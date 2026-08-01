@@ -41,16 +41,36 @@
         .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
         .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
         .quran-text-area .lang-select { flex: 1; min-width: 120px; }
-        .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; }
-        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; }
+        .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; align-items: flex-start; }
+        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
+        .quran-text-area .verse-number { 
+            display: inline-block; 
+            min-width: 24px; 
+            height: 24px; 
+            background: #d4af37; 
+            color: #0a1f0a; 
+            border-radius: 50%; 
+            text-align: center; 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            line-height: 24px; 
+            margin-right: 8px; 
+            flex-shrink: 0;
+        }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
 
         /* Mapa */
         #map { height: 400px; border-radius: 20px; border: 2px solid #d4af37; margin: 15px 0; background: #1a2f1a; z-index: 1; }
 
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
-        @media (max-width: 480px) { .prayer-grid { grid-template-columns: repeat(3, 1fr); } .prayer-card .time { font-size: 1.2rem; } }
+        @media (max-width: 480px) { 
+            .prayer-grid { grid-template-columns: repeat(3, 1fr); } 
+            .prayer-card .time { font-size: 1.2rem; }
+            .quran-text-area .verse { flex-direction: column; gap: 5px; }
+            .quran-text-area .arabic { width: 100%; text-align: right; }
+            .quran-text-area .translation { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -369,9 +389,8 @@
     }
 
     // ============================================================
-    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS
+    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS Y NUMERACIÓN DE VERSÍCULOS
     // ============================================================
-    // Ediciones disponibles para cada idioma
     const EDITIONS = {
         'es.asad': 'Español (Asad)',
         'en.sahih': 'Inglés (Sahih)',
@@ -419,9 +438,16 @@
                 for (let i = 0; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
+                    const verseNumber = i + 1;
+                    // Añadimos el número de versículo como un badge circular antes del texto árabe
                     html += `<div class="verse">
-                                <div class="arabic">${aText}</div>
-                                <div class="translation">${tText}</div>
+                                <div class="arabic">
+                                    <span class="verse-number">${verseNumber}</span>
+                                    ${aText}
+                                </div>
+                                <div class="translation">
+                                    ${tText}
+                                </div>
                              </div>`;
                 }
                 display.innerHTML = html;
