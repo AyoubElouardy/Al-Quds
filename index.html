@@ -38,7 +38,9 @@
 
         /* Corán en texto */
         .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
-        .quran-text-area select { width: 100%; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; margin-bottom: 10px; }
+        .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
+        .quran-text-area .lang-select { flex: 1; min-width: 120px; }
         .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; }
         .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
@@ -80,15 +82,23 @@
         </div>
     </div>
 
-    <!-- TAB 2: CORÁN ESCRITO -->
+    <!-- TAB 2: CORÁN ESCRITO CON SELECCIÓN DE IDIOMA -->
     <div id="tab2" class="tab-content">
         <div class="quran-text-area">
             <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">📖 El Sagrado Corán</h3>
-            <select id="surahSelect">
-                <option value="">Selecciona una Sura</option>
-            </select>
+            <div class="controls">
+                <select id="surahSelect">
+                    <option value="">Selecciona una Sura</option>
+                </select>
+                <select id="langSelect" class="lang-select">
+                    <option value="es.asad">Español</option>
+                    <option value="en.sahih">Inglés</option>
+                    <option value="fr.hamidullah">Francés</option>
+                    <option value="de.bubenheim">Alemán</option>
+                </select>
+            </div>
             <div id="quranDisplay">
-                <p style="text-align:center; color:#b8956a;">Elige una sura para leer su texto y traducción.</p>
+                <p style="text-align:center; color:#b8956a;">Elige una sura y un idioma.</p>
             </div>
         </div>
     </div>
@@ -117,7 +127,7 @@
     let currentCity = 'Madrid';
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
-    let quranAudio = null; // No usamos audio, solo texto
+    let currentSurah = ''; // guarda la sura seleccionada
 
     // ============================================================
     // 2. PESTAÑAS
@@ -128,7 +138,6 @@
             this.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(this.dataset.tab).classList.add('active');
-            // Si abrimos el mapa, forzar actualización de tamaño
             if (this.dataset.tab === 'tab3' && mapInstance) {
                 setTimeout(() => mapInstance.invalidateSize(), 300);
             }
@@ -291,7 +300,6 @@
     }
 
     function cargarMezquitasMawaqit(pais) {
-        // API no oficial de Mawaqit (gracias a la comunidad)
         const url = `https://mawaqit.thesimpleteam.net/mosques/${pais}`;
         fetch(url)
             .then(res => {
@@ -314,7 +322,6 @@
                           .bindPopup(`<b>${nombre}</b><br>${m.address || ''}`);
                     }
                 });
-                // Ajustar zoom para mostrar todas
                 if (data.length > 0) {
                     const group = L.featureGroup();
                     data.forEach(m => {
@@ -325,7 +332,6 @@
             })
             .catch(err => {
                 console.error('Error cargando Mawaqit:', err);
-                // Fallback: usar OpenStreetMap para buscar mezquitas
                 buscarMezquitasOSM(userLat, userLng);
                 mostrarMensajeMapa('No se pudo cargar Mawaqit. Mostrando mezquitas de OpenStreetMap.');
             });
@@ -363,8 +369,16 @@
     }
 
     // ============================================================
-    // 6. CORÁN ESCRITO (Árabe + Traducción al español)
+    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS
     // ============================================================
+    // Ediciones disponibles para cada idioma
+    const EDITIONS = {
+        'es.asad': 'Español (Asad)',
+        'en.sahih': 'Inglés (Sahih)',
+        'fr.hamidullah': 'Francés (Hamidullah)',
+        'de.bubenheim': 'Alemán (Bubenheim)'
+    };
+
     function loadSurahList() {
         const select = document.getElementById('surahSelect');
         fetch('https://api.alquran.cloud/v1/surah')
@@ -382,18 +396,18 @@
             .catch(err => console.error('Error cargando suras:', err));
     }
 
-    document.getElementById('surahSelect').addEventListener('change', function() {
-        const surahNumber = this.value;
+    function loadQuran(surahNumber, edition) {
         const display = document.getElementById('quranDisplay');
         if (!surahNumber) {
             display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
             return;
         }
-        // Mostrar loading
         display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
+
         // Obtener árabe y traducción en paralelo
         const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
-        const translationUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/es.asad`;
+        const translationUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}`;
+
         Promise.all([
             fetch(arabicUrl).then(r => r.json()),
             fetch(translationUrl).then(r => r.json())
@@ -412,12 +426,25 @@
                 }
                 display.innerHTML = html;
             } else {
-                display.innerHTML = '<p style="color:#ff6b6b;">Error al cargar la sura.</p>';
+                display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado. Intenta con otra edición.</p>`;
             }
         }).catch(err => {
             console.error(err);
             display.innerHTML = '<p style="color:#ff6b6b;">Error de red. Intenta de nuevo.</p>';
         });
+    }
+
+    // Eventos para selector de sura e idioma
+    document.getElementById('surahSelect').addEventListener('change', function() {
+        currentSurah = this.value;
+        const lang = document.getElementById('langSelect').value;
+        loadQuran(currentSurah, lang);
+    });
+
+    document.getElementById('langSelect').addEventListener('change', function() {
+        if (currentSurah) {
+            loadQuran(currentSurah, this.value);
+        }
     });
 
     // ============================================================
