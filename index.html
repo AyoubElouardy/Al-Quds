@@ -232,7 +232,6 @@
                         Isha: timings.Isha
                     };
                     prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
-                    // Iniciar el contador (se recalculará cada segundo)
                     startCountdownAndAdhan();
                     highlightCurrentPrayer();
                 }
@@ -241,23 +240,21 @@
     }
 
     // ============================================================
-    // 4. CONTADOR Y ADHAN (recalculado cada segundo sin array fijo)
+    // 4. CONTADOR (sin días) Y ADHAN
     // ============================================================
     function startCountdownAndAdhan() {
         setInterval(() => {
             const now = new Date();
             const todayStr = now.toISOString().split('T')[0];
 
-            // Crear fechas para cada oración usando la fecha actual
+            // Construir fechas para hoy
             let prayerDates = prayerIds.map(id => {
                 const [h, m] = prayerTimes[id].split(':').map(Number);
                 return { id, time: new Date(`${todayStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`) };
             });
-
-            // Ordenar por hora
             prayerDates.sort((a, b) => a.time - b.time);
 
-            // Buscar el próximo rezo (el primero que sea > now)
+            // Buscar próximo rezo
             let next = null;
             for (let p of prayerDates) {
                 if (p.time > now) {
@@ -265,8 +262,8 @@
                     break;
                 }
             }
-            // Si no hay ninguno, tomar el primero y sumarle un día
             if (!next && prayerDates.length > 0) {
+                // Si ya pasaron todos, tomar el primero del día siguiente
                 const first = prayerDates[0];
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -278,25 +275,17 @@
             if (next) {
                 let diff = (next.time - now) / 1000;
                 if (diff < 0) diff = 0;
+                // Asegurar que nunca supere 24h (por si acaso)
+                if (diff > 86400) diff = 86400;
 
-                let displayText = '';
-                if (diff >= 86400) {
-                    const days = Math.floor(diff / 86400);
-                    const rest = diff % 86400;
-                    const hrs = Math.floor(rest / 3600);
-                    const mins = Math.floor((rest % 3600) / 60);
-                    const secs = Math.floor(rest % 60);
-                    displayText = `${days}d ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                } else {
-                    const hrs = Math.floor(diff / 3600);
-                    const mins = Math.floor((diff % 3600) / 60);
-                    const secs = Math.floor(diff % 60);
-                    displayText = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                }
-                document.getElementById('countdownTimer').innerText = displayText;
+                const hrs = Math.floor(diff / 3600);
+                const mins = Math.floor((diff % 3600) / 60);
+                const secs = Math.floor(diff % 60);
+                document.getElementById('countdownTimer').innerText =
+                    `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
             }
 
-            // Adhan: comprobar si la hora actual coincide con alguna oración
+            // Adhan
             const currentMin = now.getHours() * 60 + now.getMinutes();
             prayerIds.forEach(id => {
                 const [h, m] = prayerTimes[id].split(':').map(Number);
@@ -309,7 +298,6 @@
                 }
             });
 
-            // Resaltar la oración actual
             highlightCurrentPrayer();
         }, 1000);
     }
@@ -418,7 +406,7 @@
     }
 
     // ============================================================
-    // 6. CORÁN ESCRITO CON BASMALA Y NUMERACIÓN CORREGIDA
+    // 6. CORÁN ESCRITO CON BASMALA SEPARADA Y NUMERACIÓN CORREGIDA
     // ============================================================
     const EDITIONS = {
         'es.asad': 'Español (Asad)',
@@ -464,37 +452,30 @@
                 let transVerses = transData.data.ayahs;
 
                 const suraNum = parseInt(surahNumber);
-                // Casos especiales
-                const isFatiha = (suraNum === 1);
-                const isTawbah = (suraNum === 9);
+                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
 
                 let basmalaText = '';
                 let startIndex = 0;
-                let verseNumberStart = 1;
 
-                if (isFatiha) {
-                    // Al-Fatiha: la Basmala es el versículo 1, se muestra con número
-                    // No separamos Basmala, la incluimos como un verso más.
-                    startIndex = 0; // mostramos todos los versos desde el 0
-                    // El número de versículo se asignará incrementalmente desde 1
-                } else if (isTawbah) {
-                    // Sura 9: no tiene Basmala
-                    startIndex = 0;
-                } else {
-                    // Resto: la Basmala está en índice 0, se muestra aparte sin número
+                if (hasBasmala) {
+                    // La Basmala siempre está en el índice 0
                     basmalaText = arabicVerses[0].text;
-                    startIndex = 1; // empezamos desde el primer verso real
+                    // Empezamos a mostrar desde el índice 1 (primer verso real)
+                    startIndex = 1;
+                } else {
+                    // Sura 9: no tiene Basmala, empezamos desde 0
+                    startIndex = 0;
                 }
 
                 // Construir HTML
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Para el resto (no Fatiha, no Tawbah) mostramos Basmala aparte
-                if (!isFatiha && !isTawbah) {
+                // Mostrar Basmala separada para todas las suras que la tienen (incluida Al-Fatiha)
+                if (hasBasmala) {
                     html += `<div class="basmala">${basmalaText}</div>`;
                 }
 
-                // Mostrar los versículos desde startIndex
+                // Mostrar los versículos desde startIndex, numerando desde 1
                 let verseNumber = 1;
                 for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
@@ -565,4 +546,4 @@
     };
 </script>
 </body>
-</html>
+</html> 
