@@ -150,14 +150,13 @@
     // 1. ELEMENTOS Y VARIABLES GLOBALES
     // ============================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-    let prayerTimes = {};
-    let prayerTimesArray = [];
+    let prayerTimes = {}; // solo almacena las horas en formato HH:MM
     let mapInstance = null;
-    let userLat = 40.4165, userLng = -3.7026; // Madrid
+    let userLat = 40.4165, userLng = -3.7026;
     let currentCity = 'Madrid';
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
-    let currentSurah = ''; // guarda la sura seleccionada
+    let currentSurah = '';
 
     // ============================================================
     // 2. PESTAÑAS
@@ -233,7 +232,7 @@
                         Isha: timings.Isha
                     };
                     prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
-                    updatePrayerTimesArray();
+                    // Iniciar el contador (se recalculará cada segundo)
                     startCountdownAndAdhan();
                     highlightCurrentPrayer();
                 }
@@ -242,48 +241,66 @@
     }
 
     // ============================================================
-    // 4. CONTADOR Y ADHAN
+    // 4. CONTADOR Y ADHAN (recalculado cada segundo sin array fijo)
     // ============================================================
-    function updatePrayerTimesArray() {
-        const now = new Date();
-        const todayStr = now.toISOString().split('T')[0];
-        prayerTimesArray = prayerIds.map(id => {
-            const [h, m] = prayerTimes[id].split(':').map(Number);
-            const d = new Date(`${todayStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`);
-            return { id, time: d };
-        }).sort((a,b) => a.time - b.time);
-    }
-
     function startCountdownAndAdhan() {
         setInterval(() => {
             const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+
+            // Crear fechas para cada oración usando la fecha actual
+            let prayerDates = prayerIds.map(id => {
+                const [h, m] = prayerTimes[id].split(':').map(Number);
+                return { id, time: new Date(`${todayStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`) };
+            });
+
+            // Ordenar por hora
+            prayerDates.sort((a, b) => a.time - b.time);
+
+            // Buscar el próximo rezo (el primero que sea > now)
             let next = null;
-            for (let p of prayerTimesArray) {
-                if (p.time > now) { next = p; break; }
+            for (let p of prayerDates) {
+                if (p.time > now) {
+                    next = p;
+                    break;
+                }
             }
-            if (!next) {
-                const first = prayerTimesArray[0];
+            // Si no hay ninguno, tomar el primero y sumarle un día
+            if (!next && prayerDates.length > 0) {
+                const first = prayerDates[0];
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                const [h,m] = prayerTimes[first.id].split(':').map(Number);
-                tomorrow.setHours(h,m,0,0);
+                const [h, m] = prayerTimes[first.id].split(':').map(Number);
+                tomorrow.setHours(h, m, 0, 0);
                 next = { id: first.id, time: tomorrow };
             }
-            const diff = (next.time - now) / 1000;
-            if (diff > 0) {
-                const hrs = Math.floor(diff/3600);
-                const mins = Math.floor((diff%3600)/60);
-                const secs = Math.floor(diff%60);
-                document.getElementById('countdownTimer').innerText =
-                    `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-            } else {
-                document.getElementById('countdownTimer').innerText = '¡Es hora!';
+
+            if (next) {
+                let diff = (next.time - now) / 1000;
+                if (diff < 0) diff = 0;
+
+                let displayText = '';
+                if (diff >= 86400) {
+                    const days = Math.floor(diff / 86400);
+                    const rest = diff % 86400;
+                    const hrs = Math.floor(rest / 3600);
+                    const mins = Math.floor((rest % 3600) / 60);
+                    const secs = Math.floor(rest % 60);
+                    displayText = `${days}d ${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                } else {
+                    const hrs = Math.floor(diff / 3600);
+                    const mins = Math.floor((diff % 3600) / 60);
+                    const secs = Math.floor(diff % 60);
+                    displayText = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                }
+                document.getElementById('countdownTimer').innerText = displayText;
             }
-            // Adhan
-            const currentMin = now.getHours()*60 + now.getMinutes();
+
+            // Adhan: comprobar si la hora actual coincide con alguna oración
+            const currentMin = now.getHours() * 60 + now.getMinutes();
             prayerIds.forEach(id => {
-                const [h,m] = prayerTimes[id].split(':').map(Number);
-                const prayerMin = h*60 + m;
+                const [h, m] = prayerTimes[id].split(':').map(Number);
+                const prayerMin = h * 60 + m;
                 if (Math.abs(currentMin - prayerMin) <= 1) {
                     if (!window._lastAdhan || window._lastAdhan !== id) {
                         window._lastAdhan = id;
@@ -291,25 +308,30 @@
                     }
                 }
             });
+
+            // Resaltar la oración actual
             highlightCurrentPrayer();
         }, 1000);
     }
 
     function highlightCurrentPrayer() {
         const now = new Date();
-        const currentMin = now.getHours()*60 + now.getMinutes();
+        const currentMin = now.getHours() * 60 + now.getMinutes();
         let activeId = null, minDiff = Infinity;
         prayerIds.forEach(id => {
-            const [h,m] = prayerTimes[id].split(':').map(Number);
-            const diff = currentMin - (h*60+m);
-            if (diff >= 0 && diff < minDiff) { minDiff = diff; activeId = id; }
+            const [h, m] = prayerTimes[id].split(':').map(Number);
+            const diff = currentMin - (h * 60 + m);
+            if (diff >= 0 && diff < minDiff) {
+                minDiff = diff;
+                activeId = id;
+            }
             document.getElementById(id).parentElement.classList.remove('active');
         });
         if (activeId) document.getElementById(activeId).parentElement.classList.add('active');
     }
 
     function playAdhan() {
-        try { adhanAudio.currentTime = 0; adhanAudio.play().catch(e=>{}); } catch(e) {}
+        try { adhanAudio.currentTime = 0; adhanAudio.play().catch(e => {}); } catch(e) {}
     }
 
     // ============================================================
@@ -321,11 +343,8 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap'
         }).addTo(mapInstance);
-        // Marcador usuario
         L.marker([lat, lng], { icon: L.divIcon({ className: 'user-marker', html: '📍', iconSize: [25,25] }) })
             .addTo(mapInstance).bindPopup('Tu ubicación');
-
-        // Cargar mezquitas de Mawaqit para España
         cargarMezquitasMawaqit('ES');
     }
 
@@ -399,7 +418,7 @@
     }
 
     // ============================================================
-    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS, BASMALA Y NUMERACIÓN
+    // 6. CORÁN ESCRITO CON BASMALA Y NUMERACIÓN CORREGIDA
     // ============================================================
     const EDITIONS = {
         'es.asad': 'Español (Asad)',
@@ -444,55 +463,52 @@
                 let arabicVerses = arabicData.data.ayahs;
                 let transVerses = transData.data.ayahs;
 
-                // Determinar si mostrar la Basmala aparte
                 const suraNum = parseInt(surahNumber);
-                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
+                // Casos especiales
+                const isFatiha = (suraNum === 1);
+                const isTawbah = (suraNum === 9);
+
                 let basmalaText = '';
                 let startIndex = 0;
+                let verseNumberStart = 1;
 
-                if (hasBasmala) {
-                    // La Basmala es el primer versículo (índice 0)
-                    basmalaText = arabicVerses[0].text;
-                    // Para Sura 1 (Al-Fatiha), la Basmala es el versículo 1, así que la incluimos normalmente
-                    if (suraNum === 1) {
-                        // No la separamos, se mostrará como versículo 1
-                        basmalaText = '';
-                        startIndex = 0;
-                    } else {
-                        // Para el resto, omitimos la Basmala de los versículos numerados
-                        startIndex = 1; // comenzamos desde el segundo elemento
-                    }
-                } else {
-                    // Sura 9: no tiene Basmala, mostramos todo desde el inicio
+                if (isFatiha) {
+                    // Al-Fatiha: la Basmala es el versículo 1, se muestra con número
+                    // No separamos Basmala, la incluimos como un verso más.
+                    startIndex = 0; // mostramos todos los versos desde el 0
+                    // El número de versículo se asignará incrementalmente desde 1
+                } else if (isTawbah) {
+                    // Sura 9: no tiene Basmala
                     startIndex = 0;
+                } else {
+                    // Resto: la Basmala está en índice 0, se muestra aparte sin número
+                    basmalaText = arabicVerses[0].text;
+                    startIndex = 1; // empezamos desde el primer verso real
                 }
 
                 // Construir HTML
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Mostrar Basmala si existe y no es Sura 1 (porque en Sura 1 ya se mostrará como verso)
-                if (hasBasmala && suraNum !== 1) {
+                // Para el resto (no Fatiha, no Tawbah) mostramos Basmala aparte
+                if (!isFatiha && !isTawbah) {
                     html += `<div class="basmala">${basmalaText}</div>`;
                 }
 
-                // Ahora mostrar los versículos desde startIndex
+                // Mostrar los versículos desde startIndex
                 let verseNumber = 1;
                 for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
-                    // Si es Sura 1, el número de versículo es i+1 (porque la Basmala es el 1)
-                    // Pero como startIndex=0, i+1 es correcto
-                    const vNum = (suraNum === 1) ? i + 1 : verseNumber;
                     html += `<div class="verse">
                                 <div class="arabic">
-                                    <span class="verse-number">${vNum}</span>
+                                    <span class="verse-number">${verseNumber}</span>
                                     ${aText}
                                 </div>
                                 <div class="translation">
                                     ${tText}
                                 </div>
                              </div>`;
-                    if (suraNum !== 1) verseNumber++;
+                    verseNumber++;
                 }
 
                 display.innerHTML = html;
