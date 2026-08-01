@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>App Islámica - Corán, Rezos y Mezquitas</title>
+    <title>Al-Quds - App Islámica</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -59,6 +59,16 @@
             flex-shrink: 0;
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
+        .quran-text-area .basmala { 
+            text-align: center; 
+            font-size: 1.8rem; 
+            color: #d4af37; 
+            margin: 10px 0 15px 0; 
+            font-weight: bold; 
+            text-shadow: 0 0 15px #d4af3740;
+            border-bottom: 1px solid #2a4a2a;
+            padding-bottom: 10px;
+        }
 
         /* Mapa */
         #map { height: 400px; border-radius: 20px; border: 2px solid #d4af37; margin: 15px 0; background: #1a2f1a; z-index: 1; }
@@ -75,7 +85,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>🕌 Mi App Islámica</h1>
+    <h1>🕌 Al-Quds</h1>
     <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
 
     <!-- Navegación -->
@@ -130,7 +140,7 @@
         <p style="font-size:0.8rem; color:#b8956a; margin-top:5px;">Fuente: Mawaqit (datos públicos).</p>
     </div>
 
-    <div class="footer">App Islámica · Horarios aproximados · Adhan automático</div>
+    <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
 <!-- ===== LIBRERÍAS ===== -->
@@ -389,7 +399,7 @@
     }
 
     // ============================================================
-    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS Y NUMERACIÓN DE VERSÍCULOS
+    // 6. CORÁN ESCRITO CON MÚLTIPLES IDIOMAS, BASMALA Y NUMERACIÓN
     // ============================================================
     const EDITIONS = {
         'es.asad': 'Español (Asad)',
@@ -423,7 +433,6 @@
         }
         display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
 
-        // Obtener árabe y traducción en paralelo
         const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
         const translationUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}`;
 
@@ -432,27 +441,63 @@
             fetch(translationUrl).then(r => r.json())
         ]).then(([arabicData, transData]) => {
             if (arabicData.code === 200 && transData.code === 200) {
-                const arabicVerses = arabicData.data.ayahs;
-                const transVerses = transData.data.ayahs;
+                let arabicVerses = arabicData.data.ayahs;
+                let transVerses = transData.data.ayahs;
+
+                // Determinar si mostrar la Basmala aparte
+                const suraNum = parseInt(surahNumber);
+                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
+                let basmalaText = '';
+                let startIndex = 0;
+
+                if (hasBasmala) {
+                    // La Basmala es el primer versículo (índice 0)
+                    basmalaText = arabicVerses[0].text;
+                    // Para Sura 1 (Al-Fatiha), la Basmala es el versículo 1, así que la incluimos normalmente
+                    if (suraNum === 1) {
+                        // No la separamos, se mostrará como versículo 1
+                        basmalaText = '';
+                        startIndex = 0;
+                    } else {
+                        // Para el resto, omitimos la Basmala de los versículos numerados
+                        startIndex = 1; // comenzamos desde el segundo elemento
+                    }
+                } else {
+                    // Sura 9: no tiene Basmala, mostramos todo desde el inicio
+                    startIndex = 0;
+                }
+
+                // Construir HTML
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
-                for (let i = 0; i < arabicVerses.length; i++) {
+
+                // Mostrar Basmala si existe y no es Sura 1 (porque en Sura 1 ya se mostrará como verso)
+                if (hasBasmala && suraNum !== 1) {
+                    html += `<div class="basmala">${basmalaText}</div>`;
+                }
+
+                // Ahora mostrar los versículos desde startIndex
+                let verseNumber = 1;
+                for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
-                    const verseNumber = i + 1;
-                    // Añadimos el número de versículo como un badge circular antes del texto árabe
+                    // Si es Sura 1, el número de versículo es i+1 (porque la Basmala es el 1)
+                    // Pero como startIndex=0, i+1 es correcto
+                    const vNum = (suraNum === 1) ? i + 1 : verseNumber;
                     html += `<div class="verse">
                                 <div class="arabic">
-                                    <span class="verse-number">${verseNumber}</span>
+                                    <span class="verse-number">${vNum}</span>
                                     ${aText}
                                 </div>
                                 <div class="translation">
                                     ${tText}
                                 </div>
                              </div>`;
+                    if (suraNum !== 1) verseNumber++;
                 }
+
                 display.innerHTML = html;
             } else {
-                display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado. Intenta con otra edición.</p>`;
+                display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
             }
         }).catch(err => {
             console.error(err);
