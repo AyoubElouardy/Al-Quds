@@ -3,177 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mi App Islámica</title>
-    <!-- Leaflet CSS para el mapa -->
+    <title>App Islámica - Corán, Rezos y Mezquitas</title>
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* ===== ESTILOS GLOBALES (Verde y Dorado Islámico) ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: #0a1f0a;
-            color: #e8d5b5;
-            padding: 15px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #d4af37;
-            font-size: 2rem;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        }
-        .subh1 {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #b8956a;
-            margin-bottom: 20px;
-        }
-        .city-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .city-input input {
-            flex: 1;
-            padding: 12px;
-            border-radius: 30px;
-            border: 1px solid #d4af37;
-            background: #1a2f1a;
-            color: #fff;
-            font-size: 1rem;
-            text-align: center;
-        }
-        .city-input button {
-            padding: 12px 25px;
-            border-radius: 30px;
-            border: none;
-            background: #d4af37;
-            color: #0a1f0a;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        /* ===== ESTILOS GLOBALES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; min-height: 100vh; }
+        .container { max-width: 700px; margin: 0 auto; }
+        h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
+        .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
+        /* Navegación por pestañas */
+        .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
+        .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
+        .tab-btn.active { background: #d4af37; color: #0a1f0a; border-color: #d4af37; }
+        .tab-content { display: none; animation: fade 0.3s; }
+        .tab-content.active { display: block; }
+        @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
+
+        /* Buscador ciudad */
+        .city-input { display: flex; gap: 10px; margin-bottom: 20px; }
+        .city-input input { flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #d4af37; background: #1a2f1a; color: #fff; font-size: 1rem; text-align: center; }
+        .city-input button { padding: 12px 25px; border-radius: 30px; border: none; background: #d4af37; color: #0a1f0a; font-weight: bold; cursor: pointer; }
+
         /* Tarjetas de rezos */
-        .prayer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .prayer-card {
-            background: #142814;
-            padding: 12px 5px;
-            border-radius: 15px;
-            text-align: center;
-            border-bottom: 3px solid #d4af37;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
-        .prayer-card .name {
-            font-size: 0.8rem;
-            color: #b8956a;
-            text-transform: uppercase;
-        }
-        .prayer-card .time {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-        }
-        .prayer-card.active {
-            border-bottom-color: #00ff88;
-            background: #1e3a1e;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-        /* Contador siguiente rezo */
-        .countdown-box {
-            background: #142814;
-            padding: 15px;
-            border-radius: 50px;
-            text-align: center;
-            margin: 15px 0;
-            border: 1px solid #d4af37;
-        }
-        .countdown-box span {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #d4af37;
-            letter-spacing: 3px;
-        }
-        /* Reproductor Corán */
-        .quran-section {
-            background: #142814;
-            padding: 15px;
-            border-radius: 20px;
-            margin: 20px 0;
-        }
-        .quran-section select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 30px;
-            background: #1a2f1a;
-            color: #fff;
-            border: 1px solid #d4af37;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-        .quran-section button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 30px;
-            border: none;
-            background: #d4af37;
-            color: #0a1f0a;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-        }
+        .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+        .prayer-card { background: #142814; padding: 12px 5px; border-radius: 15px; text-align: center; border-bottom: 3px solid #d4af37; }
+        .prayer-card .name { font-size: 0.8rem; color: #b8956a; text-transform: uppercase; }
+        .prayer-card .time { font-size: 1.5rem; font-weight: bold; color: #fff; }
+        .prayer-card.active { border-bottom-color: #00ff88; background: #1e3a1e; box-shadow: 0 0 20px #00ff8833; }
+
+        .countdown-box { background: #142814; padding: 15px; border-radius: 50px; text-align: center; margin: 15px 0; border: 1px solid #d4af37; }
+        .countdown-box span { font-size: 2.2rem; font-weight: bold; color: #d4af37; letter-spacing: 3px; }
+
+        /* Corán en texto */
+        .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
+        .quran-text-area select { width: 100%; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; margin-bottom: 10px; }
+        .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; }
+        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; }
+        .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
+        .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
+
         /* Mapa */
-        #map {
-            height: 350px;
-            border-radius: 20px;
-            border: 2px solid #d4af37;
-            margin: 20px 0;
-            background: #1a2f1a;
-            z-index: 1;
-        }
-        .footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #5a7a5a;
-            margin-top: 30px;
-        }
-        /* Ajustes para móvil */
-        @media (max-width: 480px) {
-            .prayer-grid { grid-template-columns: repeat(3, 1fr); }
-            .prayer-card .time { font-size: 1.2rem; }
-        }
+        #map { height: 400px; border-radius: 20px; border: 2px solid #d4af37; margin: 15px 0; background: #1a2f1a; z-index: 1; }
+
+        .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
+        @media (max-width: 480px) { .prayer-grid { grid-template-columns: repeat(3, 1fr); } .prayer-card .time { font-size: 1.2rem; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🕌 Mis Horarios</h1>
-        <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
+<div class="container">
+    <h1>🕌 Mi App Islámica</h1>
+    <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
 
-        <!-- Selector de ciudad -->
+    <!-- Navegación -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tab1">⏰ Rezos</button>
+        <button class="tab-btn" data-tab="tab2">📖 Corán</button>
+        <button class="tab-btn" data-tab="tab3">🗺️ Mezquitas</button>
+    </div>
+
+    <!-- TAB 1: REZOS -->
+    <div id="tab1" class="tab-content active">
         <div class="city-input">
-            <input type="text" id="cityInput" placeholder="Ej: Madrid, Londres" value="Madrid">
+            <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid">
             <button id="searchBtn">Buscar</button>
         </div>
-
-        <!-- Contador -->
-        <div class="countdown-box">
-            ⏳ Próximo rezo: <span id="countdownTimer">--:--:--</span>
-        </div>
-
-        <!-- Horarios de Rezo -->
+        <div class="countdown-box">⏳ Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
         <div class="prayer-grid" id="prayerTimesContainer">
             <div class="prayer-card"><div class="name">Fajr</div><div class="time" id="Fajr">--:--</div></div>
             <div class="prayer-card"><div class="name">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
@@ -182,350 +78,377 @@
             <div class="prayer-card"><div class="name">Isha</div><div class="time" id="Isha">--:--</div></div>
             <div class="prayer-card"><div class="name">🌙 Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
         </div>
-
-        <!-- Reproductor del Corán -->
-        <div class="quran-section">
-            <h3 style="color:#d4af37; margin-bottom:10px;">📖 Escuchar Corán</h3>
-            <select id="surahSelect"></select>
-            <button id="playQuranBtn">▶ Reproducir</button>
-            <button id="stopQuranBtn" style="margin-top:5px; background:#5a3a1a;">⏹ Detener</button>
-        </div>
-
-        <!-- Mapa de Mezquitas -->
-        <h3 style="color:#d4af37; margin:10px 0;">🕌 Mezquitas cercanas</h3>
-        <div id="map"></div>
-
-        <div class="footer">App Islámica · Todos los horarios son aproximados</div>
     </div>
 
-    <!-- ===== LIBRERÍAS EXTERNAS ===== -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // =====================================================
-        // 1. REFERENCIAS A ELEMENTOS DEL DOM
-        // =====================================================
-        const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-        let prayerTimes = {};        // Guardará las horas en formato objeto
-        let prayerTimesArray = [];   // Para el contador
-        let mapInstance = null;
-        let userLat = 40.4165, userLng = -3.7026; // Madrid por defecto
-        let currentCity = 'Madrid';
-        let audioPlayer = new Audio();
-        let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
-        // Precargar el Adhan para que responda rápido
-        adhanAudio.preload = 'auto';
+    <!-- TAB 2: CORÁN ESCRITO -->
+    <div id="tab2" class="tab-content">
+        <div class="quran-text-area">
+            <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">📖 El Sagrado Corán</h3>
+            <select id="surahSelect">
+                <option value="">Selecciona una Sura</option>
+            </select>
+            <div id="quranDisplay">
+                <p style="text-align:center; color:#b8956a;">Elige una sura para leer su texto y traducción.</p>
+            </div>
+        </div>
+    </div>
 
-        // =====================================================
-        // 2. OBTENER UBICACIÓN REAL DEL USUARIO (si permite)
-        // =====================================================
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        userLat = pos.coords.latitude;
-                        userLng = pos.coords.longitude;
-                        // Invertir geocodificación con Nominatim para sacar la ciudad
-                        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLng}&format=json`)
-                            .then(res => res.json())
-                            .then(data => {
-                                const address = data.address || {};
-                                const city = address.city || address.town || address.village || address.county || 'tu ciudad';
-                                currentCity = city;
-                                document.getElementById('cityInput').value = city;
-                                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
-                                fetchPrayerTimes(userLat, userLng);
-                                initMap(userLat, userLng);
-                            })
-                            .catch(() => {
-                                // Si falla la geocodificación, usamos las coord
-                                document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
-                                fetchPrayerTimes(userLat, userLng);
-                                initMap(userLat, userLng);
-                            });
-                    },
-                    (error) => {
-                        console.warn("Geolocalización denegada o falló. Usando Madrid por defecto.");
-                        document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (por defecto) · ${new Date().toLocaleDateString('es-ES')}`;
-                        fetchPrayerTimes(userLat, userLng);
-                        initMap(userLat, userLng);
-                    }
-                );
+    <!-- TAB 3: MAPA CON MEZQUITAS DE MAWAQIT -->
+    <div id="tab3" class="tab-content">
+        <h3 style="color:#d4af37; margin:10px 0;">🕌 Mezquitas de España (Mawaqit)</h3>
+        <div id="map"></div>
+        <p style="font-size:0.8rem; color:#b8956a; margin-top:5px;">Fuente: Mawaqit (datos públicos).</p>
+    </div>
+
+    <div class="footer">App Islámica · Horarios aproximados · Adhan automático</div>
+</div>
+
+<!-- ===== LIBRERÍAS ===== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // ============================================================
+    // 1. ELEMENTOS Y VARIABLES GLOBALES
+    // ============================================================
+    const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    let prayerTimes = {};
+    let prayerTimesArray = [];
+    let mapInstance = null;
+    let userLat = 40.4165, userLng = -3.7026; // Madrid
+    let currentCity = 'Madrid';
+    let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
+    adhanAudio.preload = 'auto';
+    let quranAudio = null; // No usamos audio, solo texto
+
+    // ============================================================
+    // 2. PESTAÑAS
+    // ============================================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(this.dataset.tab).classList.add('active');
+            // Si abrimos el mapa, forzar actualización de tamaño
+            if (this.dataset.tab === 'tab3' && mapInstance) {
+                setTimeout(() => mapInstance.invalidateSize(), 300);
+            }
+        });
+    });
+
+    // ============================================================
+    // 3. UBICACIÓN Y HORARIOS
+    // ============================================================
+    function getUserLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    userLat = pos.coords.latitude;
+                    userLng = pos.coords.longitude;
+                    reverseGeocode(userLat, userLng);
+                },
+                () => {
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (GPS denegado) · ${new Date().toLocaleDateString('es-ES')}`;
+                    fetchPrayerTimes(userLat, userLng);
+                    initMap(userLat, userLng);
+                }
+            );
+        } else {
+            document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
+            fetchPrayerTimes(userLat, userLng);
+            initMap(userLat, userLng);
+        }
+    }
+
+    function reverseGeocode(lat, lng) {
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+            .then(r => r.json())
+            .then(data => {
+                const addr = data.address || {};
+                const city = addr.city || addr.town || addr.village || addr.county || 'tu ciudad';
+                currentCity = city;
+                document.getElementById('cityInput').value = city;
+                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                fetchPrayerTimes(lat, lng);
+                initMap(lat, lng);
+            })
+            .catch(() => {
+                document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
+                fetchPrayerTimes(lat, lng);
+                initMap(lat, lng);
+            });
+    }
+
+    function fetchPrayerTimes(lat, lng) {
+        const today = Math.floor(Date.now() / 1000);
+        const url = `https://api.aladhan.com/v1/timings/${today}?latitude=${lat}&longitude=${lng}&method=8`;
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                if (data.code === 200) {
+                    const timings = data.data.timings;
+                    prayerTimes = {
+                        Fajr: timings.Fajr,
+                        Dhuhr: timings.Dhuhr,
+                        Asr: timings.Asr,
+                        Maghrib: timings.Maghrib,
+                        Isha: timings.Isha
+                    };
+                    prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
+                    updatePrayerTimesArray();
+                    startCountdownAndAdhan();
+                    highlightCurrentPrayer();
+                }
+            })
+            .catch(err => console.error('Error horarios:', err));
+    }
+
+    // ============================================================
+    // 4. CONTADOR Y ADHAN
+    // ============================================================
+    function updatePrayerTimesArray() {
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+        prayerTimesArray = prayerIds.map(id => {
+            const [h, m] = prayerTimes[id].split(':').map(Number);
+            const d = new Date(`${todayStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`);
+            return { id, time: d };
+        }).sort((a,b) => a.time - b.time);
+    }
+
+    function startCountdownAndAdhan() {
+        setInterval(() => {
+            const now = new Date();
+            let next = null;
+            for (let p of prayerTimesArray) {
+                if (p.time > now) { next = p; break; }
+            }
+            if (!next) {
+                const first = prayerTimesArray[0];
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const [h,m] = prayerTimes[first.id].split(':').map(Number);
+                tomorrow.setHours(h,m,0,0);
+                next = { id: first.id, time: tomorrow };
+            }
+            const diff = (next.time - now) / 1000;
+            if (diff > 0) {
+                const hrs = Math.floor(diff/3600);
+                const mins = Math.floor((diff%3600)/60);
+                const secs = Math.floor(diff%60);
+                document.getElementById('countdownTimer').innerText =
+                    `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
             } else {
-                document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
-                fetchPrayerTimes(userLat, userLng);
-                initMap(userLat, userLng);
+                document.getElementById('countdownTimer').innerText = '¡Es hora!';
             }
-        }
-
-        // =====================================================
-        // 3. FETCH DE HORARIOS DE REZO (API Aladhan)
-        // =====================================================
-        function fetchPrayerTimes(lat, lng) {
-            const today = Math.floor(Date.now() / 1000);
-            const url = `https://api.aladhan.com/v1/timings/${today}?latitude=${lat}&longitude=${lng}&method=8`; // Método 8 = Liga Islámica Mundial
-
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.code === 200) {
-                        const timings = data.data.timings;
-                        // Guardar en el objeto
-                        prayerTimes = {
-                            Fajr: timings.Fajr,
-                            Dhuhr: timings.Dhuhr,
-                            Asr: timings.Asr,
-                            Maghrib: timings.Maghrib,
-                            Isha: timings.Isha
-                        };
-                        // Actualizar UI
-                        prayerIds.forEach(id => {
-                            document.getElementById(id).innerText = prayerTimes[id];
-                        });
-                        // Crear array para el contador
-                        updatePrayerTimesArray();
-                        // Iniciar contador y comprobación de Adhan
-                        startCountdownAndAdhan();
-                        // Resaltar el actual
-                        highlightCurrentPrayer();
-                    }
-                })
-                .catch(err => {
-                    console.error("Error cargando horarios:", err);
-                    document.getElementById('fechaLocation').innerHTML = "⚠️ Error al cargar horarios";
-                });
-        }
-
-        // =====================================================
-        // 4. CONTADOR DE PRÓXIMO REZO Y ADHAN
-        // =====================================================
-        function updatePrayerTimesArray() {
-            const now = new Date();
-            const todayStr = now.toISOString().split('T')[0];
-            prayerTimesArray = prayerIds.map(id => {
-                const [hours, minutes] = prayerTimes[id].split(':').map(Number);
-                const d = new Date(`${todayStr}T${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:00`);
-                return { id, time: d };
-            });
-            // Ordenar por hora
-            prayerTimesArray.sort((a, b) => a.time - b.time);
-        }
-
-        function startCountdownAndAdhan() {
-            setInterval(() => {
-                const now = new Date();
-                // Buscar el próximo rezo
-                let nextPrayer = null;
-                for (let p of prayerTimesArray) {
-                    if (p.time > now) {
-                        nextPrayer = p;
-                        break;
-                    }
-                }
-                // Si ya pasaron todos, es el primero del día siguiente
-                if (!nextPrayer) {
-                    const tomorrow = new Date(now);
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    const first = prayerTimesArray[0];
-                    const tomorrowTime = new Date(tomorrow);
-                    const [h, m] = prayerTimes[first.id].split(':').map(Number);
-                    tomorrowTime.setHours(h, m, 0, 0);
-                    nextPrayer = { id: first.id, time: tomorrowTime };
-                }
-
-                // Calcular diferencia
-                const diff = (nextPrayer.time - now) / 1000;
-                if (diff > 0) {
-                    const hours = Math.floor(diff / 3600);
-                    const minutes = Math.floor((diff % 3600) / 60);
-                    const seconds = Math.floor(diff % 60);
-                    document.getElementById('countdownTimer').innerText =
-                        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                } else {
-                    document.getElementById('countdownTimer').innerText = '¡Es hora!';
-                }
-
-                // === COMPROBAR ADHAN (suena si la hora actual coincide con la del rezo) ===
-                const currentMinutes = now.getHours() * 60 + now.getMinutes();
-                prayerIds.forEach(id => {
-                    const [h, m] = prayerTimes[id].split(':').map(Number);
-                    const prayerMinutes = h * 60 + m;
-                    // Si estamos dentro del mismo minuto (margen de 1 minuto para evitar fallos)
-                    if (Math.abs(currentMinutes - prayerMinutes) <= 1) {
-                        // Evitar que suene varias veces seguidas
-                        if (!window._lastAdhan || window._lastAdhan !== id) {
-                            window._lastAdhan = id;
-                            playAdhan();
-                        }
-                    }
-                });
-
-                // Resaltar el rezo actual
-                highlightCurrentPrayer();
-
-            }, 1000); // Actualizar cada segundo
-        }
-
-        function highlightCurrentPrayer() {
-            const now = new Date();
-            const currentMinutes = now.getHours() * 60 + now.getMinutes();
-            let activeId = null;
-            let minDiff = Infinity;
-
+            // Adhan
+            const currentMin = now.getHours()*60 + now.getMinutes();
             prayerIds.forEach(id => {
-                const [h, m] = prayerTimes[id].split(':').map(Number);
-                const prayerMinutes = h * 60 + m;
-                const diff = currentMinutes - prayerMinutes;
-                if (diff >= 0 && diff < minDiff) {
-                    minDiff = diff;
-                    activeId = id;
+                const [h,m] = prayerTimes[id].split(':').map(Number);
+                const prayerMin = h*60 + m;
+                if (Math.abs(currentMin - prayerMin) <= 1) {
+                    if (!window._lastAdhan || window._lastAdhan !== id) {
+                        window._lastAdhan = id;
+                        playAdhan();
+                    }
                 }
-                // Quitar clase active
-                document.getElementById(id).parentElement.classList.remove('active');
             });
+            highlightCurrentPrayer();
+        }, 1000);
+    }
 
-            if (activeId) {
-                document.getElementById(activeId).parentElement.classList.add('active');
-            }
-        }
+    function highlightCurrentPrayer() {
+        const now = new Date();
+        const currentMin = now.getHours()*60 + now.getMinutes();
+        let activeId = null, minDiff = Infinity;
+        prayerIds.forEach(id => {
+            const [h,m] = prayerTimes[id].split(':').map(Number);
+            const diff = currentMin - (h*60+m);
+            if (diff >= 0 && diff < minDiff) { minDiff = diff; activeId = id; }
+            document.getElementById(id).parentElement.classList.remove('active');
+        });
+        if (activeId) document.getElementById(activeId).parentElement.classList.add('active');
+    }
 
-        function playAdhan() {
-            try {
-                adhanAudio.currentTime = 0;
-                adhanAudio.play().catch(e => console.warn('No se pudo reproducir el Adhan (política de autoplay):', e));
-            } catch (e) {
-                console.warn(e);
-            }
-        }
+    function playAdhan() {
+        try { adhanAudio.currentTime = 0; adhanAudio.play().catch(e=>{}); } catch(e) {}
+    }
 
-        // =====================================================
-        // 5. MAPA Y MEZQUITAS (Leaflet + Overpass API)
-        // =====================================================
-        function initMap(lat, lng) {
-            if (mapInstance) {
-                mapInstance.remove();
-            }
-            mapInstance = L.map('map').setView([lat, lng], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap'
-            }).addTo(mapInstance);
+    // ============================================================
+    // 5. MAPA CON MEZQUITAS DE MAWAQIT (ESPAÑA)
+    // ============================================================
+    function initMap(lat, lng) {
+        if (mapInstance) mapInstance.remove();
+        mapInstance = L.map('map').setView([lat, lng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(mapInstance);
+        // Marcador usuario
+        L.marker([lat, lng], { icon: L.divIcon({ className: 'user-marker', html: '📍', iconSize: [25,25] }) })
+            .addTo(mapInstance).bindPopup('Tu ubicación');
 
-            // Marcador del usuario
-            L.marker([lat, lng], { icon: L.divIcon({ className: 'user-marker', html: '📍', iconSize: [25, 25] }) })
-                .addTo(mapInstance)
-                .bindPopup('Tu ubicación');
+        // Cargar mezquitas de Mawaqit para España
+        cargarMezquitasMawaqit('ES');
+    }
 
-            // Buscar mezquitas en el área visible
-            buscarMezquitas(lat, lng);
-        }
-
-        function buscarMezquitas(lat, lng) {
-            // Usar Overpass API para obtener nodos con amenity=place_of_worship y religion=muslim
-            const radius = 3000; // 3km
-            const query = `
-                [out:json];
-                (
-                  node["amenity"="place_of_worship"]["religion"="muslim"](around:${radius},${lat},${lng});
-                  way["amenity"="place_of_worship"]["religion"="muslim"](around:${radius},${lat},${lng});
-                  relation["amenity"="place_of_worship"]["religion"="muslim"](around:${radius},${lat},${lng});
-                );
-                out center;
-            `;
-            const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    const elements = data.elements || [];
-                    if (elements.length === 0) {
-                        L.marker([lat, lng], { icon: L.divIcon({ className: 'info-marker', html: 'ℹ️', iconSize: [25, 25] }) })
-                            .addTo(mapInstance)
-                            .bindPopup('No se encontraron mezquitas cerca. Amplía el mapa.');
-                        return;
+    function cargarMezquitasMawaqit(pais) {
+        // API no oficial de Mawaqit (gracias a la comunidad)
+        const url = `https://mawaqit.thesimpleteam.net/mosques/${pais}`;
+        fetch(url)
+            .then(res => {
+                if (!res.ok) throw new Error('No se pudo obtener datos de Mawaqit');
+                return res.json();
+            })
+            .then(data => {
+                if (!data || data.length === 0) {
+                    mostrarMensajeMapa('No hay mezquitas registradas en Mawaqit para este país.');
+                    return;
+                }
+                data.forEach(m => {
+                    const lat = m.lat || m.latitude;
+                    const lng = m.lng || m.longitude;
+                    const nombre = m.name || m.nom || 'Mezquita';
+                    if (lat && lng) {
+                        L.marker([parseFloat(lat), parseFloat(lng)], {
+                            icon: L.divIcon({ className: 'mosque-marker', html: '🕌', iconSize: [30,30] })
+                        }).addTo(mapInstance)
+                          .bindPopup(`<b>${nombre}</b><br>${m.address || ''}`);
                     }
-                    elements.forEach(el => {
-                        let lat2 = el.lat || el.center?.lat;
-                        let lon2 = el.lon || el.center?.lon;
-                        if (lat2 && lon2) {
-                            const name = el.tags?.name || 'Mezquita';
-                            L.marker([lat2, lon2], { icon: L.divIcon({ className: 'mosque-marker', html: '🕌', iconSize: [30, 30] }) })
-                                .addTo(mapInstance)
-                                .bindPopup(`<b>${name}</b><br>${el.tags?.['addr:street'] || ''}`);
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.error("Error cargando mezquitas:", err);
                 });
-        }
+                // Ajustar zoom para mostrar todas
+                if (data.length > 0) {
+                    const group = L.featureGroup();
+                    data.forEach(m => {
+                        if (m.lat && m.lng) group.addLayer(L.marker([m.lat, m.lng]));
+                    });
+                    mapInstance.fitBounds(group.getBounds().pad(0.1));
+                }
+            })
+            .catch(err => {
+                console.error('Error cargando Mawaqit:', err);
+                // Fallback: usar OpenStreetMap para buscar mezquitas
+                buscarMezquitasOSM(userLat, userLng);
+                mostrarMensajeMapa('No se pudo cargar Mawaqit. Mostrando mezquitas de OpenStreetMap.');
+            });
+    }
 
-        // =====================================================
-        // 6. REPRODUCTOR DEL CORÁN (API Alquran.cloud)
-        // =====================================================
-        function loadSurahList() {
-            const select = document.getElementById('surahSelect');
-            fetch('https://api.alquran.cloud/v1/surah')
-                .then(res => res.json())
-                .then(data => {
-                    if (data.code === 200) {
-                        data.data.forEach(surah => {
-                            const option = document.createElement('option');
-                            option.value = surah.number;
-                            option.textContent = `${surah.number}. ${surah.englishName} (${surah.name})`;
-                            select.appendChild(option);
-                        });
+    function buscarMezquitasOSM(lat, lng) {
+        const query = `
+            [out:json];
+            (
+              node["amenity"="place_of_worship"]["religion"="muslim"](around:3000,${lat},${lng});
+              way["amenity"="place_of_worship"]["religion"="muslim"](around:3000,${lat},${lng});
+            );
+            out center;
+        `;
+        const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                (data.elements || []).forEach(el => {
+                    const lat2 = el.lat || el.center?.lat;
+                    const lon2 = el.lon || el.center?.lon;
+                    if (lat2 && lon2) {
+                        const name = el.tags?.name || 'Mezquita';
+                        L.marker([lat2, lon2], { icon: L.divIcon({ html: '🕌', iconSize: [30,30] }) })
+                            .addTo(mapInstance).bindPopup(`<b>${name}</b>`);
                     }
-                })
-                .catch(err => console.error("Error cargando Surahs:", err));
+                });
+            })
+            .catch(e => console.error('Error OSM:', e));
+    }
+
+    function mostrarMensajeMapa(msg) {
+        L.marker([userLat, userLng], { icon: L.divIcon({ html: 'ℹ️', iconSize: [30,30] }) })
+            .addTo(mapInstance).bindPopup(msg).openPopup();
+    }
+
+    // ============================================================
+    // 6. CORÁN ESCRITO (Árabe + Traducción al español)
+    // ============================================================
+    function loadSurahList() {
+        const select = document.getElementById('surahSelect');
+        fetch('https://api.alquran.cloud/v1/surah')
+            .then(r => r.json())
+            .then(data => {
+                if (data.code === 200) {
+                    data.data.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.number;
+                        opt.textContent = `${s.number}. ${s.englishName} (${s.name})`;
+                        select.appendChild(opt);
+                    });
+                }
+            })
+            .catch(err => console.error('Error cargando suras:', err));
+    }
+
+    document.getElementById('surahSelect').addEventListener('change', function() {
+        const surahNumber = this.value;
+        const display = document.getElementById('quranDisplay');
+        if (!surahNumber) {
+            display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
+            return;
         }
-
-        document.getElementById('playQuranBtn').addEventListener('click', function() {
-            const surahId = document.getElementById('surahSelect').value;
-            if (!surahId) return;
-            const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${surahId}.mp3`;
-            audioPlayer.src = audioUrl;
-            audioPlayer.play().catch(e => alert('Error al reproducir. Intenta con otro recitador.'));
-            this.textContent = '▶ Reproduciendo...';
+        // Mostrar loading
+        display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
+        // Obtener árabe y traducción en paralelo
+        const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
+        const translationUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/es.asad`;
+        Promise.all([
+            fetch(arabicUrl).then(r => r.json()),
+            fetch(translationUrl).then(r => r.json())
+        ]).then(([arabicData, transData]) => {
+            if (arabicData.code === 200 && transData.code === 200) {
+                const arabicVerses = arabicData.data.ayahs;
+                const transVerses = transData.data.ayahs;
+                let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
+                for (let i = 0; i < arabicVerses.length; i++) {
+                    const aText = arabicVerses[i].text;
+                    const tText = transVerses[i]?.text || '[Traducción no disponible]';
+                    html += `<div class="verse">
+                                <div class="arabic">${aText}</div>
+                                <div class="translation">${tText}</div>
+                             </div>`;
+                }
+                display.innerHTML = html;
+            } else {
+                display.innerHTML = '<p style="color:#ff6b6b;">Error al cargar la sura.</p>';
+            }
+        }).catch(err => {
+            console.error(err);
+            display.innerHTML = '<p style="color:#ff6b6b;">Error de red. Intenta de nuevo.</p>';
         });
+    });
 
-        document.getElementById('stopQuranBtn').addEventListener('click', function() {
-            audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            document.getElementById('playQuranBtn').textContent = '▶ Reproducir';
-        });
+    // ============================================================
+    // 7. BÚSQUEDA POR CIUDAD
+    // ============================================================
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        const city = document.getElementById('cityInput').value.trim();
+        if (!city) return;
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lng = parseFloat(data[0].lon);
+                    userLat = lat; userLng = lng;
+                    currentCity = data[0].display_name.split(',')[0];
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                    fetchPrayerTimes(lat, lng);
+                    initMap(lat, lng);
+                } else alert('Ciudad no encontrada.');
+            })
+            .catch(() => alert('Error en la búsqueda.'));
+    });
 
-        // =====================================================
-        // 7. BUSCADOR POR CIUDAD
-        // =====================================================
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            const city = document.getElementById('cityInput').value.trim();
-            if (!city) return;
-            // Geocodificar la ciudad con Nominatim
-            fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        const lat = parseFloat(data[0].lat);
-                        const lng = parseFloat(data[0].lon);
-                        userLat = lat;
-                        userLng = lng;
-                        currentCity = data[0].display_name.split(',')[0];
-                        document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
-                        fetchPrayerTimes(lat, lng);
-                        initMap(lat, lng);
-                    } else {
-                        alert('Ciudad no encontrada. Intenta con otra.');
-                    }
-                })
-                .catch(err => alert('Error al buscar la ciudad.'));
-        });
-
-        // =====================================================
-        // 8. INICIO DE LA APP
-        // =====================================================
-        window.onload = function() {
-            loadSurahList();
-            getUserLocation(); // Esto inicia todo: horarios, mapa y contador
-        };
-    </script>
+    // ============================================================
+    // 8. INICIO
+    // ============================================================
+    window.onload = function() {
+        loadSurahList();
+        getUserLocation();
+    };
+</script>
 </body>
 </html>
