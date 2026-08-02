@@ -1,46 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Quds - App Islámica</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        /* ===== ESTILOS GLOBALES ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; min-height: 100vh; }
-        .container { max-width: 700px; margin: 0 auto; }
-        h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
-        .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
-        /* Navegación por pestañas */
-        .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
-        .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
-        .tab-btn.active { background: #d4af37; color: #0a1f0a; border-color: #d4af37; }
-        .tab-content { display: none; animation: fade 0.3s; }
-        .tab-content.active { display: block; }
-        @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
 
-        /* Buscador ciudad */
-        .city-input { display: flex; gap: 10px; margin-bottom: 20px; }
-        .city-input input { flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #d4af37; background: #1a2f1a; color: #fff; font-size: 1rem; text-align: center; }
-        .city-input button { padding: 12px 25px; border-radius: 30px; border: none; background: #d4af37; color: #0a1f0a; font-weight: bold; cursor: pointer; }
-
-        /* Tarjetas de rezos */
-        .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-        .prayer-card { background: #142814; padding: 12px 5px; border-radius: 15px; text-align: center; border-bottom: 3px solid #d4af37; }
-        .prayer-card .name { font-size: 0.8rem; color: #b8956a; text-transform: uppercase; }
-        .prayer-card .time { font-size: 1.5rem; font-weight: bold; color: #fff; }
-        .prayer-card.active { border-bottom-color: #00ff88; background: #1e3a1e; box-shadow: 0 0 20px #00ff8833; }
-
-        .countdown-box { background: #142814; padding: 15px; border-radius: 50px; text-align: center; margin: 15px 0; border: 1px solid #d4af37; }
-        .countdown-box span { font-size: 2.2rem; font-weight: bold; color: #d4af37; letter-spacing: 3px; }
-
-        /* Corán en texto */
-        .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
-        .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
-        .quran-text-area .lang-select { flex: 1; min-width: 120px; }
+        g-select { flex: 1; min-width: 120px; }
         .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; align-items: flex-start; }
         .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
