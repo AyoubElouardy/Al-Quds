@@ -57,6 +57,16 @@
             flex-shrink: 0;
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
+        .quran-text-area .basmala { 
+            text-align: center; 
+            font-size: 1.8rem; 
+            color: #d4af37; 
+            margin: 10px 0 20px 0; 
+            font-weight: bold; 
+            text-shadow: 0 0 15px #d4af3740;
+            border-bottom: 2px solid #2a4a2a;
+            padding-bottom: 12px;
+        }
 
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
         @media (max-width: 480px) { 
@@ -286,15 +296,8 @@
     }
 
     // ============================================================
-    // 5. CORÁN ESCRITO – NUMERACIÓN CORRECTA (Basmala = verso 1)
+    // 5. CORÁN ESCRITO – BASMALA SIN NÚMERO Y NUMERACIÓN DESDE 1
     // ============================================================
-    const EDITIONS = {
-        'es.asad': 'Español (Asad)',
-        'en.sahih': 'Inglés (Sahih)',
-        'fr.hamidullah': 'Francés (Hamidullah)',
-        'de.bubenheim': 'Alemán (Bubenheim)'
-    };
-
     function loadSurahList() {
         const select = document.getElementById('surahSelect');
         fetch('https://api.alquran.cloud/v1/surah')
@@ -331,22 +334,33 @@
                 let arabicVerses = arabicData.data.ayahs;
                 let transVerses = transData.data.ayahs;
 
+                const suraNum = parseInt(surahNumber);
+                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
+
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Mostrar todos los versículos (incluyendo la Basmala como verso 1)
-                for (let i = 0; i < arabicVerses.length; i++) {
-                    const verseNum = i + 1;
+                // Si tiene Basmala, la mostramos sin número
+                let startIndex = 0;
+                if (hasBasmala) {
+                    html += `<div class="basmala">${arabicVerses[0].text}</div>`;
+                    startIndex = 1; // Empezamos a mostrar desde el verso 2 (índice 1)
+                }
+
+                // Mostramos los versículos restantes numerados desde 1
+                let verseNumber = 1;
+                for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
                     html += `<div class="verse">
                                 <div class="arabic">
-                                    <span class="verse-number">${verseNum}</span>
+                                    <span class="verse-number">${verseNumber}</span>
                                     ${aText}
                                 </div>
                                 <div class="translation">
                                     ${tText}
                                 </div>
                              </div>`;
+                    verseNumber++;
                 }
 
                 display.innerHTML = html;
