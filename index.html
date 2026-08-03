@@ -335,19 +335,44 @@
                 let transVerses = transData.data.ayahs;
 
                 const suraNum = parseInt(surahNumber);
-                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
+                // La Basmala está en el primer ayah (índice 0) para todas las suras excepto la 9
+                const hasBasmala = (suraNum !== 9 && arabicVerses[0]?.text.includes('بِسْمِ اللَّهِ'));
 
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Si tiene Basmala, se muestra separada sin número
                 let startIndex = 0;
-                if (hasBasmala) {
-                    html += `<div class="basmala">${arabicVerses[0].text}</div>`;
-                    startIndex = 1; // El primer verso real comienza en índice 1
+                let verseNumber = 1;
+
+                // Sura 1 (Al-Fatiha): la Basmala es el verso 1, la mostramos con número
+                if (suraNum === 1) {
+                    // Mostramos todos los versos con su número real (incluyendo la Basmala como 1)
+                    for (let i = 0; i < arabicVerses.length; i++) {
+                        const aText = arabicVerses[i].text;
+                        const tText = transVerses[i]?.text || '[Traducción no disponible]';
+                        const num = arabicVerses[i].numberInSurah; // número real
+                        html += `<div class="verse">
+                                    <div class="arabic">
+                                        <span class="verse-number">${num}</span>
+                                        ${aText}
+                                    </div>
+                                    <div class="translation">
+                                        ${tText}
+                                    </div>
+                                 </div>`;
+                    }
+                    display.innerHTML = html;
+                    return;
                 }
 
-                // Mostrar versículos desde startIndex, numerando desde 1
-                let verseNumber = 1;
+                // Para el resto de suras:
+                // Si tiene Basmala, la mostramos sin número y comenzamos desde el índice 1
+                if (hasBasmala) {
+                    html += `<div class="basmala">${arabicVerses[0].text}</div>`;
+                    startIndex = 1;
+                }
+
+                // Mostramos los versos desde startIndex, numerándolos desde 1
+                verseNumber = 1;
                 for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
