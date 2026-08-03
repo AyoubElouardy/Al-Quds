@@ -130,7 +130,7 @@
                 <input type="range" id="progressSlider" value="0" min="0" max="100" step="0.1">
                 <span class="time-label" id="timeDisplay">00:00 / 00:00</span>
             </div>
-            <div class="audio-status" id="audioStatus">Cargando audio...</div>
+            <div class="audio-status" id="audioStatus">Selecciona una sura para escuchar</div>
         </div>
     </div>
 
@@ -152,7 +152,7 @@
 
     // Audio
     let audio = new Audio();
-    let surahTimings = null;          // array de { verse, start, end }
+    let surahTimings = null;
     let isPlaying = false;
     let currentVerseHighlight = null;
     let verseCount = 0;
@@ -355,6 +355,7 @@
         const display = document.getElementById('quranDisplay');
         if (!surahNumber) {
             display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
+            document.getElementById('audioStatus').textContent = 'Selecciona una sura para escuchar';
             return;
         }
         display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
@@ -406,14 +407,19 @@
     }
 
     // ================================================================
-    // 6. AUDIO Y TIMINGS (con múltiples fuentes)
+    // 6. AUDIO Y TIMINGS (FUENTE FIABLE)
     // ================================================================
     function loadAudioAndTimings(surahNumber) {
         const statusEl = document.getElementById('audioStatus');
         statusEl.textContent = 'Cargando audio...';
         audioLoaded = false;
 
-        // Primero intentar cargar timings desde un repositorio (opcional)
+        // Fuente principal (muy fiable)
+        const audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${String(surahNumber).padStart(3, '0')}.mp3`;
+        audio.src = audioUrl;
+        audio.load();
+
+        // Intentar obtener timings exactos (opcional, si falla usamos estimación)
         const timingsUrl = `https://raw.githubusercontent.com/risala/quran-timings/main/timings.json`;
         fetch(timingsUrl)
             .then(r => r.json())
@@ -428,46 +434,21 @@
                 } else {
                     surahTimings = null;
                 }
-                // Cargar audio después de obtener timings
-                loadAudioFile(surahNumber);
             })
             .catch(() => {
-                // Si falla la carga de timings, usamos estimación
                 surahTimings = null;
-                loadAudioFile(surahNumber);
+            })
+            .finally(() => {
+                // Configurar eventos del audio
+                setupAudioEvents();
             });
-    }
 
-    function loadAudioFile(surahNumber) {
-        const statusEl = document.getElementById('audioStatus');
-        const audioUrl1 = `https://server8.mp3quran.net/afs/${String(surahNumber).padStart(3, '0')}.mp3`;
-        const audioUrl2 = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
-
-        // Intentar con la primera URL
-        audio.src = audioUrl1;
-        audio.load();
-        statusEl.textContent = 'Cargando audio (fuente 1)...';
-
-        // Si falla, usar la segunda
+        // Manejar errores de carga del audio
         audio.onerror = function() {
-            console.warn('Fallo la primera fuente de audio, intentando con la segunda.');
-            audio.src = audioUrl2;
-            audio.load();
-            statusEl.textContent = 'Cargando audio (fuente 2)...';
-            // Si también falla, mostrar error
-            audio.onerror = function() {
-                statusEl.textContent = 'Error: No se pudo cargar el audio.';
-                audioLoaded = false;
-            };
+            statusEl.textContent = 'Error al cargar el audio. Intenta con otra sura.';
+            audioLoaded = false;
+            document.getElementById('playBtn').textContent = '▶';
         };
-
-        // Cuando se carga correctamente
-        audio.oncanplay = function() {
-            statusEl.textContent = 'Audio listo.';
-            audioLoaded = true;
-        };
-
-        setupAudioEvents();
     }
 
     function setupAudioEvents() {
@@ -486,11 +467,13 @@
         audio.onplay = function() {
             isPlaying = true;
             document.getElementById('playBtn').textContent = '⏸';
+            document.getElementById('audioStatus').textContent = 'Reproduciendo...';
         };
 
         audio.onpause = function() {
             isPlaying = false;
             document.getElementById('playBtn').textContent = '▶';
+            document.getElementById('audioStatus').textContent = 'Pausado';
         };
 
         audio.onended = function() {
@@ -499,12 +482,20 @@
             document.getElementById('progressSlider').value = 0;
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
             clearHighlight();
+            document.getElementById('audioStatus').textContent = 'Finalizado';
         };
 
-        // Cuando los metadatos estén cargados, actualizar el tiempo
         audio.onloadedmetadata = function() {
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-            document.getElementById('audioStatus').textContent = 'Audio cargado correctamente.';
+            document.getElementById('audioStatus').textContent = 'Audio listo. Presiona play.';
+            audioLoaded = true;
+        };
+
+        audio.oncanplay = function() {
+            audioLoaded = true;
+            if (document.getElementById('audioStatus').textContent === 'Cargando audio...') {
+                document.getElementById('audioStatus').textContent = 'Audio listo.';
+            }
         };
     }
 
@@ -576,17 +567,17 @@
     // 8. CONTROLES DE AUDIO
     // ================================================================
     document.getElementById('playBtn').addEventListener('click', function() {
-        if (audio.src) {
-            if (audio.paused) {
-                audio.play().catch(e => {
-                    console.error('Error al reproducir:', e);
-                    document.getElementById('audioStatus').textContent = 'Error al reproducir. Intenta con otra sura.';
-                });
-            } else {
-                audio.pause();
-            }
-        } else {
+        if (!audio.src) {
             alert('Primero selecciona una sura.');
+            return;
+        }
+        if (audio.paused) {
+            audio.play().catch(e => {
+                console.error('Error al reproducir:', e);
+                document.getElementById('audioStatus').textContent = 'Error al reproducir. Intenta con otra sura.';
+            });
+        } else {
+            audio.pause();
         }
     });
 
