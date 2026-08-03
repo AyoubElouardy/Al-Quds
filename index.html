@@ -296,7 +296,7 @@
     }
 
     // ============================================================
-    // 5. CORÁN ESCRITO – BASMALA SIN NÚMERO Y NUMERACIÓN DESDE 1
+    // 5. CORÁN – BASMALA SIN NÚMERO Y VERSOS NUMERADOS DESDE 1
     // ============================================================
     function loadSurahList() {
         const select = document.getElementById('surahSelect');
@@ -339,14 +339,14 @@
 
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Si tiene Basmala, la mostramos sin número
+                // Si tiene Basmala, se muestra separada sin número
                 let startIndex = 0;
                 if (hasBasmala) {
                     html += `<div class="basmala">${arabicVerses[0].text}</div>`;
-                    startIndex = 1; // Empezamos a mostrar desde el verso 2 (índice 1)
+                    startIndex = 1; // El primer verso real comienza en índice 1
                 }
 
-                // Mostramos los versículos restantes numerados desde 1
+                // Mostrar versículos desde startIndex, numerando desde 1
                 let verseNumber = 1;
                 for (let i = startIndex; i < arabicVerses.length; i++) {
                     const aText = arabicVerses[i].text;
