@@ -60,6 +60,7 @@
         .audio-player button:hover { color: #fff; }
         .audio-player input[type="range"] { flex: 1; min-width: 150px; accent-color: #d4af37; background: #2a4a2a; height: 4px; border-radius: 2px; }
         .audio-player .time-label { color: #b8956a; font-size: 0.9rem; min-width: 100px; text-align: center; }
+        .audio-status { color: #b8956a; font-size: 0.8rem; text-align: center; margin-top: 5px; }
 
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
         @media (max-width: 480px) { 
@@ -129,6 +130,7 @@
                 <input type="range" id="progressSlider" value="0" min="0" max="100" step="0.1">
                 <span class="time-label" id="timeDisplay">00:00 / 00:00</span>
             </div>
+            <div class="audio-status" id="audioStatus">Cargando audio...</div>
         </div>
     </div>
 
@@ -154,6 +156,7 @@
     let isPlaying = false;
     let currentVerseHighlight = null;
     let verseCount = 0;
+    let audioLoaded = false;
 
     // ================================================================
     // 2. PESTAÑAS
@@ -403,10 +406,14 @@
     }
 
     // ================================================================
-    // 6. AUDIO Y TIMINGS (usando timings de un repositorio público)
+    // 6. AUDIO Y TIMINGS (con múltiples fuentes)
     // ================================================================
     function loadAudioAndTimings(surahNumber) {
-        // Cargar timings desde un repositorio de GitHub (alternativa)
+        const statusEl = document.getElementById('audioStatus');
+        statusEl.textContent = 'Cargando audio...';
+        audioLoaded = false;
+
+        // Primero intentar cargar timings desde un repositorio (opcional)
         const timingsUrl = `https://raw.githubusercontent.com/risala/quran-timings/main/timings.json`;
         fetch(timingsUrl)
             .then(r => r.json())
@@ -421,30 +428,52 @@
                 } else {
                     surahTimings = null;
                 }
-                // Cargar audio
-                const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
-                audio.src = audioUrl;
-                audio.load();
-                setupAudioEvents();
+                // Cargar audio después de obtener timings
+                loadAudioFile(surahNumber);
             })
             .catch(() => {
-                // Si falla la carga de timings, usamos una estimación
+                // Si falla la carga de timings, usamos estimación
                 surahTimings = null;
-                const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
-                audio.src = audioUrl;
-                audio.load();
-                setupAudioEvents();
+                loadAudioFile(surahNumber);
             });
+    }
+
+    function loadAudioFile(surahNumber) {
+        const statusEl = document.getElementById('audioStatus');
+        const audioUrl1 = `https://server8.mp3quran.net/afs/${String(surahNumber).padStart(3, '0')}.mp3`;
+        const audioUrl2 = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
+
+        // Intentar con la primera URL
+        audio.src = audioUrl1;
+        audio.load();
+        statusEl.textContent = 'Cargando audio (fuente 1)...';
+
+        // Si falla, usar la segunda
+        audio.onerror = function() {
+            console.warn('Fallo la primera fuente de audio, intentando con la segunda.');
+            audio.src = audioUrl2;
+            audio.load();
+            statusEl.textContent = 'Cargando audio (fuente 2)...';
+            // Si también falla, mostrar error
+            audio.onerror = function() {
+                statusEl.textContent = 'Error: No se pudo cargar el audio.';
+                audioLoaded = false;
+            };
+        };
+
+        // Cuando se carga correctamente
+        audio.oncanplay = function() {
+            statusEl.textContent = 'Audio listo.';
+            audioLoaded = true;
+        };
+
+        setupAudioEvents();
     }
 
     function setupAudioEvents() {
         document.getElementById('progressSlider').value = 0;
         document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
         clearHighlight();
-
-        audio.onloadedmetadata = function() {
-            document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-        };
 
         audio.ontimeupdate = function() {
             if (!audio.duration) return;
@@ -471,6 +500,12 @@
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
             clearHighlight();
         };
+
+        // Cuando los metadatos estén cargados, actualizar el tiempo
+        audio.onloadedmetadata = function() {
+            document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
+            document.getElementById('audioStatus').textContent = 'Audio cargado correctamente.';
+        };
     }
 
     function formatTime(seconds) {
@@ -484,14 +519,13 @@
     // 7. RESALTADO DEL VERSO ACTUAL
     // ================================================================
     function updateHighlight() {
-        if (!audio.currentTime || !audio.duration) {
+        if (!audio.currentTime || !audio.duration || !audioLoaded) {
             clearHighlight();
             return;
         }
 
         let activeVerse = null;
         if (surahTimings) {
-            // Usar timings exactos si están disponibles
             const currentTime = audio.currentTime;
             for (let t of surahTimings) {
                 if (currentTime >= t.start && currentTime < t.end) {
@@ -499,7 +533,6 @@
                     break;
                 }
             }
-            // Si no se encontró y estamos al final, usar el último
             if (!activeVerse && surahTimings.length > 0) {
                 const last = surahTimings[surahTimings.length - 1];
                 if (audio.currentTime >= last.end) {
@@ -507,7 +540,7 @@
                 }
             }
         } else {
-            // Estimación basada en la duración total y el número de versos
+            // Estimación basada en duración total y número de versos
             const totalVerses = verseCount;
             if (totalVerses > 0) {
                 const duration = audio.duration;
@@ -545,7 +578,10 @@
     document.getElementById('playBtn').addEventListener('click', function() {
         if (audio.src) {
             if (audio.paused) {
-                audio.play().catch(e => console.log('Error al reproducir:', e));
+                audio.play().catch(e => {
+                    console.error('Error al reproducir:', e);
+                    document.getElementById('audioStatus').textContent = 'Error al reproducir. Intenta con otra sura.';
+                });
             } else {
                 audio.pause();
             }
