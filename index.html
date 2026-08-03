@@ -11,7 +11,6 @@
         .container { max-width: 700px; margin: 0 auto; }
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
-        /* Navegación por pestañas */
         .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
         .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
         .tab-btn.active { background: #d4af37; color: #0a1f0a; border-color: #d4af37; }
@@ -19,12 +18,10 @@
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
 
-        /* Buscador ciudad */
         .city-input { display: flex; gap: 10px; margin-bottom: 20px; }
         .city-input input { flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #d4af37; background: #1a2f1a; color: #fff; font-size: 1rem; text-align: center; }
         .city-input button { padding: 12px 25px; border-radius: 30px; border: none; background: #d4af37; color: #0a1f0a; font-weight: bold; cursor: pointer; }
 
-        /* Tarjetas de rezos */
         .prayer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
         .prayer-card { background: #142814; padding: 12px 5px; border-radius: 15px; text-align: center; border-bottom: 3px solid #d4af37; }
         .prayer-card .name { font-size: 0.8rem; color: #b8956a; text-transform: uppercase; }
@@ -34,7 +31,6 @@
         .countdown-box { background: #142814; padding: 15px; border-radius: 50px; text-align: center; margin: 15px 0; border: 1px solid #d4af37; }
         .countdown-box span { font-size: 2.2rem; font-weight: bold; color: #d4af37; letter-spacing: 3px; }
 
-        /* Corán en texto */
         .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
         .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
         .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
@@ -83,7 +79,6 @@
     <h1>🕌 Al-Quds</h1>
     <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
 
-    <!-- Navegación -->
     <div class="tabs">
         <button class="tab-btn active" data-tab="tab1">⏰ Rezos</button>
         <button class="tab-btn" data-tab="tab2">📖 Corán</button>
@@ -106,7 +101,7 @@
         </div>
     </div>
 
-    <!-- TAB 2: CORÁN ESCRITO CON SELECCIÓN DE IDIOMA -->
+    <!-- TAB 2: CORÁN -->
     <div id="tab2" class="tab-content">
         <div class="quran-text-area">
             <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">📖 El Sagrado Corán</h3>
@@ -130,7 +125,6 @@
     <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
-<!-- ===== SCRIPTS ===== -->
 <script>
     // ============================================================
     // 1. ELEMENTOS Y VARIABLES GLOBALES
@@ -296,7 +290,7 @@
     }
 
     // ============================================================
-    // 5. CORÁN – BASMALA SIN NÚMERO Y VERSOS NUMERADOS DESDE 1
+    // 5. CORÁN – BASMALA SEPARADA Y NUMERACIÓN CORRECTA
     // ============================================================
     function loadSurahList() {
         const select = document.getElementById('surahSelect');
@@ -331,61 +325,63 @@
             fetch(translationUrl).then(r => r.json())
         ]).then(([arabicData, transData]) => {
             if (arabicData.code === 200 && transData.code === 200) {
-                let arabicVerses = arabicData.data.ayahs;
-                let transVerses = transData.data.ayahs;
+                const arabicVerses = arabicData.data.ayahs;
+                const transVerses = transData.data.ayahs;
+
+                // Crear un mapa de traducción por número de verso
+                const transMap = {};
+                transVerses.forEach(v => {
+                    transMap[v.numberInSurah] = v.text;
+                });
 
                 const suraNum = parseInt(surahNumber);
-                // La Basmala está en el primer ayah (índice 0) para todas las suras excepto la 9
-                const hasBasmala = (suraNum !== 9 && arabicVerses[0]?.text.includes('بِسْمِ اللَّهِ'));
-
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                let startIndex = 0;
-                let verseNumber = 1;
-
-                // Sura 1 (Al-Fatiha): la Basmala es el verso 1, la mostramos con número
+                // Sura 1 (Al-Fatiha): mostrar todos los versos con su número real
                 if (suraNum === 1) {
-                    // Mostramos todos los versos con su número real (incluyendo la Basmala como 1)
-                    for (let i = 0; i < arabicVerses.length; i++) {
-                        const aText = arabicVerses[i].text;
-                        const tText = transVerses[i]?.text || '[Traducción no disponible]';
-                        const num = arabicVerses[i].numberInSurah; // número real
+                    arabicVerses.forEach(v => {
+                        const num = v.numberInSurah;
+                        const aText = v.text;
+                        const tText = transMap[num] || '[Traducción no disponible]';
                         html += `<div class="verse">
                                     <div class="arabic">
                                         <span class="verse-number">${num}</span>
                                         ${aText}
                                     </div>
-                                    <div class="translation">
-                                        ${tText}
-                                    </div>
+                                    <div class="translation">${tText}</div>
                                  </div>`;
-                    }
+                    });
                     display.innerHTML = html;
                     return;
                 }
 
-                // Para el resto de suras:
-                // Si tiene Basmala, la mostramos sin número y comenzamos desde el índice 1
+                // Para el resto de suras
+                const hasBasmala = (suraNum !== 9); // La Sura 9 no tiene Basmala
+
                 if (hasBasmala) {
-                    html += `<div class="basmala">${arabicVerses[0].text}</div>`;
-                    startIndex = 1;
+                    // Mostrar Basmala (primer verso) sin número
+                    const basmalaVerse = arabicVerses.find(v => v.numberInSurah === 1);
+                    if (basmalaVerse) {
+                        html += `<div class="basmala">${basmalaVerse.text}</div>`;
+                    }
                 }
 
-                // Mostramos los versos desde startIndex, numerándolos desde 1
-                verseNumber = 1;
-                for (let i = startIndex; i < arabicVerses.length; i++) {
-                    const aText = arabicVerses[i].text;
-                    const tText = transVerses[i]?.text || '[Traducción no disponible]';
+                // Mostrar el resto de versos, numerando desde 1
+                let displayNumber = 1;
+                const startVerseNumber = hasBasmala ? 2 : 1; // Si tiene Basmala, empezamos desde el verso 2
+                for (let i = 0; i < arabicVerses.length; i++) {
+                    const v = arabicVerses[i];
+                    if (v.numberInSurah < startVerseNumber) continue; // Saltamos la Basmala
+                    const aText = v.text;
+                    const tText = transMap[v.numberInSurah] || '[Traducción no disponible]';
                     html += `<div class="verse">
                                 <div class="arabic">
-                                    <span class="verse-number">${verseNumber}</span>
+                                    <span class="verse-number">${displayNumber}</span>
                                     ${aText}
                                 </div>
-                                <div class="translation">
-                                    ${tText}
-                                </div>
+                                <div class="translation">${tText}</div>
                              </div>`;
-                    verseNumber++;
+                    displayNumber++;
                 }
 
                 display.innerHTML = html;
