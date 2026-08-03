@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Quds - App Islámica</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -59,19 +57,6 @@
             flex-shrink: 0;
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
-        .quran-text-area .basmala { 
-            text-align: center; 
-            font-size: 1.8rem; 
-            color: #d4af37; 
-            margin: 10px 0 20px 0; 
-            font-weight: bold; 
-            text-shadow: 0 0 15px #d4af3740;
-            border-bottom: 2px solid #2a4a2a;
-            padding-bottom: 12px;
-        }
-
-        /* Mapa */
-        #map { height: 400px; border-radius: 20px; border: 2px solid #d4af37; margin: 15px 0; background: #1a2f1a; z-index: 1; }
 
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
         @media (max-width: 480px) { 
@@ -92,7 +77,6 @@
     <div class="tabs">
         <button class="tab-btn active" data-tab="tab1">⏰ Rezos</button>
         <button class="tab-btn" data-tab="tab2">📖 Corán</button>
-        <button class="tab-btn" data-tab="tab3">🗺️ Mezquitas</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -133,25 +117,16 @@
         </div>
     </div>
 
-    <!-- TAB 3: MAPA CON MEZQUITAS DE MAWAQIT -->
-    <div id="tab3" class="tab-content">
-        <h3 style="color:#d4af37; margin:10px 0;">🕌 Mezquitas de España (Mawaqit)</h3>
-        <div id="map"></div>
-        <p style="font-size:0.8rem; color:#b8956a; margin-top:5px;">Fuente: Mawaqit (datos públicos).</p>
-    </div>
-
     <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
-<!-- ===== LIBRERÍAS ===== -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- ===== SCRIPTS ===== -->
 <script>
     // ============================================================
     // 1. ELEMENTOS Y VARIABLES GLOBALES
     // ============================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     let prayerTimes = {};
-    let mapInstance = null;
     let userLat = 40.4165, userLng = -3.7026;
     let currentCity = 'Madrid';
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
@@ -167,9 +142,6 @@
             this.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(this.dataset.tab).classList.add('active');
-            if (this.dataset.tab === 'tab3' && mapInstance) {
-                setTimeout(() => mapInstance.invalidateSize(), 300);
-            }
         });
     });
 
@@ -187,13 +159,11 @@
                 () => {
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (GPS denegado) · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
-                    initMap(userLat, userLng);
                 }
             );
         } else {
             document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
-            initMap(userLat, userLng);
         }
     }
 
@@ -207,12 +177,10 @@
                 document.getElementById('cityInput').value = city;
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
-                initMap(lat, lng);
             })
             .catch(() => {
                 document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
                 fetchPrayerTimes(lat, lng);
-                initMap(lat, lng);
             });
     }
 
@@ -318,90 +286,7 @@
     }
 
     // ============================================================
-    // 5. MAPA CON MEZQUITAS DE MAWAQIT (ESPAÑA)
-    // ============================================================
-    function initMap(lat, lng) {
-        if (mapInstance) mapInstance.remove();
-        mapInstance = L.map('map').setView([lat, lng], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(mapInstance);
-        L.marker([lat, lng], { icon: L.divIcon({ className: 'user-marker', html: '📍', iconSize: [25,25] }) })
-            .addTo(mapInstance).bindPopup('Tu ubicación');
-        cargarMezquitasMawaqit('ES');
-    }
-
-    function cargarMezquitasMawaqit(pais) {
-        const url = `https://mawaqit.thesimpleteam.net/mosques/${pais}`;
-        fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error('No se pudo obtener datos de Mawaqit');
-                return res.json();
-            })
-            .then(data => {
-                if (!data || data.length === 0) {
-                    mostrarMensajeMapa('No hay mezquitas registradas en Mawaqit para este país.');
-                    return;
-                }
-                data.forEach(m => {
-                    const lat = m.lat || m.latitude;
-                    const lng = m.lng || m.longitude;
-                    const nombre = m.name || m.nom || 'Mezquita';
-                    if (lat && lng) {
-                        L.marker([parseFloat(lat), parseFloat(lng)], {
-                            icon: L.divIcon({ className: 'mosque-marker', html: '🕌', iconSize: [30,30] })
-                        }).addTo(mapInstance)
-                          .bindPopup(`<b>${nombre}</b><br>${m.address || ''}`);
-                    }
-                });
-                if (data.length > 0) {
-                    const group = L.featureGroup();
-                    data.forEach(m => {
-                        if (m.lat && m.lng) group.addLayer(L.marker([m.lat, m.lng]));
-                    });
-                    mapInstance.fitBounds(group.getBounds().pad(0.1));
-                }
-            })
-            .catch(err => {
-                console.error('Error cargando Mawaqit:', err);
-                buscarMezquitasOSM(userLat, userLng);
-                mostrarMensajeMapa('No se pudo cargar Mawaqit. Mostrando mezquitas de OpenStreetMap.');
-            });
-    }
-
-    function buscarMezquitasOSM(lat, lng) {
-        const query = `
-            [out:json];
-            (
-              node["amenity"="place_of_worship"]["religion"="muslim"](around:3000,${lat},${lng});
-              way["amenity"="place_of_worship"]["religion"="muslim"](around:3000,${lat},${lng});
-            );
-            out center;
-        `;
-        const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-        fetch(url)
-            .then(r => r.json())
-            .then(data => {
-                (data.elements || []).forEach(el => {
-                    const lat2 = el.lat || el.center?.lat;
-                    const lon2 = el.lon || el.center?.lon;
-                    if (lat2 && lon2) {
-                        const name = el.tags?.name || 'Mezquita';
-                        L.marker([lat2, lon2], { icon: L.divIcon({ html: '🕌', iconSize: [30,30] }) })
-                            .addTo(mapInstance).bindPopup(`<b>${name}</b>`);
-                    }
-                });
-            })
-            .catch(e => console.error('Error OSM:', e));
-    }
-
-    function mostrarMensajeMapa(msg) {
-        L.marker([userLat, userLng], { icon: L.divIcon({ html: 'ℹ️', iconSize: [30,30] }) })
-            .addTo(mapInstance).bindPopup(msg).openPopup();
-    }
-
-    // ============================================================
-    // 6. CORÁN ESCRITO CON BASMALA SEPARADA Y VERSÍCULOS CORRECTOS
+    // 5. CORÁN ESCRITO – NUMERACIÓN CORRECTA (Basmala = verso 1)
     // ============================================================
     const EDITIONS = {
         'es.asad': 'Español (Asad)',
@@ -446,45 +331,22 @@
                 let arabicVerses = arabicData.data.ayahs;
                 let transVerses = transData.data.ayahs;
 
-                const suraNum = parseInt(surahNumber);
-                const hasBasmala = (suraNum !== 9); // Sura 9 no tiene Basmala
-
-                let basmalaText = '';
-                let startIndex = 0;
-
-                if (hasBasmala) {
-                    // La Basmala siempre está en el índice 0
-                    basmalaText = arabicVerses[0].text;
-                    // Empezamos a mostrar desde el índice 1 (primer verso real)
-                    startIndex = 1;
-                } else {
-                    // Sura 9: no tiene Basmala, empezamos desde 0
-                    startIndex = 0;
-                }
-
-                // Construir HTML
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                // Mostrar Basmala separada para todas las suras que la tienen
-                if (hasBasmala) {
-                    html += `<div class="basmala">${basmalaText}</div>`;
-                }
-
-                // Mostrar los versículos desde startIndex, numerando desde 1
-                let verseNumber = 1;
-                for (let i = startIndex; i < arabicVerses.length; i++) {
+                // Mostrar todos los versículos (incluyendo la Basmala como verso 1)
+                for (let i = 0; i < arabicVerses.length; i++) {
+                    const verseNum = i + 1;
                     const aText = arabicVerses[i].text;
                     const tText = transVerses[i]?.text || '[Traducción no disponible]';
                     html += `<div class="verse">
                                 <div class="arabic">
-                                    <span class="verse-number">${verseNumber}</span>
+                                    <span class="verse-number">${verseNum}</span>
                                     ${aText}
                                 </div>
                                 <div class="translation">
                                     ${tText}
                                 </div>
                              </div>`;
-                    verseNumber++;
                 }
 
                 display.innerHTML = html;
@@ -511,7 +373,7 @@
     });
 
     // ============================================================
-    // 7. BÚSQUEDA POR CIUDAD
+    // 6. BÚSQUEDA POR CIUDAD
     // ============================================================
     document.getElementById('searchBtn').addEventListener('click', function() {
         const city = document.getElementById('cityInput').value.trim();
@@ -526,14 +388,13 @@
                     currentCity = data[0].display_name.split(',')[0];
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                     fetchPrayerTimes(lat, lng);
-                    initMap(lat, lng);
                 } else alert('Ciudad no encontrada.');
             })
             .catch(() => alert('Error en la búsqueda.'));
     });
 
     // ============================================================
-    // 8. INICIO
+    // 7. INICIO
     // ============================================================
     window.onload = function() {
         loadSurahList();
