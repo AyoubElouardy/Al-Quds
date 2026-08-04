@@ -35,7 +35,7 @@
         .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
         .quran-text-area .lang-select { flex: 1; min-width: 120px; }
         .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; align-items: flex-start; }
-        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; transition: color 0.15s; }
+        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; transition: color 0.2s; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
         .quran-text-area .verse-number { 
             display: inline-block; 
@@ -52,7 +52,7 @@
             flex-shrink: 0;
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
-        .quran-text-area .arabic.highlight { color: #00ff88; text-shadow: 0 0 20px #00ff8860; }
+        .quran-text-area .arabic.highlight { color: #00ff88; text-shadow: 0 0 15px #00ff8840; }
 
         .audio-player { background: #1a2f1a; border-radius: 30px; padding: 15px; margin: 15px 0; border: 1px solid #d4af37; }
         .audio-player .controls-row { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
@@ -150,14 +150,13 @@
     let currentSurah = '';
     let currentEdition = 'es.asad';
 
-    // Audio y timings
+    // Audio
     let audio = new Audio();
-    let surahTimings = [];  // array de { verse: number, start: number, end: number }
+    let surahTimings = null;
     let isPlaying = false;
     let currentVerseHighlight = null;
     let verseCount = 0;
     let audioLoaded = false;
-    let animationFrameId = null;
 
     // ================================================================
     // 2. PESTAÑAS
@@ -169,9 +168,7 @@
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(this.dataset.tab).classList.add('active');
             if (this.dataset.tab === 'tab2' && isPlaying) {
-                startHighlightLoop();
-            } else {
-                stopHighlightLoop();
+                updateHighlight();
             }
         });
     });
@@ -410,45 +407,43 @@
     }
 
     // ================================================================
-    // 6. AUDIO Y TIMINGS (CON FUENTE FIABLE Y SINCRONIZACIÓN PRECISA)
+    // 6. AUDIO Y TIMINGS (FUENTE FIABLE)
     // ================================================================
     function loadAudioAndTimings(surahNumber) {
         const statusEl = document.getElementById('audioStatus');
         statusEl.textContent = 'Cargando audio...';
         audioLoaded = false;
-        surahTimings = [];
 
-        // Fuente de audio muy fiable
-        const audioUrl = `https://everyayah.com/data/Alafasy_128kbps/${String(surahNumber).padStart(3, '0')}.mp3`;
+        // Fuente principal (muy fiable)
+        const audioUrl = `https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/${String(surahNumber).padStart(3, '0')}.mp3`;
         audio.src = audioUrl;
         audio.load();
 
-        // Intentar cargar timings desde el repositorio de risala
+        // Intentar obtener timings exactos (opcional, si falla usamos estimación)
         const timingsUrl = `https://raw.githubusercontent.com/risala/quran-timings/main/timings.json`;
         fetch(timingsUrl)
             .then(r => r.json())
             .then(data => {
-                const raw = data.surah?.[surahNumber];
-                if (raw && raw.length > 0) {
-                    surahTimings = raw.map(t => ({
+                const surahTimingsRaw = data.surah?.[surahNumber];
+                if (surahTimingsRaw) {
+                    surahTimings = surahTimingsRaw.map(t => ({
                         verse: t.verse,
                         start: t.start,
                         end: t.end
                     }));
-                    statusEl.textContent = 'Timings cargados correctamente.';
                 } else {
-                    surahTimings = [];
-                    statusEl.textContent = 'Timings no disponibles, usando estimación.';
+                    surahTimings = null;
                 }
             })
             .catch(() => {
-                surahTimings = [];
-                statusEl.textContent = 'Timings no disponibles, usando estimación.';
+                surahTimings = null;
             })
             .finally(() => {
+                // Configurar eventos del audio
                 setupAudioEvents();
             });
 
+        // Manejar errores de carga del audio
         audio.onerror = function() {
             statusEl.textContent = 'Error al cargar el audio. Intenta con otra sura.';
             audioLoaded = false;
@@ -460,28 +455,25 @@
         document.getElementById('progressSlider').value = 0;
         document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
         clearHighlight();
-        stopHighlightLoop();
 
         audio.ontimeupdate = function() {
             if (!audio.duration) return;
             const progress = (audio.currentTime / audio.duration) * 100;
             document.getElementById('progressSlider').value = progress;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-            // No llamamos a updateHighlight aquí, lo haremos en el bucle de animación
+            updateHighlight();
         };
 
         audio.onplay = function() {
             isPlaying = true;
             document.getElementById('playBtn').textContent = '⏸';
             document.getElementById('audioStatus').textContent = 'Reproduciendo...';
-            startHighlightLoop();
         };
 
         audio.onpause = function() {
             isPlaying = false;
             document.getElementById('playBtn').textContent = '▶';
             document.getElementById('audioStatus').textContent = 'Pausado';
-            stopHighlightLoop();
         };
 
         audio.onended = function() {
@@ -491,7 +483,6 @@
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
             clearHighlight();
             document.getElementById('audioStatus').textContent = 'Finalizado';
-            stopHighlightLoop();
         };
 
         audio.onloadedmetadata = function() {
@@ -508,87 +499,56 @@
         };
     }
 
-    // ================================================================
-    // 7. RESALTADO PRECISO CON requestAnimationFrame
-    // ================================================================
-    function startHighlightLoop() {
-        if (animationFrameId) return;
-        function updateLoop() {
-            if (isPlaying && audioLoaded && audio.duration) {
-                updateHighlight();
-            }
-            animationFrameId = requestAnimationFrame(updateLoop);
-        }
-        animationFrameId = requestAnimationFrame(updateLoop);
+    function formatTime(seconds) {
+        if (isNaN(seconds) || !isFinite(seconds)) return '00:00';
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
     }
 
-    function stopHighlightLoop() {
-        if (animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = null;
-        }
-    }
-
+    // ================================================================
+    // 7. RESALTADO DEL VERSO ACTUAL
+    // ================================================================
     function updateHighlight() {
         if (!audio.currentTime || !audio.duration || !audioLoaded) {
             clearHighlight();
             return;
         }
 
-        const currentTime = audio.currentTime;
         let activeVerse = null;
-
-        if (surahTimings && surahTimings.length > 0) {
-            // Búsqueda binaria para mayor eficiencia
-            let lo = 0, hi = surahTimings.length - 1;
-            while (lo <= hi) {
-                const mid = Math.floor((lo + hi) / 2);
-                const t = surahTimings[mid];
+        if (surahTimings) {
+            const currentTime = audio.currentTime;
+            for (let t of surahTimings) {
                 if (currentTime >= t.start && currentTime < t.end) {
                     activeVerse = t.verse;
                     break;
-                } else if (currentTime < t.start) {
-                    hi = mid - 1;
-                } else {
-                    lo = mid + 1;
                 }
             }
-            // Si no se encontró y estamos al final del último verso
             if (!activeVerse && surahTimings.length > 0) {
                 const last = surahTimings[surahTimings.length - 1];
-                if (currentTime >= last.end) {
+                if (audio.currentTime >= last.end) {
                     activeVerse = last.verse;
                 }
             }
         } else {
-            // Estimación por duración promedio si no hay timings
+            // Estimación basada en duración total y número de versos
             const totalVerses = verseCount;
             if (totalVerses > 0) {
                 const duration = audio.duration;
+                const currentTime = audio.currentTime;
                 const avgTime = duration / totalVerses;
                 const verseIndex = Math.floor(currentTime / avgTime);
                 activeVerse = Math.min(verseIndex + 1, totalVerses);
             }
         }
 
-        // Si no hay verso activo, no hacemos nada
-        if (activeVerse === null || activeVerse === undefined) {
-            // Si antes había un resaltado, lo limpiamos solo si el audio está en un punto sin verso (entre versos)
-            // Para evitar parpadeos, solo limpiamos si el tiempo es mayor que la duración total
-            if (currentTime >= audio.duration) {
-                clearHighlight();
-            }
-            return;
-        }
+        clearHighlight();
 
-        // Solo actualizar si el verso cambió
-        if (currentVerseHighlight !== activeVerse) {
-            clearHighlight();
+        if (activeVerse) {
             const arabicEl = document.getElementById(`arabic-${activeVerse}`);
             if (arabicEl) {
                 arabicEl.classList.add('highlight');
                 currentVerseHighlight = activeVerse;
-                // Desplazamiento suave
                 arabicEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
             }
         }
@@ -600,7 +560,6 @@
             if (oldEl) oldEl.classList.remove('highlight');
             currentVerseHighlight = null;
         }
-        // Limpieza adicional por si quedan restos
         document.querySelectorAll('.arabic.highlight').forEach(el => el.classList.remove('highlight'));
     }
 
@@ -627,7 +586,6 @@
             const newTime = (this.value / 100) * audio.duration;
             audio.currentTime = newTime;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-            // Forzar actualización del resaltado
             updateHighlight();
         }
     });
@@ -662,17 +620,12 @@
         if (isPlaying) {
             audio.pause();
         }
-        stopHighlightLoop();
         loadQuran(currentSurah, lang);
     });
 
     document.getElementById('langSelect').addEventListener('change', function() {
         if (currentSurah) {
             currentEdition = this.value;
-            if (isPlaying) {
-                audio.pause();
-            }
-            stopHighlightLoop();
             loadQuran(currentSurah, this.value);
         }
     });
