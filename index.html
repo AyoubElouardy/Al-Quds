@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Al-Quds - App Islámica</title>
     <style>
+        /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #0a1f0a; color: #e8d5b5; padding: 15px; min-height: 100vh; }
         .container { max-width: 700px; margin: 0 auto; }
@@ -30,12 +31,13 @@
         .countdown-box { background: #142814; padding: 15px; border-radius: 50px; text-align: center; margin: 15px 0; border: 1px solid #d4af37; }
         .countdown-box span { font-size: 2.2rem; font-weight: bold; color: #d4af37; letter-spacing: 3px; }
 
+        /* ===== CORÁN ===== */
         .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
         .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
         .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
         .quran-text-area .lang-select { flex: 1; min-width: 120px; }
         .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; align-items: flex-start; }
-        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+        .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; transition: color 0.2s; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
         .quran-text-area .verse-number { 
             display: inline-block; 
@@ -53,13 +55,14 @@
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
 
+        /* ===== AUDIO PLAYER ===== */
         .audio-player { background: #1a2f1a; border-radius: 30px; padding: 15px; margin: 15px 0; border: 1px solid #d4af37; }
         .audio-player .controls-row { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; justify-content: center; }
         .audio-player button { background: transparent; border: none; color: #d4af37; font-size: 1.8rem; cursor: pointer; padding: 5px 10px; }
         .audio-player button:hover { color: #fff; }
         .audio-player input[type="range"] { flex: 1; min-width: 150px; accent-color: #d4af37; background: #2a4a2a; height: 4px; border-radius: 2px; }
         .audio-player .time-label { color: #b8956a; font-size: 0.9rem; min-width: 100px; text-align: center; }
-        .audio-status { color: #b8956a; font-size: 0.8rem; text-align: center; margin-top: 5px; }
+        .quran-text-area .arabic.highlight { color: #00ff88; text-shadow: 0 0 15px #00ff8840; }
 
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
         @media (max-width: 480px) { 
@@ -75,12 +78,12 @@
 </head>
 <body>
 <div class="container">
-    <h1>Al-Quds</h1>
-    <div class="subh1" id="fechaLocation">Cargando ubicacion...</div>
+    <h1>🕌 Al-Quds</h1>
+    <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="tab1">Rezos</button>
-        <button class="tab-btn" data-tab="tab2">Coran</button>
+        <button class="tab-btn active" data-tab="tab1">⏰ Rezos</button>
+        <button class="tab-btn" data-tab="tab2">📖 Corán</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -89,30 +92,30 @@
             <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid">
             <button id="searchBtn">Buscar</button>
         </div>
-        <div class="countdown-box">Proximo rezo: <span id="countdownTimer">--:--:--</span></div>
+        <div class="countdown-box">⏳ Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
         <div class="prayer-grid" id="prayerTimesContainer">
             <div class="prayer-card"><div class="name">Fajr</div><div class="time" id="Fajr">--:--</div></div>
             <div class="prayer-card"><div class="name">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
             <div class="prayer-card"><div class="name">Asr</div><div class="time" id="Asr">--:--</div></div>
             <div class="prayer-card"><div class="name">Maghrib</div><div class="time" id="Maghrib">--:--</div></div>
             <div class="prayer-card"><div class="name">Isha</div><div class="time" id="Isha">--:--</div></div>
-            <div class="prayer-card"><div class="name">Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
+            <div class="prayer-card"><div class="name">🌙 Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
         </div>
     </div>
 
-    <!-- TAB 2: CORAN -->
+    <!-- TAB 2: CORÁN -->
     <div id="tab2" class="tab-content">
         <div class="quran-text-area">
-            <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">El Sagrado Coran</h3>
+            <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">📖 El Sagrado Corán</h3>
             <div class="controls">
                 <select id="surahSelect">
                     <option value="">Selecciona una Sura</option>
                 </select>
                 <select id="langSelect" class="lang-select">
-                    <option value="es.asad">Espanol</option>
-                    <option value="en.sahih">Ingles</option>
-                    <option value="fr.hamidullah">Frances</option>
-                    <option value="de.bubenheim">Aleman</option>
+                    <option value="es.asad">Español</option>
+                    <option value="en.sahih">Inglés</option>
+                    <option value="fr.hamidullah">Francés</option>
+                    <option value="de.bubenheim">Alemán</option>
                 </select>
             </div>
             <div id="quranDisplay">
@@ -123,17 +126,16 @@
         <!-- REPRODUCTOR DE AUDIO -->
         <div class="audio-player" id="audioPlayer">
             <div class="controls-row">
-                <button id="prevSurahBtn" title="Sura anterior">◀</button>
+                <button id="prevSurahBtn" title="Sura anterior">⏮</button>
                 <button id="playBtn" title="Reproducir / Pausa">▶</button>
-                <button id="nextSurahBtn" title="Sura siguiente">▶</button>
+                <button id="nextSurahBtn" title="Sura siguiente">⏭</button>
                 <input type="range" id="progressSlider" value="0" min="0" max="100" step="0.1">
                 <span class="time-label" id="timeDisplay">00:00 / 00:00</span>
             </div>
-            <div class="audio-status" id="audioStatus">Selecciona una sura para escuchar</div>
         </div>
     </div>
 
-    <div class="footer">Al-Quds · Horarios aproximados · Adhan automatico</div>
+    <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
 <script>
@@ -149,10 +151,13 @@
     let currentSurah = '';
     let currentEdition = 'es.asad';
 
-    // Audio
+    // Audio y timings
     let audio = new Audio();
+    let timingsData = null;           // { surah: { verseNumber: { start, end } } }
+    let surahTimings = null;          // array de { verse, start, end }
     let isPlaying = false;
-    let audioLoaded = false;
+    let highlightInterval = null;
+    let currentVerseHighlight = null;
 
     // ================================================================
     // 2. PESTAÑAS
@@ -163,11 +168,15 @@
             this.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(this.dataset.tab).classList.add('active');
+            // Si cambiamos a la pestaña Corán, actualizamos el resaltado si está sonando
+            if (this.dataset.tab === 'tab2' && isPlaying) {
+                updateHighlight();
+            }
         });
     });
 
     // ================================================================
-    // 3. UBICACION Y HORARIOS
+    // 3. UBICACIÓN Y HORARIOS (sin cambios)
     // ================================================================
     function getUserLocation() {
         if (navigator.geolocation) {
@@ -178,12 +187,12 @@
                     reverseGeocode(userLat, userLng);
                 },
                 () => {
-                    document.getElementById('fechaLocation').innerHTML = ` ${currentCity} (GPS denegado) · ${new Date().toLocaleDateString('es-ES')}`;
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (GPS denegado) · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
                 }
             );
         } else {
-            document.getElementById('fechaLocation').innerHTML = ` ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
+            document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
         }
     }
@@ -196,11 +205,11 @@
                 const city = addr.city || addr.town || addr.village || addr.county || 'tu ciudad';
                 currentCity = city;
                 document.getElementById('cityInput').value = city;
-                document.getElementById('fechaLocation').innerHTML = ` ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
             })
             .catch(() => {
-                document.getElementById('fechaLocation').innerHTML = ` Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
+                document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
                 fetchPrayerTimes(lat, lng);
             });
     }
@@ -304,7 +313,7 @@
     }
 
     // ================================================================
-    // 4. BUSQUEDA DE CIUDAD
+    // 4. BÚSQUEDA DE CIUDAD
     // ================================================================
     document.getElementById('searchBtn').addEventListener('click', function() {
         const city = document.getElementById('cityInput').value.trim();
@@ -317,15 +326,15 @@
                     const lng = parseFloat(data[0].lon);
                     userLat = lat; userLng = lng;
                     currentCity = data[0].display_name.split(',')[0];
-                    document.getElementById('fechaLocation').innerHTML = ` ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                     fetchPrayerTimes(lat, lng);
                 } else alert('Ciudad no encontrada.');
             })
-            .catch(() => alert('Error en la busqueda.'));
+            .catch(() => alert('Error en la búsqueda.'));
     });
 
     // ================================================================
-    // 5. CORAN – CARGA DE SURAS Y TEXTO
+    // 5. CORÁN – CARGA DE SURAS Y TEXTO
     // ================================================================
     function loadSurahList() {
         const select = document.getElementById('surahSelect');
@@ -348,7 +357,6 @@
         const display = document.getElementById('quranDisplay');
         if (!surahNumber) {
             display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
-            document.getElementById('audioStatus').textContent = 'Selecciona una sura para escuchar';
             return;
         }
         display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
@@ -364,6 +372,7 @@
                 const arabicVerses = arabicData.data.ayahs;
                 const transVerses = transData.data.ayahs;
 
+                // Mapa de traducción por número de verso
                 const transMap = {};
                 transVerses.forEach(v => {
                     transMap[v.numberInSurah] = v.text;
@@ -371,10 +380,12 @@
 
                 let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
+                // Mostrar todos los versos con su número real (Basmala es verso 1, excepto en Sura 9)
                 arabicVerses.forEach(v => {
                     const num = v.numberInSurah;
                     const aText = v.text;
-                    const tText = transMap[num] || '[Traduccion no disponible]';
+                    const tText = transMap[num] || '[Traducción no disponible]';
+                    // Asignar id al bloque árabe para resaltarlo después
                     html += `<div class="verse" data-verse="${num}">
                                 <div class="arabic" id="arabic-${num}">
                                     <span class="verse-number">${num}</span>
@@ -385,8 +396,10 @@
                 });
 
                 display.innerHTML = html;
-                // Cargar audio para esta sura
-                loadAudio(surahNumber);
+                // Si hay audio cargado, reiniciar resaltado
+                clearHighlight();
+                // Cargar audio y timings para esta sura
+                loadAudioAndTimings(surahNumber);
             } else {
                 display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
             }
@@ -397,76 +410,74 @@
     }
 
     // ================================================================
-    // 6. AUDIO – CON FUENTE FIABLE Y FALLBACK
+    // 6. AUDIO Y TIMINGS
     // ================================================================
-    function loadAudio(surahNumber) {
-        const statusEl = document.getElementById('audioStatus');
-        statusEl.textContent = 'Cargando audio...';
-        audioLoaded = false;
-        // Reiniciar el audio
-        audio.pause();
-        audio.currentTime = 0;
-        document.getElementById('playBtn').textContent = '▶';
-        document.getElementById('progressSlider').value = 0;
-        document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
+    // Cargar el JSON de timings una sola vez
+    function loadTimings() {
+        return fetch('https://raw.githubusercontent.com/risala/quran-timings/main/timings.json')
+            .then(r => r.json())
+            .then(data => {
+                timingsData = data;
+                return data;
+            })
+            .catch(err => {
+                console.error('Error cargando timings:', err);
+                return null;
+            });
+    }
 
-        // Fuente principal (muy fiable)
-        const primaryUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
-        // Fuente de respaldo
-        const fallbackUrl = `https://everyayah.com/data/Alafasy_128kbps/${String(surahNumber).padStart(3, '0')}.mp3`;
-
-        // Función para intentar cargar una URL
-        function tryLoad(url) {
-            audio.src = url;
-            audio.load();
-            // Manejar errores de carga
-            audio.onerror = function() {
-                console.warn('Error cargando audio desde:', url);
-                // Si falla la primera, intentar con la segunda
-                if (url === primaryUrl) {
-                    statusEl.textContent = 'Falló fuente primaria, intentando respaldo...';
-                    tryLoad(fallbackUrl);
-                } else {
-                    statusEl.textContent = 'Error: No se pudo cargar el audio en ninguna fuente.';
-                    audioLoaded = false;
-                    document.getElementById('playBtn').textContent = '▶';
-                }
-            };
-            // Cuando se pueda reproducir, marcar como cargado
-            audio.oncanplay = function() {
-                audioLoaded = true;
-                statusEl.textContent = 'Audio listo. Presiona play.';
-            };
-            // Cuando los metadatos estén cargados, actualizar duración
-            audio.onloadedmetadata = function() {
-                document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-                if (statusEl.textContent === 'Cargando audio...' || statusEl.textContent === 'Falló fuente primaria, intentando respaldo...') {
-                    statusEl.textContent = 'Audio listo.';
-                }
-            };
+    function loadAudioAndTimings(surahNumber) {
+        // Si no tenemos timings, cargarlos primero
+        if (!timingsData) {
+            loadTimings().then(() => {
+                loadAudioAndTimings(surahNumber);
+            });
+            return;
         }
 
-        // Iniciar con la fuente primaria
-        tryLoad(primaryUrl);
+        // Obtener timings de esta sura
+        const surahTimingsRaw = timingsData.surah?.[surahNumber];
+        if (surahTimingsRaw) {
+            surahTimings = surahTimingsRaw.map(t => ({
+                verse: t.verse,
+                start: t.start,
+                end: t.end
+            }));
+        } else {
+            surahTimings = null;
+        }
 
-        // Eventos de reproducción
+        // Cargar audio
+        const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
+        audio.src = audioUrl;
+        audio.load();
+
+        // Reiniciar controles
+        document.getElementById('progressSlider').value = 0;
+        document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
+        clearHighlight();
+
+        // Eventos del audio
+        audio.onloadedmetadata = function() {
+            document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
+        };
+
         audio.ontimeupdate = function() {
             if (!audio.duration) return;
             const progress = (audio.currentTime / audio.duration) * 100;
             document.getElementById('progressSlider').value = progress;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            updateHighlight();
         };
 
         audio.onplay = function() {
             isPlaying = true;
             document.getElementById('playBtn').textContent = '⏸';
-            document.getElementById('audioStatus').textContent = 'Reproduciendo...';
         };
 
         audio.onpause = function() {
             isPlaying = false;
             document.getElementById('playBtn').textContent = '▶';
-            document.getElementById('audioStatus').textContent = 'Pausado';
         };
 
         audio.onended = function() {
@@ -474,32 +485,78 @@
             document.getElementById('playBtn').textContent = '▶';
             document.getElementById('progressSlider').value = 0;
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-            document.getElementById('audioStatus').textContent = 'Finalizado';
+            clearHighlight();
         };
     }
 
     function formatTime(seconds) {
-        if (isNaN(seconds) || !isFinite(seconds)) return '00:00';
+        if (isNaN(seconds)) return '00:00';
         const min = Math.floor(seconds / 60);
         const sec = Math.floor(seconds % 60);
         return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
     }
 
     // ================================================================
-    // 7. CONTROLES DE AUDIO
+    // 7. RESALTADO DEL VERSO ACTUAL
     // ================================================================
-    document.getElementById('playBtn').addEventListener('click', function() {
-        if (!audio.src) {
-            alert('Primero selecciona una sura.');
+    function updateHighlight() {
+        if (!surahTimings || !audio.currentTime) {
+            clearHighlight();
             return;
         }
-        if (audio.paused) {
-            audio.play().catch(e => {
-                console.error('Error al reproducir:', e);
-                document.getElementById('audioStatus').textContent = 'Error al reproducir. Intenta con otra sura.';
-            });
+
+        const currentTime = audio.currentTime;
+        let activeVerse = null;
+        for (let t of surahTimings) {
+            if (currentTime >= t.start && currentTime < t.end) {
+                activeVerse = t.verse;
+                break;
+            }
+        }
+        // Si estamos cerca del final, puede que no haya un verso activo
+        if (!activeVerse && surahTimings.length > 0) {
+            const last = surahTimings[surahTimings.length - 1];
+            if (currentTime >= last.end) {
+                activeVerse = last.verse;
+            }
+        }
+
+        // Limpiar resaltado anterior
+        clearHighlight();
+
+        if (activeVerse) {
+            const arabicEl = document.getElementById(`arabic-${activeVerse}`);
+            if (arabicEl) {
+                arabicEl.classList.add('highlight');
+                currentVerseHighlight = activeVerse;
+                // Desplazar el verso a la vista (si está oculto)
+                arabicEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            }
+        }
+    }
+
+    function clearHighlight() {
+        if (currentVerseHighlight !== null) {
+            const oldEl = document.getElementById(`arabic-${currentVerseHighlight}`);
+            if (oldEl) oldEl.classList.remove('highlight');
+            currentVerseHighlight = null;
+        }
+        // También limpiar cualquier otro que pueda haber quedado
+        document.querySelectorAll('.arabic.highlight').forEach(el => el.classList.remove('highlight'));
+    }
+
+    // ================================================================
+    // 8. CONTROLES DE AUDIO
+    // ================================================================
+    document.getElementById('playBtn').addEventListener('click', function() {
+        if (audio.src) {
+            if (audio.paused) {
+                audio.play().catch(e => console.log('Error al reproducir:', e));
+            } else {
+                audio.pause();
+            }
         } else {
-            audio.pause();
+            alert('Primero selecciona una sura.');
         }
     });
 
@@ -508,6 +565,7 @@
             const newTime = (this.value / 100) * audio.duration;
             audio.currentTime = newTime;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            updateHighlight();
         }
     });
 
@@ -532,12 +590,13 @@
     });
 
     // ================================================================
-    // 8. EVENTOS DE SELECCION
+    // 9. EVENTOS DE SELECCIÓN
     // ================================================================
     document.getElementById('surahSelect').addEventListener('change', function() {
         currentSurah = this.value;
         const lang = document.getElementById('langSelect').value;
         currentEdition = lang;
+        // Si hay audio reproduciéndose, lo paramos
         if (isPlaying) {
             audio.pause();
         }
@@ -547,19 +606,19 @@
     document.getElementById('langSelect').addEventListener('change', function() {
         if (currentSurah) {
             currentEdition = this.value;
-            if (isPlaying) {
-                audio.pause();
-            }
+            // Recargar la sura con el nuevo idioma (sin recargar audio)
             loadQuran(currentSurah, this.value);
         }
     });
 
     // ================================================================
-    // 9. INICIO
+    // 10. INICIO
     // ================================================================
     window.onload = function() {
         loadSurahList();
         getUserLocation();
+        // Precargar timings
+        loadTimings();
     };
 </script>
 </body>
