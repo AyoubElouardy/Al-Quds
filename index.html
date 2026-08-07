@@ -179,6 +179,57 @@
         }
         .footer { text-align: center; font-size: 0.7rem; color: #5a7a5a; margin-top: 30px; }
 
+        /* ===== BANNER DE COOKIES ===== */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #0a1f0a;
+            border-top: 2px solid #d4af37;
+            padding: 15px 20px;
+            z-index: 2000;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.8);
+            backdrop-filter: blur(6px);
+            font-size: 0.95rem;
+        }
+        .cookie-banner p {
+            flex: 1;
+            min-width: 200px;
+            color: #e8d5b5;
+            margin: 0;
+        }
+        .cookie-banner .cookie-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .cookie-banner button {
+            padding: 8px 22px;
+            border-radius: 30px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+        .cookie-banner .accept-btn {
+            background: #d4af37;
+            color: #0a1f0a;
+        }
+        .cookie-banner .accept-btn:hover { background: #e8c85a; }
+        .cookie-banner .reject-btn {
+            background: transparent;
+            color: #b8956a;
+            border: 1px solid #b8956a;
+        }
+        .cookie-banner .reject-btn:hover { background: #1a2f1a; }
+
         @media (max-width: 480px) { 
             .prayer-grid { grid-template-columns: repeat(3, 1fr); } 
             .prayer-card .time { font-size: 1.2rem; }
@@ -189,6 +240,8 @@
             .audio-player-fixed button { font-size: 1.4rem; }
             .lang-selector { position: relative; justify-content: center; margin-bottom: 10px; gap: 4px; }
             .lang-btn { width: 30px; height: 30px; font-size: 16px; }
+            .cookie-banner { flex-direction: column; text-align: center; padding: 12px; }
+            .cookie-banner p { min-width: unset; }
         }
     </style>
 </head>
@@ -272,6 +325,15 @@
         <button id="nextSurahBtn">&#8250;&#8250;</button>
         <input type="range" id="progressSlider" value="0" min="0" max="100" step="0.1">
         <span class="time-label" id="timeDisplay">00:00 / 00:00</span>
+    </div>
+</div>
+
+<!-- BANNER DE COOKIES -->
+<div class="cookie-banner" id="cookieBanner" style="display:none;">
+    <p>🍪 Utilizamos cookies para recordar tus preferencias (idioma, ciudad, ubicación). Al hacer clic en "Aceptar" consientes su uso. Puedes rechazarlas y seguir usando la app sin guardar preferencias.</p>
+    <div class="cookie-buttons">
+        <button class="accept-btn" id="acceptCookies">Aceptar</button>
+        <button class="reject-btn" id="rejectCookies">Rechazar</button>
     </div>
 </div>
 
@@ -483,6 +545,7 @@
     adhanAudio.preload = 'auto';
     let currentSurah = '';
     let currentLang = 'es'; // idioma global
+    let cookiesAccepted = false;
 
     let audio = new Audio();
     let isPlaying = false;
@@ -552,6 +615,79 @@
     }
 
     // ================================================================
+    // GESTIÓN DE COOKIES / LOCALSTORAGE
+    // ================================================================
+    function checkCookies() {
+        const accepted = localStorage.getItem('cookiesAccepted');
+        if (accepted === 'true') {
+            cookiesAccepted = true;
+            document.getElementById('cookieBanner').style.display = 'none';
+            restorePreferences();
+        } else if (accepted === 'false') {
+            cookiesAccepted = false;
+            document.getElementById('cookieBanner').style.display = 'none';
+            // No restaurar preferencias
+        } else {
+            // No se ha tomado decisión, mostrar banner
+            document.getElementById('cookieBanner').style.display = 'flex';
+        }
+    }
+
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        cookiesAccepted = true;
+        document.getElementById('cookieBanner').style.display = 'none';
+        saveCurrentPreferences();
+        // Recargar la ubicación con las preferencias guardadas o solicitar nueva
+        getUserLocation();
+    }
+
+    function rejectCookies() {
+        localStorage.setItem('cookiesAccepted', 'false');
+        cookiesAccepted = false;
+        document.getElementById('cookieBanner').style.display = 'none';
+        // No guardar preferencias, pero la app sigue funcionando con valores por defecto
+        getUserLocation();
+    }
+
+    function saveCurrentPreferences() {
+        if (!cookiesAccepted) return;
+        try {
+            localStorage.setItem('pref_lang', currentLang);
+            localStorage.setItem('pref_city', currentCity);
+            localStorage.setItem('pref_lat', userLat);
+            localStorage.setItem('pref_lng', userLng);
+        } catch(e) {}
+    }
+
+    function restorePreferences() {
+        try {
+            const lang = localStorage.getItem('pref_lang');
+            const city = localStorage.getItem('pref_city');
+            const lat = parseFloat(localStorage.getItem('pref_lat'));
+            const lng = parseFloat(localStorage.getItem('pref_lng'));
+            if (lang && i18n[lang]) {
+                currentLang = lang;
+                // Actualizar botón activo
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${lang}"]`)?.classList.add('active');
+                updateUILanguage();
+                loadDuas();
+            }
+            if (city && !isNaN(lat) && !isNaN(lng)) {
+                currentCity = city;
+                userLat = lat;
+                userLng = lng;
+                document.getElementById('cityInput').value = city;
+                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                fetchPrayerTimes(lat, lng);
+                return true;
+            }
+        } catch(e) {}
+        return false;
+    }
+
+    // ================================================================
     // SELECCIÓN DE IDIOMA CON BANDERAS
     // ================================================================
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -568,6 +704,7 @@
                 display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
                 document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
             }
+            if (cookiesAccepted) saveCurrentPreferences();
         });
     });
 
@@ -597,12 +734,19 @@
     // UBICACIÓN Y HORARIOS
     // ================================================================
     function getUserLocation() {
+        // Si ya tenemos datos guardados y cookies aceptadas, no pedir de nuevo
+        if (cookiesAccepted) {
+            const restored = restorePreferences();
+            if (restored) return; // ya se cargaron los horarios
+        }
+        // Si no, intentar geolocalización
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     userLat = pos.coords.latitude;
                     userLng = pos.coords.longitude;
                     reverseGeocode(userLat, userLng);
+                    if (cookiesAccepted) saveCurrentPreferences();
                 },
                 () => {
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
@@ -625,6 +769,7 @@
                 document.getElementById('cityInput').value = city;
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
+                if (cookiesAccepted) saveCurrentPreferences();
             })
             .catch(() => {
                 document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
@@ -746,6 +891,7 @@
                     currentCity = data[0].display_name.split(',')[0];
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                     fetchPrayerTimes(lat, lng);
+                    if (cookiesAccepted) saveCurrentPreferences();
                 } else alert(getTranslation('city_not_found'));
             })
             .catch(() => alert(getTranslation('search_error')));
@@ -980,15 +1126,29 @@
     }
 
     // ================================================================
+    // BOTONES DE COOKIES
+    // ================================================================
+    document.getElementById('acceptCookies').addEventListener('click', acceptCookies);
+    document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
+
+    // ================================================================
     // INICIO
     // ================================================================
     window.onload = function() {
-        // Idioma por defecto: español (botón activo ya está marcado en HTML)
-        currentLang = 'es';
-        updateUILanguage();
+        // Comprobar cookies primero
+        checkCookies();
+
+        // Si no se restauraron preferencias (porque no había cookies o se rechazaron), continuar con valores por defecto
+        // Cargar lista de suras
         loadSurahList();
-        getUserLocation();
+        // Cargar duas
         loadDuas();
+        // Si no se restauraron preferencias, cargar ubicación por defecto
+        if (!cookiesAccepted || !restorePreferences()) {
+            getUserLocation();
+        }
+        // Actualizar idioma (si se restauró, ya se hizo en restorePreferences)
+        updateUILanguage();
     };
 </script>
 </body>
