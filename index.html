@@ -55,7 +55,7 @@
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
 
-        /* ===== REPRODUCTOR FIJO TIPO SOUNDCLOUD (SOLO VISIBLE EN CORÁN) ===== */
+        /* ===== REPRODUCTOR FIJO ===== */
         .audio-player-fixed {
             position: fixed;
             bottom: 0;
@@ -164,12 +164,7 @@
                     <option value="fr.hamidullah">Francés</option>
                     <option value="de.bubenheim">Alemán</option>
                 </select>
-                <!-- NUEVO: Selector de recitador -->
-                <select id="reciterSelect" class="lang-select" style="flex:1; min-width:120px;">
-                    <!-- Llenado por JS -->
-                </select>
             </div>
-            <!-- Estado del audio -->
             <div id="audioStatus" style="text-align:center; color:#b8956a; margin:5px 0;"></div>
             <div id="quranDisplay">
                 <p style="text-align:center; color:#b8956a;">Elige una sura y un idioma.</p>
@@ -180,7 +175,7 @@
     <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
-<!-- REPRODUCTOR FIJO (SOLO VISIBLE EN CORÁN) -->
+<!-- REPRODUCTOR FIJO -->
 <div class="audio-player-fixed" id="audioPlayerFixed">
     <div class="surah-info" id="surahInfo">Selecciona una sura para escuchar</div>
     <div class="controls-row">
@@ -208,19 +203,8 @@
     let audio = new Audio();
     let isPlaying = false;
 
-    // ===== LISTA DE RECITADORES =====
-    const reciters = [
-        { id: 'mishaari_rashid_al_afasy', name: 'Mishari Al-Afasy' },
-        { id: 'abdul_basit_murattal', name: 'Abdul Basit (Murattal)' },
-        { id: 'saud_al_shuraim', name: 'Saud Al-Shuraim' },
-        { id: 'abdurrahmaan_as_sudais', name: 'Abdurrahman As-Sudais' },
-        { id: 'maher_al_muaiqly', name: 'Maher Al-Muaiqly' },
-        { id: 'yasser_al_dosari', name: 'Yasser Al-Dosari' },
-        { id: 'salah_al_budair', name: 'Salah Al-Budair' }
-    ];
-
     // ================================================================
-    // PESTAÑAS – control de visibilidad del reproductor
+    // PESTAÑAS
     // ================================================================
     const player = document.getElementById('audioPlayerFixed');
 
@@ -236,9 +220,7 @@
                 player.classList.add('visible');
             } else {
                 player.classList.remove('visible');
-                if (isPlaying) {
-                    audio.pause();
-                }
+                if (isPlaying) audio.pause();
             }
         });
     });
@@ -422,20 +404,6 @@
     }
 
     // ================================================================
-    // RECITADORES – CARGA EN SELECTOR
-    // ================================================================
-    function loadReciters() {
-        const select = document.getElementById('reciterSelect');
-        reciters.forEach(r => {
-            const opt = document.createElement('option');
-            opt.value = r.id;
-            opt.textContent = r.name;
-            select.appendChild(opt);
-        });
-        select.selectedIndex = 0; // Seleccionar el primero por defecto
-    }
-
-    // ================================================================
     // CARGA DE CORÁN (TEXTO + AUDIO)
     // ================================================================
     function loadQuran(surahNumber, edition) {
@@ -482,7 +450,7 @@
                 display.innerHTML = html;
                 document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
 
-                // Cargar el audio para esta sura con el recitador actual
+                // Cargar el audio
                 loadAudioForSurah(surahNumber);
             } else {
                 display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
@@ -494,15 +462,11 @@
     }
 
     // ================================================================
-    // AUDIO – CARGA Y REPRODUCCIÓN (CON RECITADOR SELECCIONABLE)
+    // AUDIO – UN SOLO RECITADOR (ALAFASY) CON URL FIABLE
     // ================================================================
     function loadAudioForSurah(surahNumber) {
-        const reciterId = document.getElementById('reciterSelect').value;
-        if (!reciterId) {
-            document.getElementById('audioStatus').textContent = 'Selecciona un recitador.';
-            return;
-        }
-        const audioUrl = `https://download.quranicaudio.com/quran/${reciterId}/${String(surahNumber).padStart(3, '0')}.mp3`;
+        // Usamos la URL de server8.mp3quran.net que es muy estable
+        const audioUrl = `https://server8.mp3quran.net/afs/${String(surahNumber).padStart(3, '0')}.mp3`;
         console.log('Cargando audio:', audioUrl);
 
         if (isPlaying) audio.pause();
@@ -520,7 +484,7 @@
         audio.onloadedmetadata = function() {
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
             statusDiv.textContent = '✅ Audio listo. Pulsa play.';
-            // No autoplay
+            // No autoplay para evitar bloqueos
         };
 
         audio.ontimeupdate = function() {
@@ -552,7 +516,7 @@
 
         audio.onerror = function(e) {
             console.error('Error de audio:', e);
-            statusDiv.textContent = '❌ Error al cargar el audio. Intenta otra sura o recitador.';
+            statusDiv.textContent = '❌ Error al cargar el audio. Intenta otra sura.';
             document.getElementById('playBtn').innerHTML = '&#9654;';
             isPlaying = false;
             document.getElementById('surahInfo').textContent = 'Error de audio';
@@ -619,9 +583,7 @@
         currentSurah = this.value;
         const lang = document.getElementById('langSelect').value;
         currentEdition = lang;
-        if (isPlaying) {
-            audio.pause();
-        }
+        if (isPlaying) audio.pause();
         loadQuran(currentSurah, lang);
     });
 
@@ -632,20 +594,11 @@
         }
     });
 
-    // Al cambiar de recitador, si hay sura cargada, recargar el audio
-    document.getElementById('reciterSelect').addEventListener('change', function() {
-        if (currentSurah) {
-            loadAudioForSurah(currentSurah);
-            document.getElementById('surahInfo').textContent = 'Cambiando recitador...';
-        }
-    });
-
     // ================================================================
     // INICIO
     // ================================================================
     window.onload = function() {
         loadSurahList();
-        loadReciters();        // <-- nuevo
         getUserLocation();
     };
 </script>
