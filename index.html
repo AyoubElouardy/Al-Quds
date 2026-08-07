@@ -544,7 +544,7 @@
             opacity: 0.6;
         }
 
-        /* ===== BANNER DE COOKIES ===== */
+        /* ===== BANNER DE COOKIES SIEMPRE VISIBLE HASTA ACEPTAR/RECHAZAR ===== */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -552,7 +552,7 @@
             width: 100%;
             background: rgba(10, 31, 10, 0.95);
             backdrop-filter: blur(16px);
-            border-top: 2px solid #d4af37;
+            border-top: 3px solid #d4af37;
             padding: 20px 24px;
             z-index: 2000;
             display: none;
@@ -569,8 +569,9 @@
             min-width: 200px;
             color: #e8d5b5;
             margin: 0;
-            line-height: 1.5;
+            line-height: 1.6;
         }
+        .cookie-banner p strong { color: #d4af37; }
         .cookie-banner .cookie-buttons {
             display: flex;
             gap: 12px;
@@ -733,9 +734,9 @@
     </div>
 </div>
 
-<!-- BANNER DE COOKIES -->
-<div class="cookie-banner" id="cookieBanner">
-    <p>🍪 Utilizamos cookies para recordar tus preferencias (idioma, ciudad, ubicación). Al hacer clic en "Aceptar" consientes su uso. Puedes rechazarlas y seguir usando la app sin guardar preferencias.</p>
+<!-- BANNER DE COOKIES (SIEMPRE VISIBLE HASTA RESPUESTA) -->
+<div class="cookie-banner visible" id="cookieBanner">
+    <p><strong>🍪 ¡Hola!</strong> Para ofrecerte la mejor experiencia, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante para nosotros.</p>
     <div class="cookie-buttons">
         <button class="accept-btn" id="acceptCookies">Aceptar</button>
         <button class="reject-btn" id="rejectCookies">Rechazar</button>
@@ -796,7 +797,8 @@
             cat_familia: 'Familia',
             cat_viaje: 'Viaje',
             cat_general: 'Generales',
-            cat_manana_tarde: 'Mañana y Tarde'
+            cat_manana_tarde: 'Mañana y Tarde',
+            cookies_placeholder: 'Se requiere aceptar cookies para guardar preferencias.'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -847,7 +849,8 @@
             cat_familia: 'Famille',
             cat_viaje: 'Voyage',
             cat_general: 'Générales',
-            cat_manana_tarde: 'Matin et Soir'
+            cat_manana_tarde: 'Matin et Soir',
+            cookies_placeholder: 'Acceptez les cookies pour enregistrer vos préférences.'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -898,7 +901,8 @@
             cat_familia: 'Family',
             cat_viaje: 'Travel',
             cat_general: 'General',
-            cat_manana_tarde: 'Morning & Evening'
+            cat_manana_tarde: 'Morning & Evening',
+            cookies_placeholder: 'Accept cookies to save your preferences.'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -949,7 +953,8 @@
             cat_familia: 'العائلة',
             cat_viaje: 'السفر',
             cat_general: 'عامة',
-            cat_manana_tarde: 'الصباح والمساء'
+            cat_manana_tarde: 'الصباح والمساء',
+            cookies_placeholder: 'قبل ملفات الارتباط لحفظ تفضيلاتك.'
         }
     };
 
@@ -1218,13 +1223,13 @@
     // ================================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     let prayerTimes = {};
-    let userLat = 40.4165, userLng = -3.7026;
+    let userLat = 40.4165, userLng = -3.7026; // Madrid por defecto (si rechaza cookies)
     let currentCity = 'Madrid';
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
     let currentSurah = '';
     let currentLang = 'es';
-    let cookiesAccepted = false;
+    let cookiesAccepted = false; // True solo si el usuario ha aceptado explícitamente
 
     let audio = new Audio();
     let isPlaying = false;
@@ -1292,20 +1297,26 @@
     }
 
     // ================================================================
-    // GESTIÓN DE COOKIES / LOCALSTORAGE
+    // GESTIÓN DE COOKIES (siempre muestra el banner al cargar)
     // ================================================================
     function checkCookies() {
-        const accepted = localStorage.getItem('cookiesAccepted');
-        if (accepted === 'true') {
+        // Siempre mostrar el banner al cargar la página, independientemente de si ya había respuesta previa
+        // Pero si ya hay una respuesta guardada, la aplicamos y ocultamos el banner.
+        const stored = localStorage.getItem('cookiesAccepted');
+        if (stored === 'true') {
             cookiesAccepted = true;
             document.getElementById('cookieBanner').classList.remove('visible');
+            // Restaurar preferencias y ubicación
             restorePreferences();
-        } else if (accepted === 'false') {
+        } else if (stored === 'false') {
             cookiesAccepted = false;
             document.getElementById('cookieBanner').classList.remove('visible');
+            // Usar ubicación por defecto (Madrid)
+            usarUbicacionPorDefecto();
         } else {
-            // Mostrar el banner de cookies
+            // No hay cookie, mostrar banner y bloquear carga de ubicación
             document.getElementById('cookieBanner').classList.add('visible');
+            // No cargar ubicación hasta que responda
         }
     }
 
@@ -1313,6 +1324,7 @@
         localStorage.setItem('cookiesAccepted', 'true');
         cookiesAccepted = true;
         document.getElementById('cookieBanner').classList.remove('visible');
+        // Guardar preferencias actuales y obtener ubicación
         saveCurrentPreferences();
         getUserLocation();
     }
@@ -1321,7 +1333,18 @@
         localStorage.setItem('cookiesAccepted', 'false');
         cookiesAccepted = false;
         document.getElementById('cookieBanner').classList.remove('visible');
-        getUserLocation();
+        // Usar ubicación por defecto (Madrid)
+        usarUbicacionPorDefecto();
+    }
+
+    function usarUbicacionPorDefecto() {
+        userLat = 40.4165;
+        userLng = -3.7026;
+        currentCity = 'Madrid (por defecto)';
+        document.getElementById('cityInput').value = 'Madrid';
+        document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+        fetchPrayerTimes(userLat, userLng);
+        calcularQibla(userLat, userLng);
     }
 
     function saveCurrentPreferences() {
@@ -1355,9 +1378,14 @@
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
                 return true;
+            } else {
+                usarUbicacionPorDefecto();
+                return false;
             }
-        } catch(e) {}
-        return false;
+        } catch(e) {
+            usarUbicacionPorDefecto();
+            return false;
+        }
     }
 
     // ================================================================
@@ -1406,14 +1434,19 @@
     });
 
     // ================================================================
-    // UBICACIÓN Y HORARIOS
+    // UBICACIÓN Y HORARIOS (solo si cookies aceptadas)
     // ================================================================
     function getUserLocation() {
-        // Si ya tenemos datos restaurados, no pedir geolocalización de nuevo
-        if (cookiesAccepted) {
-            const restored = restorePreferences();
-            if (restored) return;
+        if (!cookiesAccepted) {
+            // Si no hay cookies, no pedir ubicación
+            usarUbicacionPorDefecto();
+            return;
         }
+        // Primero intentar restaurar preferencias guardadas
+        if (restorePreferences()) {
+            return;
+        }
+        // Si no hay preferencias guardadas, pedir geolocalización
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
@@ -1558,6 +1591,10 @@
     // BÚSQUEDA DE CIUDAD
     // ================================================================
     document.getElementById('searchBtn').addEventListener('click', function() {
+        if (!cookiesAccepted) {
+            alert('Debes aceptar las cookies para buscar ciudades y guardar preferencias.');
+            return;
+        }
         const city = document.getElementById('cityInput').value.trim();
         if (!city) return;
         fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`)
@@ -2045,13 +2082,19 @@
     document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
 
     window.onload = function() {
-        // Primero verificar cookies
+        // Primero verificar cookies (esto decide si mostrar banner o no)
         checkCookies();
-        // Cargar listas
+        // Cargar listas de suras y Duas
         loadSurahList();
-        // Si ya hay cookies aceptadas y preferencias, restaurar, sino pedir ubicación
-        if (!cookiesAccepted || !restorePreferences()) {
-            getUserLocation();
+        // Si no hay cookies aceptadas, no cargar ubicación (se hará tras aceptar)
+        // Si ya están aceptadas, checkCookies llama a restorePreferences o getUserLocation
+        // Pero si no hay cookie, no hacemos nada más (el banner está visible)
+        if (cookiesAccepted) {
+            // Ya se llamó a getUserLocation desde checkCookies o restorePreferences
+        } else {
+            // Mostrar ubicación por defecto (Madrid) solo si no hay cookie
+            // Pero si no hay cookie, mostramos "Cargando ubicación..." hasta que acepte
+            document.getElementById('fechaLocation').innerHTML = '📍 Acepta las cookies para cargar tu ubicación.';
         }
         updateUILanguage();
         setTimeout(() => {
