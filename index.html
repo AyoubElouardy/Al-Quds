@@ -7,7 +7,7 @@
     <style>
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 120px; /* espacio para el reproductor fijo */ min-height: 100vh; }
+        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 120px; min-height: 100vh; }
         .container { max-width: 700px; margin: 0 auto; }
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
@@ -199,12 +199,10 @@
     let currentSurah = '';
     let currentEdition = 'es.asad';
 
-    // Audio y timings
     let audio = new Audio();
-    let timingsData = null;           // { surah: { verseNumber: { start, end } } }
-    let surahTimings = null;          // array de { verse, start, end }
+    let timingsData = null;
+    let surahTimings = null;
     let isPlaying = false;
-    let highlightInterval = null;
     let currentVerseHighlight = null;
 
     // ================================================================
@@ -216,7 +214,6 @@
             this.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(this.dataset.tab).classList.add('active');
-            // Si cambiamos a la pestaña Corán, actualizamos el resaltado si está sonando
             if (this.dataset.tab === 'tab2' && isPlaying) {
                 updateHighlight();
             }
@@ -405,7 +402,6 @@
         const display = document.getElementById('quranDisplay');
         if (!surahNumber) {
             display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
-            // Limpiar info del reproductor
             document.getElementById('surahInfo').textContent = 'Selecciona una sura para escuchar';
             return;
         }
@@ -443,12 +439,9 @@
                 });
 
                 display.innerHTML = html;
-                // Actualizar info del reproductor
                 document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
 
-                // Limpiar resaltado anterior
                 clearHighlight();
-                // Cargar audio y timings para esta sura
                 loadAudioAndTimings(surahNumber);
             } else {
                 display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
@@ -494,17 +487,15 @@
             surahTimings = null;
         }
 
-        // Cargar audio
+        // Construir URL del audio según la sura
         const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
         audio.src = audioUrl;
         audio.load();
 
-        // Reiniciar controles
         document.getElementById('progressSlider').value = 0;
         document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
         clearHighlight();
 
-        // Eventos del audio
         audio.onloadedmetadata = function() {
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
         };
@@ -519,12 +510,12 @@
 
         audio.onplay = function() {
             isPlaying = true;
-            document.getElementById('playBtn').innerHTML = '&#9208;'; // pausa
+            document.getElementById('playBtn').innerHTML = '&#9208;';
         };
 
         audio.onpause = function() {
             isPlaying = false;
-            document.getElementById('playBtn').innerHTML = '&#9654;'; // play
+            document.getElementById('playBtn').innerHTML = '&#9654;';
         };
 
         audio.onended = function() {
@@ -535,7 +526,7 @@
             clearHighlight();
         };
 
-        // Reproducción automática (si el navegador lo permite)
+        // Intento de reproducción automática
         audio.play().catch(e => {
             console.log('Autoplay bloqueado, esperando interacción del usuario.');
         });
