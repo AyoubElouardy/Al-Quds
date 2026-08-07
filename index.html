@@ -602,6 +602,18 @@
         }
         .cookie-banner .reject-btn:hover { background: rgba(255,255,255,0.05); }
 
+        /* Mensaje de cookies no aceptadas */
+        .cookie-warning {
+            text-align: center;
+            color: #b8956a;
+            padding: 20px;
+            font-size: 1.1rem;
+            background: rgba(20,40,20,0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(212,175,55,0.2);
+        }
+        .cookie-warning strong { color: #d4af37; }
+
         @media (max-width: 480px) {
             .prayer-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .prayer-card .time { font-size: 1.2rem; }
@@ -657,13 +669,18 @@
             <button id="searchBtn" data-i18n="search_btn">Buscar</button>
         </div>
         <div class="countdown-box" data-i18n="next_prayer">Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
-        <div class="prayer-grid" id="prayerTimesContainer">
-            <div class="prayer-card"><div class="name" data-i18n="prayer_fajr">Fajr</div><div class="time" id="Fajr">--:--</div></div>
-            <div class="prayer-card"><div class="name" data-i18n="prayer_dhuhr">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
-            <div class="prayer-card"><div class="name" data-i18n="prayer_asr">Asr</div><div class="time" id="Asr">--:--</div></div>
-            <div class="prayer-card"><div class="name" data-i18n="prayer_maghrib">Maghrib</div><div class="time" id="Maghrib">--:--</div></div>
-            <div class="prayer-card"><div class="name" data-i18n="prayer_isha">Isha</div><div class="time" id="Isha">--:--</div></div>
-            <div class="prayer-card"><div class="name" data-i18n="prayer_qibla">Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
+        <div id="prayerTimesContainer">
+            <div class="prayer-grid" id="prayerGrid">
+                <div class="prayer-card"><div class="name" data-i18n="prayer_fajr">Fajr</div><div class="time" id="Fajr">--:--</div></div>
+                <div class="prayer-card"><div class="name" data-i18n="prayer_dhuhr">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
+                <div class="prayer-card"><div class="name" data-i18n="prayer_asr">Asr</div><div class="time" id="Asr">--:--</div></div>
+                <div class="prayer-card"><div class="name" data-i18n="prayer_maghrib">Maghrib</div><div class="time" id="Maghrib">--:--</div></div>
+                <div class="prayer-card"><div class="name" data-i18n="prayer_isha">Isha</div><div class="time" id="Isha">--:--</div></div>
+                <div class="prayer-card"><div class="name" data-i18n="prayer_qibla">Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
+            </div>
+            <div id="cookieWarning" class="cookie-warning" style="display:none;">
+                <strong>🍪</strong> Para ver los horarios de oración, por favor <strong>acepta las cookies</strong> desde el banner inferior.
+            </div>
         </div>
     </div>
 
@@ -738,7 +755,7 @@
 
 <!-- BANNER DE COOKIES (INICIALMENTE OCULTO, SE MUESTRA CON JS) -->
 <div class="cookie-banner" id="cookieBanner">
-    <p><strong>🍪 ¡Hola!</strong> Para ofrecerte la mejor experiencia, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante para nosotros.</p>
+    <p><strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante.</p>
     <div class="cookie-buttons">
         <button class="accept-btn" id="acceptCookies">Aceptar</button>
         <button class="reject-btn" id="rejectCookies">Rechazar</button>
@@ -800,7 +817,9 @@
             cat_viaje: 'Viaje',
             cat_general: 'Generales',
             cat_manana_tarde: 'Mañana y Tarde',
-            cookies_placeholder: 'Se requiere aceptar cookies para guardar preferencias.'
+            cookies_placeholder: 'Se requiere aceptar cookies para guardar preferencias.',
+            cookies_required: 'Acepta las cookies para ver los horarios de oración.',
+            location_disabled: 'Ubicación deshabilitada por rechazo de cookies.'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -852,7 +871,9 @@
             cat_viaje: 'Voyage',
             cat_general: 'Générales',
             cat_manana_tarde: 'Matin et Soir',
-            cookies_placeholder: 'Acceptez les cookies pour enregistrer vos préférences.'
+            cookies_placeholder: 'Acceptez les cookies pour enregistrer vos préférences.',
+            cookies_required: 'Acceptez les cookies pour voir les horaires de prière.',
+            location_disabled: 'Localisation désactivée par refus des cookies.'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -904,7 +925,9 @@
             cat_viaje: 'Travel',
             cat_general: 'General',
             cat_manana_tarde: 'Morning & Evening',
-            cookies_placeholder: 'Accept cookies to save your preferences.'
+            cookies_placeholder: 'Accept cookies to save your preferences.',
+            cookies_required: 'Accept cookies to see prayer times.',
+            location_disabled: 'Location disabled due to cookie rejection.'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -956,7 +979,9 @@
             cat_viaje: 'السفر',
             cat_general: 'عامة',
             cat_manana_tarde: 'الصباح والمساء',
-            cookies_placeholder: 'قبل ملفات الارتباط لحفظ تفضيلاتك.'
+            cookies_placeholder: 'قبل ملفات الارتباط لحفظ تفضيلاتك.',
+            cookies_required: 'اقبل ملفات الارتباط لمشاهدة أوقات الصلاة.',
+            location_disabled: 'تم تعطيل الموقع بسبب رفض ملفات الارتباط.'
         }
     };
 
@@ -1232,6 +1257,7 @@
     let currentSurah = '';
     let currentLang = 'es';
     let cookiesAccepted = false;
+    let locationEnabled = false; // indica si se ha habilitado la ubicación por cookies
 
     let audio = new Audio();
     let isPlaying = false;
@@ -1296,35 +1322,71 @@
         const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
         loadDuasByCategory(activeCat);
         actualizarInfoQibla();
+
+        // Actualizar mensaje de cookies si está deshabilitado
+        if (!locationEnabled) {
+            document.getElementById('cookieWarning').style.display = 'block';
+            document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
+        }
     }
 
     // ================================================================
-    // GESTIÓN DE COOKIES (el banner siempre se muestra hasta que el usuario elija)
+    // GESTIÓN DE COOKIES
     // ================================================================
     function checkCookies() {
         const stored = localStorage.getItem('cookiesAccepted');
         const banner = document.getElementById('cookieBanner');
         if (stored === 'true') {
             cookiesAccepted = true;
-            banner.classList.remove('visible'); // ocultar banner
-            restorePreferences(); // restaurar preferencias y ubicación
+            locationEnabled = true;
+            banner.classList.remove('visible');
+            // Restaurar preferencias y ubicación
+            const restored = restorePreferences();
+            if (!restored) {
+                getUserLocation();
+            }
         } else if (stored === 'false') {
             cookiesAccepted = false;
+            locationEnabled = false;
             banner.classList.remove('visible');
-            usarUbicacionPorDefecto(); // ubicación por defecto
+            mostrarMensajeSinCookies();
         } else {
-            // No hay respuesta, mostrar banner (se asegura que esté visible)
+            // No hay respuesta, mostrar banner
             cookiesAccepted = false;
+            locationEnabled = false;
             banner.classList.add('visible');
-            // No cargar ubicación hasta que responda
-            document.getElementById('fechaLocation').innerHTML = '📍 Acepta las cookies para cargar tu ubicación.';
+            mostrarMensajeSinCookies();
         }
+    }
+
+    function mostrarMensajeSinCookies() {
+        document.getElementById('fechaLocation').innerHTML = `📍 ${getTranslation('cookies_required')}`;
+        document.getElementById('cookieWarning').style.display = 'block';
+        document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
+        // Ocultar horarios
+        document.getElementById('prayerGrid').style.display = 'none';
+        document.getElementById('countdownTimer').textContent = '--:--:--';
+        // Deshabilitar búsqueda de ciudad
+        document.getElementById('searchBtn').disabled = true;
+        document.getElementById('cityInput').disabled = true;
+        // Mostrar mensaje en el campo de ciudad
+        document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
+    }
+
+    function habilitarFuncionalidad() {
+        document.getElementById('prayerGrid').style.display = 'grid';
+        document.getElementById('cookieWarning').style.display = 'none';
+        document.getElementById('searchBtn').disabled = false;
+        document.getElementById('cityInput').disabled = false;
+        document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
     }
 
     function acceptCookies() {
         localStorage.setItem('cookiesAccepted', 'true');
         cookiesAccepted = true;
+        locationEnabled = true;
         document.getElementById('cookieBanner').classList.remove('visible');
+        habilitarFuncionalidad();
         // Guardar preferencias actuales y obtener ubicación
         saveCurrentPreferences();
         getUserLocation();
@@ -1333,18 +1395,9 @@
     function rejectCookies() {
         localStorage.setItem('cookiesAccepted', 'false');
         cookiesAccepted = false;
+        locationEnabled = false;
         document.getElementById('cookieBanner').classList.remove('visible');
-        usarUbicacionPorDefecto();
-    }
-
-    function usarUbicacionPorDefecto() {
-        userLat = 40.4165;
-        userLng = -3.7026;
-        currentCity = 'Madrid (por defecto)';
-        document.getElementById('cityInput').value = 'Madrid';
-        document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
-        fetchPrayerTimes(userLat, userLng);
-        calcularQibla(userLat, userLng);
+        mostrarMensajeSinCookies();
     }
 
     function saveCurrentPreferences() {
@@ -1358,6 +1411,7 @@
     }
 
     function restorePreferences() {
+        if (!cookiesAccepted) return false;
         try {
             const lang = localStorage.getItem('pref_lang');
             const city = localStorage.getItem('pref_city');
@@ -1377,13 +1431,12 @@
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
+                habilitarFuncionalidad();
                 return true;
             } else {
-                usarUbicacionPorDefecto();
                 return false;
             }
         } catch(e) {
-            usarUbicacionPorDefecto();
             return false;
         }
     }
@@ -1437,8 +1490,8 @@
     // UBICACIÓN Y HORARIOS (solo si cookies aceptadas)
     // ================================================================
     function getUserLocation() {
-        if (!cookiesAccepted) {
-            usarUbicacionPorDefecto();
+        if (!cookiesAccepted || !locationEnabled) {
+            mostrarMensajeSinCookies();
             return;
         }
         // Primero intentar restaurar preferencias guardadas
@@ -1459,12 +1512,14 @@
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
                     calcularQibla(userLat, userLng);
+                    habilitarFuncionalidad();
                 }
             );
         } else {
             document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
             calcularQibla(userLat, userLng);
+            habilitarFuncionalidad();
         }
     }
 
@@ -1480,11 +1535,13 @@
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
                 if (cookiesAccepted) saveCurrentPreferences();
+                habilitarFuncionalidad();
             })
             .catch(() => {
                 document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
+                habilitarFuncionalidad();
             });
     }
 
@@ -1512,6 +1569,7 @@
     }
 
     function startCountdownAndAdhan() {
+        if (!locationEnabled) return;
         setInterval(() => {
             const now = new Date();
             const todayStr = now.toISOString().split('T')[0];
@@ -1567,6 +1625,7 @@
     }
 
     function highlightCurrentPrayer() {
+        if (!locationEnabled) return;
         const now = new Date();
         const currentMin = now.getHours() * 60 + now.getMinutes();
         let activeId = null, minDiff = Infinity;
@@ -1583,6 +1642,7 @@
     }
 
     function playAdhan() {
+        if (!locationEnabled) return;
         try { adhanAudio.currentTime = 0; adhanAudio.play().catch(e => {}); } catch(e) {}
     }
 
@@ -1590,8 +1650,8 @@
     // BÚSQUEDA DE CIUDAD
     // ================================================================
     document.getElementById('searchBtn').addEventListener('click', function() {
-        if (!cookiesAccepted) {
-            alert('Debes aceptar las cookies para buscar ciudades y guardar preferencias.');
+        if (!cookiesAccepted || !locationEnabled) {
+            alert(getTranslation('cookies_required'));
             return;
         }
         const city = document.getElementById('cityInput').value.trim();
