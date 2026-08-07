@@ -55,6 +55,19 @@
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
 
+        /* ===== DUA ===== */
+        .dua-container { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
+        .dua-item { 
+            background: #1a2f1a; 
+            padding: 15px; 
+            border-radius: 15px; 
+            margin-bottom: 15px; 
+            border-left: 4px solid #d4af37;
+        }
+        .dua-item .dua-title { color: #d4af37; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
+        .dua-item .dua-arabic { font-size: 1.6rem; color: #fff; text-align: right; line-height: 2; margin-bottom: 8px; }
+        .dua-item .dua-translation { color: #c5b08a; font-size: 1rem; line-height: 1.6; }
+
         /* ===== REPRODUCTOR FIJO ===== */
         .audio-player-fixed {
             position: fixed;
@@ -131,6 +144,7 @@
     <div class="tabs">
         <button class="tab-btn active" data-tab="tab1">Rezos</button>
         <button class="tab-btn" data-tab="tab2">Corán</button>
+        <button class="tab-btn" data-tab="tab3">Dua</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -172,6 +186,14 @@
         </div>
     </div>
 
+    <!-- TAB 3: DUA -->
+    <div id="tab3" class="tab-content">
+        <div class="dua-container">
+            <h3 style="color:#d4af37; text-align:center; margin-bottom:15px;">Súplicas (Duas)</h3>
+            <div id="duaList"></div>
+        </div>
+    </div>
+
     <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
@@ -203,6 +225,50 @@
     let audio = new Audio();
     let isPlaying = false;
 
+    // ===== LISTA DE DUAS =====
+    const duas = [
+        {
+            title: 'Dua al despertar',
+            arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',
+            translation: 'Alabado sea Allah que nos devolvió la vida después de habernos hecho morir y a Él es el retorno.'
+        },
+        {
+            title: 'Dua al dormir',
+            arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
+            translation: 'En Tu nombre, oh Allah, muero y vivo.'
+        },
+        {
+            title: 'Dua al salir de casa',
+            arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ',
+            translation: 'En el nombre de Allah, confío en Allah, y no hay poder ni fuerza sino en Allah.'
+        },
+        {
+            title: 'Dua al entrar a casa',
+            arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا',
+            translation: 'En el nombre de Allah entramos, en el nombre de Allah salimos, y en nuestro Señor confiamos.'
+        },
+        {
+            title: 'Dua antes de comer',
+            arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ',
+            translation: 'En el nombre de Allah y con la bendición de Allah.'
+        },
+        {
+            title: 'Dua después de comer',
+            arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',
+            translation: 'Alabado sea Allah que nos ha alimentado, nos ha dado de beber y nos ha hecho musulmanes.'
+        },
+        {
+            title: 'Dua al entrar al baño',
+            arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',
+            translation: 'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.'
+        },
+        {
+            title: 'Dua al salir del baño',
+            arabic: 'غُفْرَانَكَ',
+            translation: '¡Tu perdón, oh Allah!'
+        }
+    ];
+
     // ================================================================
     // PESTAÑAS
     // ================================================================
@@ -216,6 +282,7 @@
             const tabId = this.dataset.tab;
             document.getElementById(tabId).classList.add('active');
 
+            // Mostrar/ocultar reproductor solo en Corán
             if (tabId === 'tab2') {
                 player.classList.add('visible');
             } else {
@@ -462,10 +529,9 @@
     }
 
     // ================================================================
-    // AUDIO – UN SOLO RECITADOR (ALAFASY) CON URL FIABLE
+    // AUDIO – UN SOLO RECITADOR (ALAFASY)
     // ================================================================
     function loadAudioForSurah(surahNumber) {
-        // Usamos la URL de server8.mp3quran.net que es muy estable
         const audioUrl = `https://server8.mp3quran.net/afs/${String(surahNumber).padStart(3, '0')}.mp3`;
         console.log('Cargando audio:', audioUrl);
 
@@ -484,7 +550,6 @@
         audio.onloadedmetadata = function() {
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
             statusDiv.textContent = '✅ Audio listo. Pulsa play.';
-            // No autoplay para evitar bloqueos
         };
 
         audio.ontimeupdate = function() {
@@ -577,7 +642,7 @@
     });
 
     // ================================================================
-    // EVENTOS DE SELECCIÓN
+    // EVENTOS DE SELECCIÓN (CORÁN)
     // ================================================================
     document.getElementById('surahSelect').addEventListener('change', function() {
         currentSurah = this.value;
@@ -595,11 +660,30 @@
     });
 
     // ================================================================
+    // CARGA DE DUAS
+    // ================================================================
+    function loadDuas() {
+        const container = document.getElementById('duaList');
+        let html = '';
+        duas.forEach((dua, index) => {
+            html += `
+                <div class="dua-item">
+                    <div class="dua-title">${dua.title}</div>
+                    <div class="dua-arabic">${dua.arabic}</div>
+                    <div class="dua-translation">${dua.translation}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // ================================================================
     // INICIO
     // ================================================================
     window.onload = function() {
         loadSurahList();
         getUserLocation();
+        loadDuas();  // Cargar las súplicas
     };
 </script>
 </body>
