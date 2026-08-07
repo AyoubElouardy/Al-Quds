@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Quds - Islam, Salah, Quran</title>
+    <title>Al-Quds - App Islámica</title>
     <style>
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -50,9 +50,7 @@
             box-shadow: 0 0 12px #d4af3740;
             background: #1a2f1a;
         }
-        .lang-btn .flag-emoji {
-            line-height: 1;
-        }
+        .lang-btn .flag-emoji { line-height: 1; }
         .lang-btn .arabic-char {
             background: #1a6b3a;
             border-radius: 50%;
@@ -111,6 +109,16 @@
 
         /* ===== DUA ===== */
         .dua-container { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
+        .dua-category-title {
+            color: #d4af37;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         .dua-item { 
             background: #1a2f1a; 
             padding: 15px; 
@@ -130,10 +138,7 @@
             margin: 15px 0;
             text-align: center;
         }
-        .compass-wrapper {
-            position: relative;
-            display: inline-block;
-        }
+        .compass-wrapper { position: relative; display: inline-block; }
         #compassCanvas {
             width: 250px;
             height: 250px;
@@ -143,20 +148,9 @@
             border: 3px solid #d4af37;
             touch-action: none;
         }
-        .qibla-info {
-            margin-top: 15px;
-            color: #c5b08a;
-            font-size: 1.1rem;
-        }
-        .qibla-info strong {
-            color: #d4af37;
-        }
-        .qibla-angle {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #d4af37;
-            margin: 5px 0;
-        }
+        .qibla-info { margin-top: 15px; color: #c5b08a; font-size: 1.1rem; }
+        .qibla-info strong { color: #d4af37; }
+        .qibla-angle { font-size: 2rem; font-weight: bold; color: #d4af37; margin: 5px 0; }
         .compass-legend {
             display: flex;
             justify-content: center;
@@ -165,17 +159,8 @@
             font-size: 0.85rem;
             color: #b8956a;
         }
-        .compass-legend span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .legend-dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
+        .compass-legend span { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
         .legend-dot.north { background: #ff4d4d; }
         .legend-dot.qibla { background: #d4af37; }
 
@@ -463,7 +448,16 @@
             city_not_found: 'Ciudad no encontrada.',
             search_error: 'Error en la búsqueda.',
             select_reciter: 'Selecciona un recitador.',
-            translation_not_available: '[Traducción no disponible]'
+            translation_not_available: '[Traducción no disponible]',
+            // Categorías de Duas
+            cat_rizq: 'Sustento (Rizq)',
+            cat_istighfar: 'Perdón (Istighfar)',
+            cat_proteccion: 'Protección',
+            cat_salud: 'Salud',
+            cat_familia: 'Familia',
+            cat_viaje: 'Viaje',
+            cat_general: 'Generales',
+            cat_manana_tarde: 'Mañana y Tarde'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -506,7 +500,15 @@
             city_not_found: 'Ville introuvable.',
             search_error: 'Erreur de recherche.',
             select_reciter: 'Choisissez un récitateur.',
-            translation_not_available: '[Traduction non disponible]'
+            translation_not_available: '[Traduction non disponible]',
+            cat_rizq: 'Subsistance (Rizq)',
+            cat_istighfar: 'Pardon (Istighfar)',
+            cat_proteccion: 'Protection',
+            cat_salud: 'Santé',
+            cat_familia: 'Famille',
+            cat_viaje: 'Voyage',
+            cat_general: 'Générales',
+            cat_manana_tarde: 'Matin et Soir'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -549,7 +551,15 @@
             city_not_found: 'City not found.',
             search_error: 'Search error.',
             select_reciter: 'Select a reciter.',
-            translation_not_available: '[Translation not available]'
+            translation_not_available: '[Translation not available]',
+            cat_rizq: 'Sustenance (Rizq)',
+            cat_istighfar: 'Forgiveness (Istighfar)',
+            cat_proteccion: 'Protection',
+            cat_salud: 'Health',
+            cat_familia: 'Family',
+            cat_viaje: 'Travel',
+            cat_general: 'General',
+            cat_manana_tarde: 'Morning & Evening'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -592,148 +602,276 @@
             city_not_found: 'لم يتم العثور على المدينة.',
             search_error: 'خطأ في البحث.',
             select_reciter: 'اختر قارئاً.',
-            translation_not_available: '[الترجمة غير متوفرة]'
+            translation_not_available: '[الترجمة غير متوفرة]',
+            cat_rizq: 'الرزق',
+            cat_istighfar: 'الاستغفار',
+            cat_proteccion: 'الحماية',
+            cat_salud: 'الصحة',
+            cat_familia: 'العائلة',
+            cat_viaje: 'السفر',
+            cat_general: 'عامة',
+            cat_manana_tarde: 'الصباح والمساء'
         }
     };
 
     // ================================================================
-    // TRADUCCIONES DE DUAS (ampliado a 20)
+    // TRADUCCIONES DE DUAS (extendidas con más súplicas)
     // ================================================================
     const duaTranslations = {
         es: [
-            'Alabado sea Allah que nos devolvió la vida después de habernos hecho morir y a Él es el retorno.',
-            'En Tu nombre, oh Allah, muero y vivo.',
-            'En el nombre de Allah, confío en Allah, y no hay poder ni fuerza sino en Allah.',
-            'En el nombre de Allah entramos, en el nombre de Allah salimos, y en nuestro Señor confiamos.',
-            'En el nombre de Allah y con la bendición de Allah.',
-            'Alabado sea Allah que nos ha alimentado, nos ha dado de beber y nos ha hecho musulmanes.',
-            'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
-            '¡Tu perdón, oh Allah!',
-            'Oh Allah, te pido el bien en este día, la victoria y la ayuda, la luz y la bendición.',
+            // Rizq (Sustento) - índices 0-4
+            'Oh Allah, te pido el sustento, la suficiencia y la bendición en lo que nos has concedido.',
+            'Oh Allah, provee para mí un sustento lícito y puro, y no me hagas dependiente de nadie.',
+            'Oh Allah, bendice nuestro alimento y danos el sustento de Tu generosidad.',
+            'Oh Allah, te pido el sustento abundante, la salud duradera y la muerte en la fe.',
+            'Oh Allah, no me hagas depender de la creación, y provee para mí desde donde no espero.',
+            // Istighfar (Perdón) - índices 5-9
+            'Oh Allah, perdona mis pecados y errores, y límpiame como se limpia la tela blanca.',
             'Oh Allah, te pido el perdón y la salud en mi religión, mi vida y mi familia.',
-            'Oh Allah, te pido que me concedas un buen final y la salvación del infierno.',
-            'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Tu amor.',
-            'Oh Allah, te pido la constancia en el bien, el buen juicio y la protección contra la incredulidad.',
-            'Oh Allah, te pido el paraíso y la protección del infierno.',
-            'Oh Allah, te pido el bien en este mundo y en el más allá, y me refugio en Ti del mal en este mundo y en el más allá.',
+            'Oh Allah, he sido injusto conmigo mismo, así que perdóname, pues solo Tú perdonas los pecados.',
+            'Oh Allah, te pido el perdón y la protección contra el castigo del fuego y la tumba.',
+            'Oh Allah, te pido el perdón de lo que he hecho y lo que he dejado de hacer.',
+            // Protección - índices 10-14
+            'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
+            'Oh Allah, me refugio en Ti de la pobreza, la miseria y la humillación.',
+            'Oh Allah, me refugio en Ti de la ansiedad, la tristeza y la debilidad.',
+            'Oh Allah, me refugio en Ti de la incredulidad, la pobreza y el castigo de la tumba.',
+            'Oh Allah, me refugio en Ti de la opresión de los opresores y de las maquinaciones de los enemigos.',
+            // Salud - índices 15-19
+            'Oh Allah, te pido la salud en este mundo y en el más allá.',
+            'Oh Allah, te pido la salud, la seguridad y la buena fe en todo momento.',
+            'Oh Allah, te pido la salud en mi cuerpo, en mi audición y en mi vista.',
+            'Oh Allah, te pido la salud, la seguridad y la protección contra toda enfermedad.',
+            'Oh Allah, te pido la salud en mi corazón y en mis acciones.',
+            // Familia - índices 20-24
+            'Oh Allah, protege a mi familia y a mis seres queridos, y bendícenos con Tu misericordia.',
+            'Oh Allah, reúne a mi familia en el bien y guíanos hacia lo que amas.',
+            'Oh Allah, protege a mis hijos y a mi cónyuge de todo mal.',
+            'Oh Allah, bendice nuestro hogar y nuestra unión familiar.',
+            'Oh Allah, haz que mi familia sea de los que aman y son amados por Ti.',
+            // Viaje - índices 25-29
+            'Oh Allah, te pido la seguridad en el viaje y la bendición en el destino.',
+            'Oh Allah, haz que este viaje sea fácil y llévanos a nuestro destino con bien.',
+            'Oh Allah, te pido la protección durante el viaje y el regreso a salvo.',
+            'Oh Allah, te pido el buen viaje y la buena compañía.',
+            'Oh Allah, te pido la seguridad en el camino y la protección contra todo peligro.',
+            // Generales - índices 30-34
+            'Oh Allah, te pido el bien en este mundo y en el más allá.',
             'Oh Allah, te pido el bien de lo que he hecho y el bien de lo que no he hecho.',
+            'Oh Allah, te pido la constancia en el bien y el buen juicio.',
+            'Oh Allah, te pido el paraíso y la protección del infierno.',
+            'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Ti.',
+            // Mañana y Tarde - índices 35-39
             'Oh Allah, te pido el bien de la mañana y el bien de la noche.',
-            'Oh Allah, te pido el bien del camino y el bien del hogar.',
-            'Oh Allah, te pido el bien de la vida y el bien de la muerte.',
-            'Oh Allah, te pido el bien del paraíso y la protección del infierno.'
+            'Oh Allah, te pido el bien del día y el bien de la noche que sigue.',
+            'Oh Allah, te pido la protección en la mañana y en la tarde.',
+            'Oh Allah, te pido la seguridad en el amanecer y en el anochecer.',
+            'Oh Allah, te pido el bien en el día y en la noche, y me refugio en Ti de su mal.'
         ],
         fr: [
-            'Louange à Allah qui nous a rendus vivants après nous avoir fait mourir et c\'est vers Lui le retour.',
-            'En Ton nom, ô Allah, je meurs et je vis.',
-            'Au nom d\'Allah, je place ma confiance en Allah, et il n\'y a de force ni de puissance qu\'en Allah.',
-            'Au nom d\'Allah nous entrons, au nom d\'Allah nous sortons, et en notre Seigneur nous plaçons notre confiance.',
-            'Au nom d\'Allah et par la bénédiction d\'Allah.',
-            'Louange à Allah qui nous a nourris, nous a abreuvés et nous a faits musulmans.',
-            'Ô Allah, je cherche refuge en Toi contre toute impureté et toute action malveillante.',
-            'Ton pardon, ô Allah !',
-            'Ô Allah, je Te demande le bien en ce jour, la victoire et le secours, la lumière et la bénédiction.',
+            // Rizq
+            'Ô Allah, je Te demande la subsistance, la suffisance et la bénédiction dans ce que Tu nous as accordé.',
+            'Ô Allah, accorde-moi une subsistance licite et pure, et ne me rends pas dépendant de personne.',
+            'Ô Allah, bénis notre nourriture et donne-nous la subsistance de Ta générosité.',
+            'Ô Allah, je Te demande la subsistance abondante, la santé durable et la mort dans la foi.',
+            'Ô Allah, ne me rends pas dépendant de la création, et pourvois-moi d\'où je ne m\'y attends pas.',
+            // Istighfar
+            'Ô Allah, pardonne mes péchés et mes erreurs, et purifie-moi comme on purifie le vêtement blanc.',
             'Ô Allah, je Te demande le pardon et la santé dans ma religion, ma vie et ma famille.',
-            'Ô Allah, je Te demande de m\'accorder une bonne fin et le salut de l\'Enfer.',
-            'Ô Allah, je Te demande l\'amour de Toi, l\'amour de ceux qui T\'aiment et l\'amour des œuvres qui me rapprochent de Ton amour.',
-            'Ô Allah, je Te demande la constance dans le bien, le bon jugement et la protection contre la mécréance.',
-            'Ô Allah, je Te demande le Paradis et la protection de l\'Enfer.',
-            'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-delà, et je cherche refuge en Toi contre le mal dans ce monde et dans l\'au-delà.',
+            'Ô Allah, j\'ai été injuste envers moi-même, alors pardonne-moi, car Toi seul pardonnes les péchés.',
+            'Ô Allah, je Te demande le pardon et la protection contre le châtiment du feu et de la tombe.',
+            'Ô Allah, je Te demande le pardon de ce que j\'ai fait et de ce que j\'ai laissé faire.',
+            // Protection
+            'Ô Allah, je cherche refuge en Toi contre tout mal et les mauvaises actions.',
+            'Ô Allah, je cherche refuge en Toi contre la pauvreté, la misère et l\'humiliation.',
+            'Ô Allah, je cherche refuge en Toi contre l\'anxiété, la tristesse et la faiblesse.',
+            'Ô Allah, je cherche refuge en Toi contre la mécréance, la pauvreté et le châtiment de la tombe.',
+            'Ô Allah, je cherche refuge en Toi contre l\'oppression des oppresseurs et les manœuvres des ennemis.',
+            // Santé
+            'Ô Allah, je Te demande la santé dans ce monde et dans l\'au-delà.',
+            'Ô Allah, je Te demande la santé, la sécurité et la bonne foi en tout temps.',
+            'Ô Allah, je Te demande la santé dans mon corps, dans mon ouïe et dans ma vue.',
+            'Ô Allah, je Te demande la santé, la sécurité et la protection contre toute maladie.',
+            'Ô Allah, je Te demande la santé dans mon cœur et dans mes actions.',
+            // Famille
+            'Ô Allah, protège ma famille et mes proches, et bénis-nous de Ta miséricorde.',
+            'Ô Allah, réunis ma famille dans le bien et guide-nous vers ce que Tu aimes.',
+            'Ô Allah, protège mes enfants et mon conjoint de tout mal.',
+            'Ô Allah, bénis notre foyer et notre union familiale.',
+            'Ô Allah, fais que ma famille soit de ceux qui T\'aiment et sont aimés par Toi.',
+            // Voyage
+            'Ô Allah, je Te demande la sécurité pendant le voyage et la bénédiction à destination.',
+            'Ô Allah, rends ce voyage facile et amène-nous à destination en toute sécurité.',
+            'Ô Allah, je Te demande la protection pendant le voyage et le retour en sécurité.',
+            'Ô Allah, je Te demande le bon voyage et la bonne compagnie.',
+            'Ô Allah, je Te demande la sécurité sur la route et la protection contre tout danger.',
+            // Générales
+            'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-delà.',
             'Ô Allah, je Te demande le bien de ce que j\'ai fait et le bien de ce que je n\'ai pas fait.',
+            'Ô Allah, je Te demande la constance dans le bien et le bon jugement.',
+            'Ô Allah, je Te demande le Paradis et la protection de l\'Enfer.',
+            'Ô Allah, je Te demande l\'amour de Toi, l\'amour de ceux qui T\'aiment et l\'amour des œuvres qui me rapprochent de Toi.',
+            // Matin et Soir
             'Ô Allah, je Te demande le bien du matin et le bien de la nuit.',
-            'Ô Allah, je Te demande le bien du chemin et le bien du foyer.',
-            'Ô Allah, je Te demande le bien de la vie et le bien de la mort.',
-            'Ô Allah, je Te demande le bien du Paradis et la protection de l\'Enfer.'
+            'Ô Allah, je Te demande le bien du jour et le bien de la nuit qui suit.',
+            'Ô Allah, je Te demande la protection au matin et au soir.',
+            'Ô Allah, je Te demande la sécurité à l\'aube et au crépuscule.',
+            'Ô Allah, je Te demande le bien dans le jour et dans la nuit, et je cherche refuge en Toi contre leur mal.'
         ],
         en: [
-            'Praise be to Allah who gave us life after having taken it from us and unto Him is the resurrection.',
-            'In Your name, O Allah, I die and I live.',
-            'In the name of Allah, I put my trust in Allah, and there is no power nor strength except in Allah.',
-            'In the name of Allah we enter, in the name of Allah we leave, and upon our Lord we place our trust.',
-            'In the name of Allah and with the blessing of Allah.',
-            'Praise be to Allah who fed us, gave us drink, and made us Muslims.',
+            // Rizq
+            'O Allah, I ask You for sustenance, sufficiency, and blessing in what You have granted us.',
+            'O Allah, provide me with lawful and pure sustenance, and do not make me dependent on anyone.',
+            'O Allah, bless our food and give us sustenance from Your generosity.',
+            'O Allah, I ask You for abundant sustenance, lasting health, and death in faith.',
+            'O Allah, do not make me dependent on creation, and provide for me from where I do not expect.',
+            // Istighfar
+            'O Allah, forgive my sins and mistakes, and purify me as white cloth is purified.',
+            'O Allah, I ask You for forgiveness and health in my religion, my life, and my family.',
+            'O Allah, I have been unjust to myself, so forgive me, for only You forgive sins.',
+            'O Allah, I ask You for forgiveness and protection from the punishment of the Fire and the grave.',
+            'O Allah, I ask You for forgiveness for what I have done and what I have left undone.',
+            // Protection
             'O Allah, I seek refuge in You from all evil and evil actions.',
-            'Your forgiveness, O Allah!',
-            'O Allah, I ask You for the good of this day, victory and help, light and blessing.',
-            'O Allah, I ask You for forgiveness and health in my religion, my life and my family.',
-            'O Allah, I ask You to grant me a good end and salvation from Hell.',
-            'O Allah, I ask You for love of You, love of those who love You, and love of deeds that bring me closer to Your love.',
-            'O Allah, I ask You for steadfastness in good, sound judgment, and protection from disbelief.',
-            'O Allah, I ask You for Paradise and protection from Hell.',
-            'O Allah, I ask You for the good of this world and the Hereafter, and I seek refuge in You from the evil of this world and the Hereafter.',
+            'O Allah, I seek refuge in You from poverty, misery, and humiliation.',
+            'O Allah, I seek refuge in You from anxiety, sorrow, and weakness.',
+            'O Allah, I seek refuge in You from disbelief, poverty, and the punishment of the grave.',
+            'O Allah, I seek refuge in You from the oppression of oppressors and the plots of enemies.',
+            // Health
+            'O Allah, I ask You for health in this world and the Hereafter.',
+            'O Allah, I ask You for health, safety, and good faith at all times.',
+            'O Allah, I ask You for health in my body, my hearing, and my sight.',
+            'O Allah, I ask You for health, safety, and protection from all diseases.',
+            'O Allah, I ask You for health in my heart and in my actions.',
+            // Family
+            'O Allah, protect my family and loved ones, and bless us with Your mercy.',
+            'O Allah, gather my family in goodness and guide us to what You love.',
+            'O Allah, protect my children and spouse from all evil.',
+            'O Allah, bless our home and our family unity.',
+            'O Allah, make my family among those who love You and are loved by You.',
+            // Travel
+            'O Allah, I ask You for safety during travel and blessing at the destination.',
+            'O Allah, make this journey easy and bring us to our destination safely.',
+            'O Allah, I ask You for protection during travel and a safe return.',
+            'O Allah, I ask You for a good journey and good company.',
+            'O Allah, I ask You for safety on the road and protection from all danger.',
+            // General
+            'O Allah, I ask You for the good of this world and the Hereafter.',
             'O Allah, I ask You for the good of what I have done and the good of what I have not done.',
+            'O Allah, I ask You for steadfastness in good and sound judgment.',
+            'O Allah, I ask You for Paradise and protection from Hell.',
+            'O Allah, I ask You for love of You, love of those who love You, and love of deeds that bring me closer to You.',
+            // Morning & Evening
             'O Allah, I ask You for the good of the morning and the good of the night.',
-            'O Allah, I ask You for the good of the path and the good of the home.',
-            'O Allah, I ask You for the good of life and the good of death.',
-            'O Allah, I ask You for the good of Paradise and protection from Hell.'
+            'O Allah, I ask You for the good of the day and the good of the night that follows.',
+            'O Allah, I ask You for protection in the morning and the evening.',
+            'O Allah, I ask You for safety at dawn and at dusk.',
+            'O Allah, I ask You for the good in the day and night, and I seek refuge in You from their evil.'
         ],
         ar: [
-            'الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور',
-            'باسمك اللهم أموت وأحيا',
-            'بسم الله، توكلت على الله، ولا حول ولا قوة إلا بالله',
-            'بسم الله ولجنا، وبسم الله خرجنا، وعلى ربنا توكلنا',
-            'بسم الله وعلى بركة الله',
-            'الحمد لله الذي أطعمنا وسقانا وجعلنا مسلمين',
-            'اللهم إني أعوذ بك من الخبث والخبائث',
-            'غفرانك',
-            'اللهم إني أسألك خير هذا اليوم، النصر والعون، النور والبركة',
-            'اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي',
-            'اللهم إني أسألك حسن الخاتمة والنجاة من النار',
-            'اللهم إني أسألك حبك وحب من يحبك وحب العمل الذي يقربني إلى حبك',
-            'اللهم إني أسألك الثبات في الأمر والعزم على الرشد والعصمة من الكفر',
-            'اللهم إني أسألك الجنة وأعوذ بك من النار',
-            'اللهم إني أسألك خير الدنيا والآخرة وأعوذ بك من شر الدنيا والآخرة',
-            'اللهم إني أسألك خير ما عملت وخير ما لم أعمل',
-            'اللهم إني أسألك خير الصباح وخير المساء',
-            'اللهم إني أسألك خير الطريق وخير المنزل',
-            'اللهم إني أسألك خير الحياة وخير الممات',
-            'اللهم إني أسألك خير الجنة وأعوذ بك من النار'
+            // Rizq
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الرِّزْقَ وَالْكَفَافَ وَالْبَرَكَةَ فِيمَا رَزَقْتَنَا',
+            'اللَّهُمَّ ارْزُقْنِي رِزْقًا حَلَالًا طَيِّبًا وَلَا تَجْعَلْنِي مُحْتَاجًا إِلَى أَحَدٍ',
+            'اللَّهُمَّ بَارِكْ لَنَا فِي طَعَامِنَا وَارْزُقْنَا مِنْ فَضْلِكَ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الرِّزْقَ الْوَاسِعَ وَالصِّحَّةَ الدَّائِمَةَ وَالْمَوْتَ عَلَى الْإِيمَانِ',
+            'اللَّهُمَّ لَا تَجْعَلْنِي مُحْتَاجًا إِلَى الْخَلْقِ وَارْزُقْنِي مِنْ حَيْثُ لَا أَحْتَسِبُ',
+            // Istighfar
+            'اللَّهُمَّ اغْفِرْ لِي ذُنُوبِي وَخَطَايَايَ وَطَهِّرْنِي كَمَا يُطَهَّرُ الثَّوْبُ الْأَبْيَضُ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي',
+            'اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ مِنْ عَذَابِ النَّارِ وَعَذَابِ الْقَبْرِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ عَمَّا عَمِلْتُ وَعَمَّا تَرَكْتُ',
+            // Protection
+            'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ كُلِّ سُوءٍ وَمِنَ الْأَعْمَالِ الْخَبِيثَةِ',
+            'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْفَقْرِ وَالْبُؤْسِ وَالذُّلِّ',
+            'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالضَّعْفِ',
+            'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ وَعَذَابِ الْقَبْرِ',
+            'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ ظُلْمِ الظَّالِمِينَ وَكَيْدِ الْأَعْدَاءِ',
+            // Health
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ وَالسَّلَامَةَ وَحُسْنَ الْيَقِينِ فِي كُلِّ حِينٍ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي بَدَنِي وَفِي سَمْعِي وَفِي بَصَرِي',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ وَالسَّلَامَةَ وَالْوِقَايَةَ مِنْ كُلِّ دَاءٍ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي قَلْبِي وَفِي عَمَلِي',
+            // Family
+            'اللَّهُمَّ احْفَظْ أَهْلِي وَأَحِبَّتِي وَبَارِكْ لَنَا بِرَحْمَتِكَ',
+            'اللَّهُمَّ اجْمَعْ شَمْلَ أَهْلِي عَلَى الْخَيْرِ وَاهْدِنَا إِلَى مَا تُحِبُّ',
+            'اللَّهُمَّ احْفَظْ أَوْلَادِي وَزَوْجَتِي مِنْ كُلِّ سُوءٍ',
+            'اللَّهُمَّ بَارِكْ لَنَا فِي بَيْتِنَا وَفِي أُسْرَتِنَا',
+            'اللَّهُمَّ اجْعَلْ أَهْلِي مِنْ أَهْلِ مَنْ يُحِبُّونَكَ وَيُحِبُّهُمْ لَكَ',
+            // Travel
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ السَّلَامَةَ فِي السَّفَرِ وَالْبَرَكَةَ فِي الْمَقْصِدِ',
+            'اللَّهُمَّ هَوِّنْ عَلَيْنَا هَذَا السَّفَرَ وَبَلِّغْنَا مَقْصِدَنَا بِخَيْرٍ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْحِفْظَ فِي السَّفَرِ وَالرُّجُوعَ بِسَلَامٍ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُسْنَ السَّفَرِ وَحُسْنَ الصُّحْبَةِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ السَّلَامَةَ فِي الطَّرِيقِ وَالْوِقَايَةَ مِنْ كُلِّ مَخَاوِفَ',
+            // General
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الدُّنْيَا وَالْآخِرَةِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ مَا عَمِلْتُ وَخَيْرَ مَا لَمْ أَعْمَلْ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الثَّبَاتَ فِي الْخَيْرِ وَالْعَزْمَ عَلَى الرُّشْدِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ وَحُبَّ مَنْ يُحِبُّكَ وَحُبَّ الْعَمَلِ الَّذِي يُقَرِّبُنِي إِلَيْكَ',
+            // Morning & Evening
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الصَّبَاحِ وَخَيْرَ الْمَسَاءِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْيَوْمِ وَخَيْرَ اللَّيْلِ بَعْدَهُ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْحِفْظَ فِي الصَّبَاحِ وَفِي الْمَسَاءِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ السَّلَامَةَ فِي الْفَجْرِ وَفِي الْغُرُوبِ',
+            'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْيَوْمِ وَاللَّيْلِ وَأَعُوذُ بِكَ مِنْ شَرِّهِمَا'
         ]
     };
 
     // ================================================================
-    // LISTA DE DUAS (20)
+    // LISTA DE DUAS CON CATEGORÍAS (40+)
     // ================================================================
     const duas = [
-        { title: { es: 'Dua al despertar', fr: 'Dua au réveil', en: 'Dua upon waking', ar: 'دعاء الاستيقاظ' },
-          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ' },
-        { title: { es: 'Dua al dormir', fr: 'Dua avant de dormir', en: 'Dua before sleeping', ar: 'دعاء النوم' },
-          arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا' },
-        { title: { es: 'Dua al salir de casa', fr: 'Dua en quittant la maison', en: 'Dua leaving home', ar: 'دعاء الخروج من المنزل' },
-          arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ' },
-        { title: { es: 'Dua al entrar a casa', fr: 'Dua en entrant à la maison', en: 'Dua entering home', ar: 'دعاء دخول المنزل' },
-          arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا' },
-        { title: { es: 'Dua antes de comer', fr: 'Dua avant de manger', en: 'Dua before eating', ar: 'دعاء قبل الأكل' },
-          arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ' },
-        { title: { es: 'Dua después de comer', fr: 'Dua après avoir mangé', en: 'Dua after eating', ar: 'دعاء بعد الأكل' },
-          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ' },
-        { title: { es: 'Dua al entrar al baño', fr: 'Dua en entrant aux toilettes', en: 'Dua entering bathroom', ar: 'دعاء دخول الخلاء' },
-          arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ' },
-        { title: { es: 'Dua al salir del baño', fr: 'Dua en sortant des toilettes', en: 'Dua leaving bathroom', ar: 'دعاء الخروج من الخلاء' },
-          arabic: 'غُفْرَانَكَ' },
-        { title: { es: 'Dua de la mañana', fr: 'Dua du matin', en: 'Morning Dua', ar: 'دعاء الصباح' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ، النَّصْرَ وَالْعَوْنَ، النُّورَ وَالْبَرَكَةَ' },
-        { title: { es: 'Dua por perdón y salud', fr: 'Dua pour le pardon et la santé', en: 'Dua for forgiveness and health', ar: 'دعاء العفو والعافية' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي' },
-        { title: { es: 'Dua por un buen final', fr: 'Dua pour une bonne fin', en: 'Dua for a good end', ar: 'دعاء حسن الخاتمة' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُسْنَ الْخَاتِمَةِ وَالنَّجَاةَ مِنَ النَّارِ' },
-        { title: { es: 'Dua por el amor a Allah', fr: 'Dua pour l\'amour d\'Allah', en: 'Dua for love of Allah', ar: 'دعاء حب الله' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ وَحُبَّ مَنْ يُحِبُّكَ وَحُبَّ الْعَمَلِ الَّذِي يُقَرِّبُنِي إِلَى حُبِّكَ' },
-        { title: { es: 'Dua por constancia en el bien', fr: 'Dua pour la constance dans le bien', en: 'Dua for steadfastness in good', ar: 'دعاء الثبات على الخير' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الثَّبَاتَ فِي الْأَمْرِ وَالْعَزْمَ عَلَى الرُّشْدِ وَالْعِصْمَةَ مِنَ الْكُفْرِ' },
-        { title: { es: 'Dua por el paraíso', fr: 'Dua pour le Paradis', en: 'Dua for Paradise', ar: 'دعاء الجنة' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ' },
-        { title: { es: 'Dua por el bien en ambos mundos', fr: 'Dua pour le bien dans les deux mondes', en: 'Dua for good in both worlds', ar: 'دعاء خير الدنيا والآخرة' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الدُّنْيَا وَالْآخِرَةِ وَأَعُوذُ بِكَ مِنْ شَرِّ الدُّنْيَا وَالْآخِرَةِ' },
-        { title: { es: 'Dua por el bien de lo hecho y lo no hecho', fr: 'Dua pour le bien de ce qui est fait et non fait', en: 'Dua for the good of done and undone', ar: 'دعاء خير ما عملت' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ مَا عَمِلْتُ وَخَيْرَ مَا لَمْ أَعْمَلْ' },
-        { title: { es: 'Dua por el bien de la mañana y la noche', fr: 'Dua pour le bien du matin et du soir', en: 'Dua for the good of morning and night', ar: 'دعاء خير الصباح والمساء' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الصَّبَاحِ وَخَيْرَ الْمَسَاءِ' },
-        { title: { es: 'Dua por el bien del camino y el hogar', fr: 'Dua pour le bien du chemin et du foyer', en: 'Dua for the good of the path and home', ar: 'دعاء خير الطريق والمنزل' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الطَّرِيقِ وَخَيْرَ الْمَنْزِلِ' },
-        { title: { es: 'Dua por el bien de la vida y la muerte', fr: 'Dua pour le bien de la vie et de la mort', en: 'Dua for the good of life and death', ar: 'دعاء خير الحياة والممات' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْحَيَاةِ وَخَيْرَ الْمَمَاتِ' },
-        { title: { es: 'Dua por el paraíso y protección del fuego', fr: 'Dua pour le Paradis et protection du Feu', en: 'Dua for Paradise and protection from Fire', ar: 'دعاء الجنة والنار' },
-          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْجَنَّةِ وَأَعُوذُ بِكَ مِنَ النَّارِ' }
+        // Rizq (Sustento)
+        { category: 'rizq', title: { es: 'Dua por el sustento', fr: 'Dua pour la subsistance', en: 'Dua for sustenance', ar: 'دعاء الرزق' }, arabic: duaTranslations.ar[0] },
+        { category: 'rizq', title: { es: 'Dua por sustento lícito', fr: 'Dua pour une subsistance licite', en: 'Dua for lawful sustenance', ar: 'دعاء الرزق الحلال' }, arabic: duaTranslations.ar[1] },
+        { category: 'rizq', title: { es: 'Dua por bendición en el alimento', fr: 'Dua pour la bénédiction dans la nourriture', en: 'Dua for blessing in food', ar: 'دعاء البركة في الطعام' }, arabic: duaTranslations.ar[2] },
+        { category: 'rizq', title: { es: 'Dua por sustento abundante', fr: 'Dua pour une subsistance abondante', en: 'Dua for abundant sustenance', ar: 'دعاء الرزق الواسع' }, arabic: duaTranslations.ar[3] },
+        { category: 'rizq', title: { es: 'Dua para no depender de la creación', fr: 'Dua pour ne pas dépendre de la création', en: 'Dua to not depend on creation', ar: 'دعاء عدم الحاجة للخلق' }, arabic: duaTranslations.ar[4] },
+        // Istighfar (Perdón)
+        { category: 'istighfar', title: { es: 'Dua por perdón y purificación', fr: 'Dua pour le pardon et la purification', en: 'Dua for forgiveness and purification', ar: 'دعاء المغفرة والتطهير' }, arabic: duaTranslations.ar[5] },
+        { category: 'istighfar', title: { es: 'Dua por perdón y salud', fr: 'Dua pour le pardon et la santé', en: 'Dua for forgiveness and health', ar: 'دعاء العفو والعافية' }, arabic: duaTranslations.ar[6] },
+        { category: 'istighfar', title: { es: 'Dua por perdón de la injusticia propia', fr: 'Dua pour le pardon de l\'injustice personnelle', en: 'Dua for forgiveness of self-injustice', ar: 'دعاء ظلم النفس' }, arabic: duaTranslations.ar[7] },
+        { category: 'istighfar', title: { es: 'Dua por perdón y protección del castigo', fr: 'Dua pour le pardon et la protection du châtiment', en: 'Dua for forgiveness and protection from punishment', ar: 'دعاء العفو من العذاب' }, arabic: duaTranslations.ar[8] },
+        { category: 'istighfar', title: { es: 'Dua por perdón de lo hecho y lo omitido', fr: 'Dua pour le pardon de ce qui est fait et omis', en: 'Dua for forgiveness of done and undone', ar: 'دعاء ما عملت وما تركت' }, arabic: duaTranslations.ar[9] },
+        // Protección
+        { category: 'proteccion', title: { es: 'Dua contra el mal', fr: 'Dua contre le mal', en: 'Dua against evil', ar: 'دعاء الشر' }, arabic: duaTranslations.ar[10] },
+        { category: 'proteccion', title: { es: 'Dua contra la pobreza y la humillación', fr: 'Dua contre la pauvreté et l\'humiliation', en: 'Dua against poverty and humiliation', ar: 'دعاء الفقر والذل' }, arabic: duaTranslations.ar[11] },
+        { category: 'proteccion', title: { es: 'Dua contra la ansiedad y la tristeza', fr: 'Dua contre l\'anxiété et la tristesse', en: 'Dua against anxiety and sorrow', ar: 'دعاء الهم والحزن' }, arabic: duaTranslations.ar[12] },
+        { category: 'proteccion', title: { es: 'Dua contra la incredulidad y el castigo de la tumba', fr: 'Dua contre la mécréance et le châtiment de la tombe', en: 'Dua against disbelief and grave punishment', ar: 'دعاء الكفر وعذاب القبر' }, arabic: duaTranslations.ar[13] },
+        { category: 'proteccion', title: { es: 'Dua contra los opresores y enemigos', fr: 'Dua contre les oppresseurs et les ennemis', en: 'Dua against oppressors and enemies', ar: 'دعاء الظالمين والأعداء' }, arabic: duaTranslations.ar[14] },
+        // Salud
+        { category: 'salud', title: { es: 'Dua por salud en ambos mundos', fr: 'Dua pour la santé dans les deux mondes', en: 'Dua for health in both worlds', ar: 'دعاء العافية في الدنيا والآخرة' }, arabic: duaTranslations.ar[15] },
+        { category: 'salud', title: { es: 'Dua por salud, seguridad y buena fe', fr: 'Dua pour la santé, la sécurité et la bonne foi', en: 'Dua for health, safety and good faith', ar: 'دعاء العافية والسلامة وحسن اليقين' }, arabic: duaTranslations.ar[16] },
+        { category: 'salud', title: { es: 'Dua por salud en el cuerpo, oído y vista', fr: 'Dua pour la santé du corps, de l\'ouïe et de la vue', en: 'Dua for health in body, hearing and sight', ar: 'دعاء العافية في البدن والسمع والبصر' }, arabic: duaTranslations.ar[17] },
+        { category: 'salud', title: { es: 'Dua por protección contra enfermedades', fr: 'Dua pour la protection contre les maladies', en: 'Dua for protection from diseases', ar: 'دعاء الوقاية من الأمراض' }, arabic: duaTranslations.ar[18] },
+        { category: 'salud', title: { es: 'Dua por salud en el corazón y las acciones', fr: 'Dua pour la santé du cœur et des actions', en: 'Dua for health in heart and actions', ar: 'دعاء العافية في القلب والعمل' }, arabic: duaTranslations.ar[19] },
+        // Familia
+        { category: 'familia', title: { es: 'Dua por protección de la familia', fr: 'Dua pour la protection de la famille', en: 'Dua for family protection', ar: 'دعاء حفظ العائلة' }, arabic: duaTranslations.ar[20] },
+        { category: 'familia', title: { es: 'Dua por unidad y guía familiar', fr: 'Dua pour l\'unité et la guidance familiale', en: 'Dua for family unity and guidance', ar: 'دعاء جمع شمل العائلة' }, arabic: duaTranslations.ar[21] },
+        { category: 'familia', title: { es: 'Dua por protección de hijos y cónyuge', fr: 'Dua pour la protection des enfants et du conjoint', en: 'Dua for protection of children and spouse', ar: 'دعاء حفظ الأولاد والزوجة' }, arabic: duaTranslations.ar[22] },
+        { category: 'familia', title: { es: 'Dua por bendición del hogar', fr: 'Dua pour la bénédiction du foyer', en: 'Dua for blessing of the home', ar: 'دعاء بركة البيت' }, arabic: duaTranslations.ar[23] },
+        { category: 'familia', title: { es: 'Dua por el amor de la familia hacia Allah', fr: 'Dua pour l\'amour de la famille envers Allah', en: 'Dua for family\'s love for Allah', ar: 'دعاء حب العائلة لله' }, arabic: duaTranslations.ar[24] },
+        // Viaje
+        { category: 'viaje', title: { es: 'Dua por seguridad en el viaje', fr: 'Dua pour la sécurité en voyage', en: 'Dua for safety during travel', ar: 'دعاء السلامة في السفر' }, arabic: duaTranslations.ar[25] },
+        { category: 'viaje', title: { es: 'Dua por facilidad en el viaje', fr: 'Dua pour la facilité en voyage', en: 'Dua for ease in travel', ar: 'دعاء تيسير السفر' }, arabic: duaTranslations.ar[26] },
+        { category: 'viaje', title: { es: 'Dua por protección y regreso seguro', fr: 'Dua pour la protection et le retour en sécurité', en: 'Dua for protection and safe return', ar: 'دعاء الحفظ في السفر والرجوع' }, arabic: duaTranslations.ar[27] },
+        { category: 'viaje', title: { es: 'Dua por buen viaje y buena compañía', fr: 'Dua pour un bon voyage et une bonne compagnie', en: 'Dua for good journey and good company', ar: 'دعاء حسن السفر والصُحبة' }, arabic: duaTranslations.ar[28] },
+        { category: 'viaje', title: { es: 'Dua por seguridad en el camino', fr: 'Dua pour la sécurité sur la route', en: 'Dua for safety on the road', ar: 'دعاء السلامة في الطريق' }, arabic: duaTranslations.ar[29] },
+        // Generales
+        { category: 'general', title: { es: 'Dua por el bien en ambos mundos', fr: 'Dua pour le bien dans les deux mondes', en: 'Dua for good in both worlds', ar: 'دعاء خير الدنيا والآخرة' }, arabic: duaTranslations.ar[30] },
+        { category: 'general', title: { es: 'Dua por el bien de lo hecho y lo no hecho', fr: 'Dua pour le bien de ce qui est fait et non fait', en: 'Dua for good of done and undone', ar: 'دعاء خير ما عملت' }, arabic: duaTranslations.ar[31] },
+        { category: 'general', title: { es: 'Dua por constancia y buen juicio', fr: 'Dua pour la constance et le bon jugement', en: 'Dua for steadfastness and sound judgment', ar: 'دعاء الثبات والعزم' }, arabic: duaTranslations.ar[32] },
+        { category: 'general', title: { es: 'Dua por el paraíso y protección del infierno', fr: 'Dua pour le Paradis et la protection de l\'Enfer', en: 'Dua for Paradise and protection from Hell', ar: 'دعاء الجنة والنار' }, arabic: duaTranslations.ar[33] },
+        { category: 'general', title: { es: 'Dua por el amor a Allah', fr: 'Dua pour l\'amour d\'Allah', en: 'Dua for love of Allah', ar: 'دعاء حب الله' }, arabic: duaTranslations.ar[34] },
+        // Mañana y Tarde
+        { category: 'manana_tarde', title: { es: 'Dua por el bien de la mañana y la noche', fr: 'Dua pour le bien du matin et du soir', en: 'Dua for the good of morning and night', ar: 'دعاء خير الصباح والمساء' }, arabic: duaTranslations.ar[35] },
+        { category: 'manana_tarde', title: { es: 'Dua por el bien del día y la noche', fr: 'Dua pour le bien du jour et de la nuit', en: 'Dua for the good of day and night', ar: 'دعاء خير اليوم والليل' }, arabic: duaTranslations.ar[36] },
+        { category: 'manana_tarde', title: { es: 'Dua por protección en la mañana y tarde', fr: 'Dua pour la protection au matin et au soir', en: 'Dua for protection in morning and evening', ar: 'دعاء الحفظ في الصباح والمساء' }, arabic: duaTranslations.ar[37] },
+        { category: 'manana_tarde', title: { es: 'Dua por seguridad al amanecer y anochecer', fr: 'Dua pour la sécurité à l\'aube et au crépuscule', en: 'Dua for safety at dawn and dusk', ar: 'دعاء السلامة في الفجر والغروب' }, arabic: duaTranslations.ar[38] },
+        { category: 'manana_tarde', title: { es: 'Dua por el bien del día y la noche y refugio del mal', fr: 'Dua pour le bien du jour et de la nuit et refuge contre leur mal', en: 'Dua for the good of day and night and refuge from their evil', ar: 'دعاء خير اليوم والليل والتعوذ من شرهما' }, arabic: duaTranslations.ar[39] }
     ];
 
     // ================================================================
@@ -746,15 +884,15 @@
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
     let currentSurah = '';
-    let currentLang = 'es'; // idioma global
+    let currentLang = 'es';
     let cookiesAccepted = false;
 
     let audio = new Audio();
     let isPlaying = false;
 
-    // ===== VARIABLES PARA LA BRÚJULA =====
-    let qiblaAngle = 0;          // ángulo calculado desde el norte verdadero
-    let deviceHeading = 0;       // orientación del dispositivo (grados)
+    // Variables para la brújula
+    let qiblaAngle = 0;
+    let deviceHeading = 0;
     let headingAvailable = false;
 
     // ================================================================
@@ -770,6 +908,10 @@
 
     function getDuaTitle(index) {
         return duas[index].title[currentLang] || duas[index].title['es'] || 'Dua';
+    }
+
+    function getCategoryTitle(catKey) {
+        return getTranslation('cat_' + catKey);
     }
 
     // ================================================================
@@ -799,7 +941,10 @@
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
-        // Actualizar textos de Qibla (ya están con data-i18n)
+        // Actualizar Duas al cambiar idioma
+        loadDuas();
+        // Actualizar textos de Qibla
+        actualizarInfoQibla();
     }
 
     // ================================================================
@@ -855,7 +1000,6 @@
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 document.querySelector(`.lang-btn[data-lang="${lang}"]`)?.classList.add('active');
                 updateUILanguage();
-                loadDuas();
             }
             if (city && !isNaN(lat) && !isNaN(lng)) {
                 currentCity = city;
@@ -880,7 +1024,6 @@
             this.classList.add('active');
             currentLang = this.dataset.lang;
             updateUILanguage();
-            loadDuas();
             if (currentSurah) {
                 loadQuran(currentSurah);
             } else {
@@ -888,8 +1031,6 @@
                 display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
                 document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
             }
-            // Actualizar textos de la brújula
-            actualizarInfoQibla();
             if (cookiesAccepted) saveCurrentPreferences();
         });
     });
@@ -914,7 +1055,6 @@
                 if (isPlaying) audio.pause();
             }
             if (tabId === 'tab4') {
-                // Iniciar la brújula si no está activa
                 iniciarBrújula();
             }
         });
@@ -1128,7 +1268,7 @@
         if (currentLang === 'es') edition = 'es.asad';
         else if (currentLang === 'fr') edition = 'fr.hamidullah';
         else if (currentLang === 'en') edition = 'en.sahih';
-        else edition = ''; // árabe solo texto
+        else edition = '';
 
         const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
         const translationUrl = edition ? `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}` : null;
@@ -1300,22 +1440,38 @@
     });
 
     // ================================================================
-    // CARGA DE DUAS (con idioma actual)
+    // CARGA DE DUAS (agrupadas por categoría)
     // ================================================================
     function loadDuas() {
         const container = document.getElementById('duaList');
-        let html = '';
+        // Agrupar por categoría
+        const grupos = {};
         duas.forEach((dua, index) => {
-            const title = getDuaTitle(index);
-            const translation = getDuaTranslation(index);
-            html += `
-                <div class="dua-item">
-                    <div class="dua-title">${title}</div>
-                    <div class="dua-arabic">${dua.arabic}</div>
-                    <div class="dua-translation">${translation}</div>
-                </div>
-            `;
+            const cat = dua.category;
+            if (!grupos[cat]) grupos[cat] = [];
+            grupos[cat].push({ index, dua });
         });
+
+        let html = '';
+        const ordenCategorias = ['rizq', 'istighfar', 'proteccion', 'salud', 'familia', 'viaje', 'general', 'manana_tarde'];
+        ordenCategorias.forEach(catKey => {
+            if (grupos[catKey]) {
+                const catTitle = getCategoryTitle(catKey);
+                html += `<div class="dua-category-title">${catTitle}</div>`;
+                grupos[catKey].forEach(({ index, dua }) => {
+                    const title = getDuaTitle(index);
+                    const translation = getDuaTranslation(index);
+                    html += `
+                        <div class="dua-item">
+                            <div class="dua-title">${title}</div>
+                            <div class="dua-arabic">${dua.arabic}</div>
+                            <div class="dua-translation">${translation}</div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
         container.innerHTML = html;
     }
 
@@ -1366,7 +1522,6 @@
 
         ctx.clearRect(0, 0, w, h);
 
-        // Fondo circular con degradado
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radio);
         grad.addColorStop(0, '#1a2f1a');
         grad.addColorStop(1, '#0a1f0a');
@@ -1378,7 +1533,6 @@
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Marcas de los puntos cardinales
         const puntos = [
             { ang: 0, label: 'N' },
             { ang: 90, label: 'E' },
@@ -1396,7 +1550,6 @@
             ctx.fillText(p.label, x, y);
         });
 
-        // Líneas de los 45°
         for (let i = 0; i < 8; i++) {
             const ang = i * 45 * Math.PI / 180;
             const x1 = cx + radio * 0.75 * Math.sin(ang);
@@ -1411,26 +1564,17 @@
             ctx.stroke();
         }
 
-        // Flecha de la Qibla (dorada) - calculada a partir del ángulo de la brújula
-        // Si tenemos heading, ajustamos la flecha para que apunte al norte real, y la Qibla se dibuja relativa a ese norte.
         let anguloFinal = 0;
         if (headingAvailable) {
-            // La flecha debe apuntar al ángulo de la Qibla, pero teniendo en cuenta la rotación del dispositivo.
-            // Si el dispositivo apunta al norte (heading=0), la flecha debe dibujarse en qiblaAngle.
-            // Si el dispositivo está girado, debemos rotar la flecha en sentido contrario.
-            // La convención: el canvas dibuja con Y hacia arriba (norte). La rotación del dispositivo se resta.
             anguloFinal = (qiblaAngle - deviceHeading) * Math.PI / 180;
         } else {
-            // Sin brújula, usamos el ángulo de la Qibla directamente (norte verdadero)
             anguloFinal = qiblaAngle * Math.PI / 180;
         }
 
-        // Flecha dorada
         const largo = radio * 0.65;
         const xFlecha = cx + largo * Math.sin(anguloFinal);
         const yFlecha = cy - largo * Math.cos(anguloFinal);
 
-        // Dibujar línea de la flecha
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(xFlecha, yFlecha);
@@ -1441,7 +1585,6 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Cabeza de flecha
         const angFlecha = Math.atan2(xFlecha - cx, -(yFlecha - cy));
         const headLen = 20;
         const headAngle = 0.4;
@@ -1460,7 +1603,6 @@
         ctx.lineWidth = 4;
         ctx.stroke();
 
-        // Círculo central
         ctx.beginPath();
         ctx.arc(cx, cy, 12, 0, 2 * Math.PI);
         ctx.fillStyle = '#0a1f0a';
@@ -1475,7 +1617,6 @@
     // ================================================================
     function iniciarBrújula() {
         if (window.DeviceOrientationEvent) {
-            // Solicitar permiso en iOS 13+
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
                     .then(state => {
@@ -1497,20 +1638,14 @@
             headingAvailable = false;
             dibujarBrújula();
         }
-        // Dibujar inicialmente
         dibujarBrújula();
     }
 
     function handleOrientation(event) {
         let heading = 0;
         if (event.webkitCompassHeading !== undefined && event.webkitCompassHeading !== null) {
-            // iOS
             heading = event.webkitCompassHeading;
         } else if (event.alpha !== null) {
-            // Android / otros (alpha es el ángulo respecto al norte magnético)
-            // Si tenemos event.alpha, pero puede ser el ángulo desde el norte magnético, no verdadero.
-            // En Android, el alpha es el ángulo desde el norte magnético. No tenemos corrección de declinación fácil.
-            // Usamos alpha tal cual, el usuario debe saber que es magnético.
             heading = event.alpha;
         } else {
             headingAvailable = false;
@@ -1518,7 +1653,7 @@
             return;
         }
         headingAvailable = true;
-        deviceHeading = heading; // grados
+        deviceHeading = heading;
         dibujarBrújula();
     }
 
@@ -1534,19 +1669,16 @@
     window.onload = function() {
         checkCookies();
         loadSurahList();
-        loadDuas();
+        // Cargar Duas ya se hace al actualizar idioma
         if (!cookiesAccepted || !restorePreferences()) {
             getUserLocation();
         }
-        updateUILanguage();
-        // La brújula se inicia al hacer clic en la pestaña tab4
-        // También la dibujamos al cargar si ya tenemos datos
+        updateUILanguage(); // esto llama a loadDuas()
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
         }, 500);
     };
 
-    // Redibujar la brújula cuando cambie el tamaño de la ventana
     window.addEventListener('resize', () => {
         if (document.getElementById('tab4').classList.contains('active')) {
             dibujarBrújula();
