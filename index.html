@@ -7,7 +7,7 @@
     <style>
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 120px; min-height: 100vh; }
+        body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 20px; min-height: 100vh; }
         .container { max-width: 700px; margin: 0 auto; }
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
@@ -55,7 +55,7 @@
         }
         .quran-text-area .surah-name { color: #d4af37; font-size: 1.2rem; text-align: center; margin: 10px 0; }
 
-        /* ===== REPRODUCTOR FIJO TIPO SOUNDCLOUD ===== */
+        /* ===== REPRODUCTOR FIJO TIPO SOUNDCLOUD (SOLO VISIBLE EN CORÁN) ===== */
         .audio-player-fixed {
             position: fixed;
             bottom: 0;
@@ -66,9 +66,12 @@
             padding: 12px 20px;
             z-index: 1000;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.7);
-            display: flex;
+            display: none;  /* Oculto por defecto */
             flex-direction: column;
             gap: 6px;
+        }
+        .audio-player-fixed.visible {
+            display: flex;
         }
         .audio-player-fixed .controls-row {
             display: flex;
@@ -173,7 +176,7 @@
     <div class="footer">Al-Quds · Horarios aproximados · Adhan automatico</div>
 </div>
 
-<!-- REPRODUCTOR FIJO (SIEMPRE VISIBLE) -->
+<!-- REPRODUCTOR FIJO (SOLO VISIBLE EN CORÁN) -->
 <div class="audio-player-fixed" id="audioPlayerFixed">
     <div class="surah-info" id="surahInfo">Selecciona una sura para escuchar</div>
     <div class="controls-row">
@@ -202,14 +205,28 @@
     let isPlaying = false;
 
     // ================================================================
-    // PESTAÑAS
+    // PESTAÑAS – control de visibilidad del reproductor
     // ================================================================
+    const player = document.getElementById('audioPlayerFixed');
+
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(this.dataset.tab).classList.add('active');
+            const tabId = this.dataset.tab;
+            document.getElementById(tabId).classList.add('active');
+
+            // Mostrar/ocultar reproductor según pestaña
+            if (tabId === 'tab2') {
+                player.classList.add('visible');
+            } else {
+                player.classList.remove('visible');
+                // Si hay audio sonando, lo pausamos
+                if (isPlaying) {
+                    audio.pause();
+                }
+            }
         });
     });
 
