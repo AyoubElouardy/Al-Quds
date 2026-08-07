@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Quds - App Islámica</title>
+    <title>Al-Quds - Islam, Salah, Quran</title>
     <style>
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -67,7 +67,7 @@
         }
 
         .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
-        .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
+        .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; min-width: 60px; }
         .tab-btn.active { background: #d4af37; color: #0a1f0a; border-color: #d4af37; }
         .tab-content { display: none; animation: fade 0.3s; }
         .tab-content.active { display: block; }
@@ -121,6 +121,63 @@
         .dua-item .dua-title { color: #d4af37; font-size: 1.1rem; font-weight: bold; margin-bottom: 8px; }
         .dua-item .dua-arabic { font-size: 1.6rem; color: #fff; text-align: right; line-height: 2; margin-bottom: 8px; }
         .dua-item .dua-translation { color: #c5b08a; font-size: 1rem; line-height: 1.6; }
+
+        /* ===== QIBLA / BRÚJULA ===== */
+        .qibla-container {
+            background: #142814;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .compass-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        #compassCanvas {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1a2f1a 0%, #0a1f0a 100%);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            border: 3px solid #d4af37;
+            touch-action: none;
+        }
+        .qibla-info {
+            margin-top: 15px;
+            color: #c5b08a;
+            font-size: 1.1rem;
+        }
+        .qibla-info strong {
+            color: #d4af37;
+        }
+        .qibla-angle {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin: 5px 0;
+        }
+        .compass-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #b8956a;
+        }
+        .compass-legend span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .legend-dot.north { background: #ff4d4d; }
+        .legend-dot.qibla { background: #d4af37; }
 
         /* ===== REPRODUCTOR FIJO ===== */
         .audio-player-fixed {
@@ -242,6 +299,8 @@
             .lang-btn { width: 30px; height: 30px; font-size: 16px; }
             .cookie-banner { flex-direction: column; text-align: center; padding: 12px; }
             .cookie-banner p { min-width: unset; }
+            #compassCanvas { width: 180px; height: 180px; }
+            .qibla-angle { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -270,6 +329,7 @@
         <button class="tab-btn active" data-tab="tab1" data-i18n="tab_prayers">Rezos</button>
         <button class="tab-btn" data-tab="tab2" data-i18n="tab_quran">Corán</button>
         <button class="tab-btn" data-tab="tab3" data-i18n="tab_dua">Dua</button>
+        <button class="tab-btn" data-tab="tab4" data-i18n="tab_qibla">Qibla</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -313,6 +373,26 @@
         </div>
     </div>
 
+    <!-- TAB 4: QIBLA / BRÚJULA -->
+    <div id="tab4" class="tab-content">
+        <div class="qibla-container">
+            <h3 style="color:#d4af37; margin-bottom:10px;" data-i18n="qibla_title">Dirección de la Qibla</h3>
+            <div class="compass-wrapper">
+                <canvas id="compassCanvas" width="500" height="500"></canvas>
+            </div>
+            <div class="qibla-info">
+                <div data-i18n="qibla_angle">Ángulo desde el Norte:</div>
+                <div class="qibla-angle" id="qiblaAngleDisplay">--°</div>
+                <div data-i18n="qibla_direction">La Kaaba está hacia <strong id="qiblaDirectionText">--</strong></div>
+            </div>
+            <div class="compass-legend">
+                <span><span class="legend-dot north"></span> <span data-i18n="compass_north">Norte</span></span>
+                <span><span class="legend-dot qibla"></span> <span data-i18n="compass_qibla">Qibla</span></span>
+            </div>
+            <div style="margin-top:10px; font-size:0.85rem; color:#5a7a5a;" data-i18n="compass_note">Gira tu dispositivo para que la flecha dorada apunte hacia la Qibla.</div>
+        </div>
+    </div>
+
     <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
@@ -339,13 +419,14 @@
 
 <script>
     // ================================================================
-    // TRADUCCIONES DE LA INTERFAZ
+    // TRADUCCIONES DE LA INTERFAZ (ampliadas)
     // ================================================================
     const i18n = {
         es: {
             tab_prayers: 'Rezos',
             tab_quran: 'Corán',
             tab_dua: 'Dua',
+            tab_qibla: 'Qibla',
             search_btn: 'Buscar',
             next_prayer: 'Próximo rezo: ',
             prayer_fajr: 'Fajr',
@@ -359,6 +440,12 @@
             quran_placeholder: 'Elige una sura para leer.',
             select_surah_audio: 'Selecciona una sura para escuchar',
             dua_title: 'Súplicas (Duas)',
+            qibla_title: 'Dirección de la Qibla',
+            qibla_angle: 'Ángulo desde el Norte:',
+            qibla_direction: 'La Kaaba está hacia ',
+            compass_north: 'Norte',
+            compass_qibla: 'Qibla',
+            compass_note: 'Gira tu dispositivo para que la flecha dorada apunte hacia la Qibla.',
             footer: 'Al-Quds · Horarios aproximados · Adhan automático',
             loading: 'Cargando...',
             error_network: 'Error de red. Intenta de nuevo.',
@@ -382,6 +469,7 @@
             tab_prayers: 'Prières',
             tab_quran: 'Coran',
             tab_dua: 'Dua',
+            tab_qibla: 'Qibla',
             search_btn: 'Chercher',
             next_prayer: 'Prochaine prière: ',
             prayer_fajr: 'Fajr',
@@ -395,6 +483,12 @@
             quran_placeholder: 'Choisissez une sourate à lire.',
             select_surah_audio: 'Choisissez une sourate à écouter',
             dua_title: 'Invocations (Douas)',
+            qibla_title: 'Direction de la Qibla',
+            qibla_angle: 'Angle depuis le Nord:',
+            qibla_direction: 'La Kaaba est vers ',
+            compass_north: 'Nord',
+            compass_qibla: 'Qibla',
+            compass_note: 'Tournez votre appareil pour que la flèche dorée pointe vers la Qibla.',
             footer: 'Al-Quds · Horaires approximatifs · Adhan automatique',
             loading: 'Chargement...',
             error_network: 'Erreur réseau. Réessayez.',
@@ -418,6 +512,7 @@
             tab_prayers: 'Prayers',
             tab_quran: 'Quran',
             tab_dua: 'Dua',
+            tab_qibla: 'Qibla',
             search_btn: 'Search',
             next_prayer: 'Next prayer: ',
             prayer_fajr: 'Fajr',
@@ -431,6 +526,12 @@
             quran_placeholder: 'Choose a surah to read.',
             select_surah_audio: 'Select a surah to listen',
             dua_title: 'Supplications (Duas)',
+            qibla_title: 'Qibla Direction',
+            qibla_angle: 'Angle from North:',
+            qibla_direction: 'The Kaaba is towards ',
+            compass_north: 'North',
+            compass_qibla: 'Qibla',
+            compass_note: 'Turn your device so the golden arrow points to the Qibla.',
             footer: 'Al-Quds · Approximate times · Automatic Adhan',
             loading: 'Loading...',
             error_network: 'Network error. Try again.',
@@ -454,6 +555,7 @@
             tab_prayers: 'الصلوات',
             tab_quran: 'القرآن',
             tab_dua: 'الدعاء',
+            tab_qibla: 'القبلة',
             search_btn: 'بحث',
             next_prayer: 'الصلاة القادمة: ',
             prayer_fajr: 'الفجر',
@@ -467,6 +569,12 @@
             quran_placeholder: 'اختر سورة للقراءة.',
             select_surah_audio: 'اختر سورة للاستماع',
             dua_title: 'الأدعية',
+            qibla_title: 'اتجاه القبلة',
+            qibla_angle: 'الزاوية من الشمال:',
+            qibla_direction: 'الكعبة باتجاه ',
+            compass_north: 'الشمال',
+            compass_qibla: 'القبلة',
+            compass_note: 'أدر جهازك حتى يشير السهم الذهبي إلى القبلة.',
             footer: 'القدس · أوقات تقريبية · أذان تلقائي',
             loading: 'جاري التحميل...',
             error_network: 'خطأ في الشبكة. حاول مرة أخرى.',
@@ -489,7 +597,7 @@
     };
 
     // ================================================================
-    // TRADUCCIONES DE DUAS POR IDIOMA
+    // TRADUCCIONES DE DUAS (ampliado a 20)
     // ================================================================
     const duaTranslations = {
         es: [
@@ -500,7 +608,19 @@
             'En el nombre de Allah y con la bendición de Allah.',
             'Alabado sea Allah que nos ha alimentado, nos ha dado de beber y nos ha hecho musulmanes.',
             'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
-            '¡Tu perdón, oh Allah!'
+            '¡Tu perdón, oh Allah!',
+            'Oh Allah, te pido el bien en este día, la victoria y la ayuda, la luz y la bendición.',
+            'Oh Allah, te pido el perdón y la salud en mi religión, mi vida y mi familia.',
+            'Oh Allah, te pido que me concedas un buen final y la salvación del infierno.',
+            'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Tu amor.',
+            'Oh Allah, te pido la constancia en el bien, el buen juicio y la protección contra la incredulidad.',
+            'Oh Allah, te pido el paraíso y la protección del infierno.',
+            'Oh Allah, te pido el bien en este mundo y en el más allá, y me refugio en Ti del mal en este mundo y en el más allá.',
+            'Oh Allah, te pido el bien de lo que he hecho y el bien de lo que no he hecho.',
+            'Oh Allah, te pido el bien de la mañana y el bien de la noche.',
+            'Oh Allah, te pido el bien del camino y el bien del hogar.',
+            'Oh Allah, te pido el bien de la vida y el bien de la muerte.',
+            'Oh Allah, te pido el bien del paraíso y la protección del infierno.'
         ],
         fr: [
             'Louange à Allah qui nous a rendus vivants après nous avoir fait mourir et c\'est vers Lui le retour.',
@@ -510,7 +630,19 @@
             'Au nom d\'Allah et par la bénédiction d\'Allah.',
             'Louange à Allah qui nous a nourris, nous a abreuvés et nous a faits musulmans.',
             'Ô Allah, je cherche refuge en Toi contre toute impureté et toute action malveillante.',
-            'Ton pardon, ô Allah !'
+            'Ton pardon, ô Allah !',
+            'Ô Allah, je Te demande le bien en ce jour, la victoire et le secours, la lumière et la bénédiction.',
+            'Ô Allah, je Te demande le pardon et la santé dans ma religion, ma vie et ma famille.',
+            'Ô Allah, je Te demande de m\'accorder une bonne fin et le salut de l\'Enfer.',
+            'Ô Allah, je Te demande l\'amour de Toi, l\'amour de ceux qui T\'aiment et l\'amour des œuvres qui me rapprochent de Ton amour.',
+            'Ô Allah, je Te demande la constance dans le bien, le bon jugement et la protection contre la mécréance.',
+            'Ô Allah, je Te demande le Paradis et la protection de l\'Enfer.',
+            'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-delà, et je cherche refuge en Toi contre le mal dans ce monde et dans l\'au-delà.',
+            'Ô Allah, je Te demande le bien de ce que j\'ai fait et le bien de ce que je n\'ai pas fait.',
+            'Ô Allah, je Te demande le bien du matin et le bien de la nuit.',
+            'Ô Allah, je Te demande le bien du chemin et le bien du foyer.',
+            'Ô Allah, je Te demande le bien de la vie et le bien de la mort.',
+            'Ô Allah, je Te demande le bien du Paradis et la protection de l\'Enfer.'
         ],
         en: [
             'Praise be to Allah who gave us life after having taken it from us and unto Him is the resurrection.',
@@ -520,7 +652,19 @@
             'In the name of Allah and with the blessing of Allah.',
             'Praise be to Allah who fed us, gave us drink, and made us Muslims.',
             'O Allah, I seek refuge in You from all evil and evil actions.',
-            'Your forgiveness, O Allah!'
+            'Your forgiveness, O Allah!',
+            'O Allah, I ask You for the good of this day, victory and help, light and blessing.',
+            'O Allah, I ask You for forgiveness and health in my religion, my life and my family.',
+            'O Allah, I ask You to grant me a good end and salvation from Hell.',
+            'O Allah, I ask You for love of You, love of those who love You, and love of deeds that bring me closer to Your love.',
+            'O Allah, I ask You for steadfastness in good, sound judgment, and protection from disbelief.',
+            'O Allah, I ask You for Paradise and protection from Hell.',
+            'O Allah, I ask You for the good of this world and the Hereafter, and I seek refuge in You from the evil of this world and the Hereafter.',
+            'O Allah, I ask You for the good of what I have done and the good of what I have not done.',
+            'O Allah, I ask You for the good of the morning and the good of the night.',
+            'O Allah, I ask You for the good of the path and the good of the home.',
+            'O Allah, I ask You for the good of life and the good of death.',
+            'O Allah, I ask You for the good of Paradise and protection from Hell.'
         ],
         ar: [
             'الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور',
@@ -530,9 +674,67 @@
             'بسم الله وعلى بركة الله',
             'الحمد لله الذي أطعمنا وسقانا وجعلنا مسلمين',
             'اللهم إني أعوذ بك من الخبث والخبائث',
-            'غفرانك'
+            'غفرانك',
+            'اللهم إني أسألك خير هذا اليوم، النصر والعون، النور والبركة',
+            'اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي',
+            'اللهم إني أسألك حسن الخاتمة والنجاة من النار',
+            'اللهم إني أسألك حبك وحب من يحبك وحب العمل الذي يقربني إلى حبك',
+            'اللهم إني أسألك الثبات في الأمر والعزم على الرشد والعصمة من الكفر',
+            'اللهم إني أسألك الجنة وأعوذ بك من النار',
+            'اللهم إني أسألك خير الدنيا والآخرة وأعوذ بك من شر الدنيا والآخرة',
+            'اللهم إني أسألك خير ما عملت وخير ما لم أعمل',
+            'اللهم إني أسألك خير الصباح وخير المساء',
+            'اللهم إني أسألك خير الطريق وخير المنزل',
+            'اللهم إني أسألك خير الحياة وخير الممات',
+            'اللهم إني أسألك خير الجنة وأعوذ بك من النار'
         ]
     };
+
+    // ================================================================
+    // LISTA DE DUAS (20)
+    // ================================================================
+    const duas = [
+        { title: { es: 'Dua al despertar', fr: 'Dua au réveil', en: 'Dua upon waking', ar: 'دعاء الاستيقاظ' },
+          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ' },
+        { title: { es: 'Dua al dormir', fr: 'Dua avant de dormir', en: 'Dua before sleeping', ar: 'دعاء النوم' },
+          arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا' },
+        { title: { es: 'Dua al salir de casa', fr: 'Dua en quittant la maison', en: 'Dua leaving home', ar: 'دعاء الخروج من المنزل' },
+          arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ' },
+        { title: { es: 'Dua al entrar a casa', fr: 'Dua en entrant à la maison', en: 'Dua entering home', ar: 'دعاء دخول المنزل' },
+          arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا' },
+        { title: { es: 'Dua antes de comer', fr: 'Dua avant de manger', en: 'Dua before eating', ar: 'دعاء قبل الأكل' },
+          arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ' },
+        { title: { es: 'Dua después de comer', fr: 'Dua après avoir mangé', en: 'Dua after eating', ar: 'دعاء بعد الأكل' },
+          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ' },
+        { title: { es: 'Dua al entrar al baño', fr: 'Dua en entrant aux toilettes', en: 'Dua entering bathroom', ar: 'دعاء دخول الخلاء' },
+          arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ' },
+        { title: { es: 'Dua al salir del baño', fr: 'Dua en sortant des toilettes', en: 'Dua leaving bathroom', ar: 'دعاء الخروج من الخلاء' },
+          arabic: 'غُفْرَانَكَ' },
+        { title: { es: 'Dua de la mañana', fr: 'Dua du matin', en: 'Morning Dua', ar: 'دعاء الصباح' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ هَذَا الْيَوْمِ، النَّصْرَ وَالْعَوْنَ، النُّورَ وَالْبَرَكَةَ' },
+        { title: { es: 'Dua por perdón y salud', fr: 'Dua pour le pardon et la santé', en: 'Dua for forgiveness and health', ar: 'دعاء العفو والعافية' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي' },
+        { title: { es: 'Dua por un buen final', fr: 'Dua pour une bonne fin', en: 'Dua for a good end', ar: 'دعاء حسن الخاتمة' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُسْنَ الْخَاتِمَةِ وَالنَّجَاةَ مِنَ النَّارِ' },
+        { title: { es: 'Dua por el amor a Allah', fr: 'Dua pour l\'amour d\'Allah', en: 'Dua for love of Allah', ar: 'دعاء حب الله' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ وَحُبَّ مَنْ يُحِبُّكَ وَحُبَّ الْعَمَلِ الَّذِي يُقَرِّبُنِي إِلَى حُبِّكَ' },
+        { title: { es: 'Dua por constancia en el bien', fr: 'Dua pour la constance dans le bien', en: 'Dua for steadfastness in good', ar: 'دعاء الثبات على الخير' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الثَّبَاتَ فِي الْأَمْرِ وَالْعَزْمَ عَلَى الرُّشْدِ وَالْعِصْمَةَ مِنَ الْكُفْرِ' },
+        { title: { es: 'Dua por el paraíso', fr: 'Dua pour le Paradis', en: 'Dua for Paradise', ar: 'دعاء الجنة' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ' },
+        { title: { es: 'Dua por el bien en ambos mundos', fr: 'Dua pour le bien dans les deux mondes', en: 'Dua for good in both worlds', ar: 'دعاء خير الدنيا والآخرة' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الدُّنْيَا وَالْآخِرَةِ وَأَعُوذُ بِكَ مِنْ شَرِّ الدُّنْيَا وَالْآخِرَةِ' },
+        { title: { es: 'Dua por el bien de lo hecho y lo no hecho', fr: 'Dua pour le bien de ce qui est fait et non fait', en: 'Dua for the good of done and undone', ar: 'دعاء خير ما عملت' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ مَا عَمِلْتُ وَخَيْرَ مَا لَمْ أَعْمَلْ' },
+        { title: { es: 'Dua por el bien de la mañana y la noche', fr: 'Dua pour le bien du matin et du soir', en: 'Dua for the good of morning and night', ar: 'دعاء خير الصباح والمساء' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الصَّبَاحِ وَخَيْرَ الْمَسَاءِ' },
+        { title: { es: 'Dua por el bien del camino y el hogar', fr: 'Dua pour le bien du chemin et du foyer', en: 'Dua for the good of the path and home', ar: 'دعاء خير الطريق والمنزل' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الطَّرِيقِ وَخَيْرَ الْمَنْزِلِ' },
+        { title: { es: 'Dua por el bien de la vida y la muerte', fr: 'Dua pour le bien de la vie et de la mort', en: 'Dua for the good of life and death', ar: 'دعاء خير الحياة والممات' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْحَيَاةِ وَخَيْرَ الْمَمَاتِ' },
+        { title: { es: 'Dua por el paraíso y protección del fuego', fr: 'Dua pour le Paradis et protection du Feu', en: 'Dua for Paradise and protection from Fire', ar: 'دعاء الجنة والنار' },
+          arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْجَنَّةِ وَأَعُوذُ بِكَ مِنَ النَّارِ' }
+    ];
 
     // ================================================================
     // VARIABLES GLOBALES
@@ -550,25 +752,10 @@
     let audio = new Audio();
     let isPlaying = false;
 
-    // ===== LISTA DE DUAS (estática) =====
-    const duas = [
-        { title: { es: 'Dua al despertar', fr: 'Dua au réveil', en: 'Dua upon waking', ar: 'دعاء الاستيقاظ' },
-          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ' },
-        { title: { es: 'Dua al dormir', fr: 'Dua avant de dormir', en: 'Dua before sleeping', ar: 'دعاء النوم' },
-          arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا' },
-        { title: { es: 'Dua al salir de casa', fr: 'Dua en quittant la maison', en: 'Dua leaving home', ar: 'دعاء الخروج من المنزل' },
-          arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ' },
-        { title: { es: 'Dua al entrar a casa', fr: 'Dua en entrant à la maison', en: 'Dua entering home', ar: 'دعاء دخول المنزل' },
-          arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا' },
-        { title: { es: 'Dua antes de comer', fr: 'Dua avant de manger', en: 'Dua before eating', ar: 'دعاء قبل الأكل' },
-          arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ' },
-        { title: { es: 'Dua después de comer', fr: 'Dua après avoir mangé', en: 'Dua after eating', ar: 'دعاء بعد الأكل' },
-          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ' },
-        { title: { es: 'Dua al entrar al baño', fr: 'Dua en entrant aux toilettes', en: 'Dua entering bathroom', ar: 'دعاء دخول الخلاء' },
-          arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ' },
-        { title: { es: 'Dua al salir del baño', fr: 'Dua en sortant des toilettes', en: 'Dua leaving bathroom', ar: 'دعاء الخروج من الخلاء' },
-          arabic: 'غُفْرَانَكَ' }
-    ];
+    // ===== VARIABLES PARA LA BRÚJULA =====
+    let qiblaAngle = 0;          // ángulo calculado desde el norte verdadero
+    let deviceHeading = 0;       // orientación del dispositivo (grados)
+    let headingAvailable = false;
 
     // ================================================================
     // FUNCIONES DE INTERNACIONALIZACIÓN
@@ -612,6 +799,7 @@
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
+        // Actualizar textos de Qibla (ya están con data-i18n)
     }
 
     // ================================================================
@@ -626,9 +814,7 @@
         } else if (accepted === 'false') {
             cookiesAccepted = false;
             document.getElementById('cookieBanner').style.display = 'none';
-            // No restaurar preferencias
         } else {
-            // No se ha tomado decisión, mostrar banner
             document.getElementById('cookieBanner').style.display = 'flex';
         }
     }
@@ -638,7 +824,6 @@
         cookiesAccepted = true;
         document.getElementById('cookieBanner').style.display = 'none';
         saveCurrentPreferences();
-        // Recargar la ubicación con las preferencias guardadas o solicitar nueva
         getUserLocation();
     }
 
@@ -646,7 +831,6 @@
         localStorage.setItem('cookiesAccepted', 'false');
         cookiesAccepted = false;
         document.getElementById('cookieBanner').style.display = 'none';
-        // No guardar preferencias, pero la app sigue funcionando con valores por defecto
         getUserLocation();
     }
 
@@ -668,7 +852,6 @@
             const lng = parseFloat(localStorage.getItem('pref_lng'));
             if (lang && i18n[lang]) {
                 currentLang = lang;
-                // Actualizar botón activo
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 document.querySelector(`.lang-btn[data-lang="${lang}"]`)?.classList.add('active');
                 updateUILanguage();
@@ -681,6 +864,7 @@
                 document.getElementById('cityInput').value = city;
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
                 return true;
             }
         } catch(e) {}
@@ -704,6 +888,8 @@
                 display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
                 document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
             }
+            // Actualizar textos de la brújula
+            actualizarInfoQibla();
             if (cookiesAccepted) saveCurrentPreferences();
         });
     });
@@ -727,6 +913,10 @@
                 player.classList.remove('visible');
                 if (isPlaying) audio.pause();
             }
+            if (tabId === 'tab4') {
+                // Iniciar la brújula si no está activa
+                iniciarBrújula();
+            }
         });
     });
 
@@ -734,28 +924,29 @@
     // UBICACIÓN Y HORARIOS
     // ================================================================
     function getUserLocation() {
-        // Si ya tenemos datos guardados y cookies aceptadas, no pedir de nuevo
         if (cookiesAccepted) {
             const restored = restorePreferences();
-            if (restored) return; // ya se cargaron los horarios
+            if (restored) return;
         }
-        // Si no, intentar geolocalización
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     userLat = pos.coords.latitude;
                     userLng = pos.coords.longitude;
                     reverseGeocode(userLat, userLng);
+                    calcularQibla(userLat, userLng);
                     if (cookiesAccepted) saveCurrentPreferences();
                 },
                 () => {
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
+                    calcularQibla(userLat, userLng);
                 }
             );
         } else {
             document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
+            calcularQibla(userLat, userLng);
         }
     }
 
@@ -769,11 +960,13 @@
                 document.getElementById('cityInput').value = city;
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
                 if (cookiesAccepted) saveCurrentPreferences();
             })
             .catch(() => {
                 document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
                 fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
             });
     }
 
@@ -891,6 +1084,7 @@
                     currentCity = data[0].display_name.split(',')[0];
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                     fetchPrayerTimes(lat, lng);
+                    calcularQibla(lat, lng);
                     if (cookiesAccepted) saveCurrentPreferences();
                 } else alert(getTranslation('city_not_found'));
             })
@@ -1126,6 +1320,209 @@
     }
 
     // ================================================================
+    // QIBLA - CÁLCULO Y BRÚJULA
+    // ================================================================
+    function calcularQibla(lat, lng) {
+        const latMecca = 21.4225;
+        const lngMecca = 39.8262;
+        const phi1 = lat * Math.PI / 180;
+        const phi2 = latMecca * Math.PI / 180;
+        const deltaLambda = (lngMecca - lng) * Math.PI / 180;
+
+        const x = Math.cos(phi2) * Math.sin(deltaLambda);
+        const y = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
+        let angle = Math.atan2(x, y) * 180 / Math.PI;
+        angle = (angle + 360) % 360;
+        qiblaAngle = angle;
+        actualizarInfoQibla();
+        dibujarBrújula();
+    }
+
+    function actualizarInfoQibla() {
+        document.getElementById('qiblaAngleDisplay').textContent = `${Math.round(qiblaAngle)}°`;
+        const direcciones = {
+            es: ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'],
+            fr: ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'],
+            en: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+            ar: ['ش', 'ش-ش', 'ش', 'ش-غ', 'غ', 'غ-ج', 'ج', 'ج-ش']
+        };
+        const idx = Math.round(qiblaAngle / 45) % 8;
+        const dir = direcciones[currentLang]?.[idx] || direcciones['es'][idx];
+        document.getElementById('qiblaDirectionText').textContent = dir;
+    }
+
+    // ================================================================
+    // DIBUJO DE LA BRÚJULA EN CANVAS
+    // ================================================================
+    const canvas = document.getElementById('compassCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function dibujarBrújula() {
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const radio = Math.min(w, h) * 0.42;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Fondo circular con degradado
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radio);
+        grad.addColorStop(0, '#1a2f1a');
+        grad.addColorStop(1, '#0a1f0a');
+        ctx.beginPath();
+        ctx.arc(cx, cy, radio, 0, 2 * Math.PI);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Marcas de los puntos cardinales
+        const puntos = [
+            { ang: 0, label: 'N' },
+            { ang: 90, label: 'E' },
+            { ang: 180, label: 'S' },
+            { ang: 270, label: 'O' }
+        ];
+        ctx.font = 'bold 18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        puntos.forEach(p => {
+            const rad = p.ang * Math.PI / 180;
+            const x = cx + radio * 0.85 * Math.sin(rad);
+            const y = cy - radio * 0.85 * Math.cos(rad);
+            ctx.fillStyle = p.label === 'N' ? '#ff4d4d' : '#b8956a';
+            ctx.fillText(p.label, x, y);
+        });
+
+        // Líneas de los 45°
+        for (let i = 0; i < 8; i++) {
+            const ang = i * 45 * Math.PI / 180;
+            const x1 = cx + radio * 0.75 * Math.sin(ang);
+            const y1 = cy - radio * 0.75 * Math.cos(ang);
+            const x2 = cx + radio * 0.9 * Math.sin(ang);
+            const y2 = cy - radio * 0.9 * Math.cos(ang);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = '#2a4a2a';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        // Flecha de la Qibla (dorada) - calculada a partir del ángulo de la brújula
+        // Si tenemos heading, ajustamos la flecha para que apunte al norte real, y la Qibla se dibuja relativa a ese norte.
+        let anguloFinal = 0;
+        if (headingAvailable) {
+            // La flecha debe apuntar al ángulo de la Qibla, pero teniendo en cuenta la rotación del dispositivo.
+            // Si el dispositivo apunta al norte (heading=0), la flecha debe dibujarse en qiblaAngle.
+            // Si el dispositivo está girado, debemos rotar la flecha en sentido contrario.
+            // La convención: el canvas dibuja con Y hacia arriba (norte). La rotación del dispositivo se resta.
+            anguloFinal = (qiblaAngle - deviceHeading) * Math.PI / 180;
+        } else {
+            // Sin brújula, usamos el ángulo de la Qibla directamente (norte verdadero)
+            anguloFinal = qiblaAngle * Math.PI / 180;
+        }
+
+        // Flecha dorada
+        const largo = radio * 0.65;
+        const xFlecha = cx + largo * Math.sin(anguloFinal);
+        const yFlecha = cy - largo * Math.cos(anguloFinal);
+
+        // Dibujar línea de la flecha
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(xFlecha, yFlecha);
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 5;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 15;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Cabeza de flecha
+        const angFlecha = Math.atan2(xFlecha - cx, -(yFlecha - cy));
+        const headLen = 20;
+        const headAngle = 0.4;
+        ctx.beginPath();
+        ctx.moveTo(xFlecha, yFlecha);
+        ctx.lineTo(
+            xFlecha - headLen * Math.cos(angFlecha - headAngle),
+            yFlecha - headLen * Math.sin(angFlecha - headAngle)
+        );
+        ctx.moveTo(xFlecha, yFlecha);
+        ctx.lineTo(
+            xFlecha - headLen * Math.cos(angFlecha + headAngle),
+            yFlecha - headLen * Math.sin(angFlecha + headAngle)
+        );
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Círculo central
+        ctx.beginPath();
+        ctx.arc(cx, cy, 12, 0, 2 * Math.PI);
+        ctx.fillStyle = '#0a1f0a';
+        ctx.fill();
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    // ================================================================
+    // ORIENTACIÓN DEL DISPOSITIVO
+    // ================================================================
+    function iniciarBrújula() {
+        if (window.DeviceOrientationEvent) {
+            // Solicitar permiso en iOS 13+
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(state => {
+                        if (state === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                        } else {
+                            headingAvailable = false;
+                            dibujarBrújula();
+                        }
+                    })
+                    .catch(() => {
+                        headingAvailable = false;
+                        dibujarBrújula();
+                    });
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
+        } else {
+            headingAvailable = false;
+            dibujarBrújula();
+        }
+        // Dibujar inicialmente
+        dibujarBrújula();
+    }
+
+    function handleOrientation(event) {
+        let heading = 0;
+        if (event.webkitCompassHeading !== undefined && event.webkitCompassHeading !== null) {
+            // iOS
+            heading = event.webkitCompassHeading;
+        } else if (event.alpha !== null) {
+            // Android / otros (alpha es el ángulo respecto al norte magnético)
+            // Si tenemos event.alpha, pero puede ser el ángulo desde el norte magnético, no verdadero.
+            // En Android, el alpha es el ángulo desde el norte magnético. No tenemos corrección de declinación fácil.
+            // Usamos alpha tal cual, el usuario debe saber que es magnético.
+            heading = event.alpha;
+        } else {
+            headingAvailable = false;
+            dibujarBrújula();
+            return;
+        }
+        headingAvailable = true;
+        deviceHeading = heading; // grados
+        dibujarBrújula();
+    }
+
+    // ================================================================
     // BOTONES DE COOKIES
     // ================================================================
     document.getElementById('acceptCookies').addEventListener('click', acceptCookies);
@@ -1135,21 +1532,26 @@
     // INICIO
     // ================================================================
     window.onload = function() {
-        // Comprobar cookies primero
         checkCookies();
-
-        // Si no se restauraron preferencias (porque no había cookies o se rechazaron), continuar con valores por defecto
-        // Cargar lista de suras
         loadSurahList();
-        // Cargar duas
         loadDuas();
-        // Si no se restauraron preferencias, cargar ubicación por defecto
         if (!cookiesAccepted || !restorePreferences()) {
             getUserLocation();
         }
-        // Actualizar idioma (si se restauró, ya se hizo en restorePreferences)
         updateUILanguage();
+        // La brújula se inicia al hacer clic en la pestaña tab4
+        // También la dibujamos al cargar si ya tenemos datos
+        setTimeout(() => {
+            if (qiblaAngle !== 0) dibujarBrújula();
+        }, 500);
     };
+
+    // Redibujar la brújula cuando cambie el tamaño de la ventana
+    window.addEventListener('resize', () => {
+        if (document.getElementById('tab4').classList.contains('active')) {
+            dibujarBrújula();
+        }
+    });
 </script>
 </body>
 </html>
