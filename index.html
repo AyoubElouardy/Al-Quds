@@ -12,24 +12,59 @@
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
 
-        /* Selector de idioma fijo arriba a la derecha */
+        /* Selector de idioma con banderas circulares */
         .lang-selector {
             position: absolute;
             top: 0;
             right: 0;
             z-index: 100;
+            display: flex;
+            gap: 6px;
+            background: rgba(10, 31, 10, 0.8);
+            padding: 4px 8px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            border: 1px solid #2a4a2a;
         }
-        .lang-selector select {
-            padding: 8px 12px;
-            border-radius: 20px;
-            background: #1a2f1a;
-            color: #fff;
-            border: 1px solid #d4af37;
-            font-size: 0.9rem;
+        .lang-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            background: transparent;
             cursor: pointer;
-            outline: none;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            color: #fff;
+            font-weight: bold;
         }
-        .lang-selector select option { background: #0a1f0a; }
+        .lang-btn:hover {
+            transform: scale(1.1);
+            border-color: #b8956a;
+        }
+        .lang-btn.active {
+            border-color: #d4af37;
+            box-shadow: 0 0 12px #d4af3740;
+            background: #1a2f1a;
+        }
+        .lang-btn .flag-emoji {
+            line-height: 1;
+        }
+        .lang-btn .arabic-char {
+            background: #1a6b3a;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
 
         .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
         .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
@@ -152,20 +187,27 @@
             .quran-text-area .translation { width: 100%; }
             .audio-player-fixed .controls-row { gap: 8px; }
             .audio-player-fixed button { font-size: 1.4rem; }
-            .lang-selector { position: relative; text-align: right; margin-bottom: 10px; }
+            .lang-selector { position: relative; justify-content: center; margin-bottom: 10px; gap: 4px; }
+            .lang-btn { width: 30px; height: 30px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Selector de idioma -->
-    <div class="lang-selector">
-        <select id="globalLangSelect">
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="en">English</option>
-            <option value="ar">العربية</option>
-        </select>
+    <!-- Selector de idioma con banderas circulares -->
+    <div class="lang-selector" id="langSelector">
+        <button class="lang-btn active" data-lang="es" title="Español">
+            <span class="flag-emoji">🇪🇸</span>
+        </button>
+        <button class="lang-btn" data-lang="fr" title="Français">
+            <span class="flag-emoji">🇫🇷</span>
+        </button>
+        <button class="lang-btn" data-lang="en" title="English">
+            <span class="flag-emoji">🇬🇧</span>
+        </button>
+        <button class="lang-btn" data-lang="ar" title="العربية">
+            <span class="arabic-char">ع</span>
+        </button>
     </div>
 
     <h1>Al-Quds</h1>
@@ -202,11 +244,10 @@
                 <select id="surahSelect">
                     <option value="" data-i18n="select_surah">Selecciona una Sura</option>
                 </select>
-                <!-- El selector de idioma se ha movido al global, así que lo quitamos -->
             </div>
             <div id="audioStatus" style="text-align:center; color:#b8956a; margin:5px 0;"></div>
             <div id="quranDisplay">
-                <p style="text-align:center; color:#b8956a;" data-i18n="quran_placeholder">Elige una sura y un idioma.</p>
+                <p style="text-align:center; color:#b8956a;" data-i18n="quran_placeholder">Elige una sura para leer.</p>
             </div>
         </div>
     </div>
@@ -485,11 +526,9 @@
     // ACTUALIZAR IDIOMA DE LA INTERFAZ
     // ================================================================
     function updateUILanguage() {
-        // Actualizar todos los elementos con data-i18n
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
             let text = getTranslation(key);
-            // Para el countdown-box, tiene un span dentro, así que reemplazamos solo el texto antes del span
             if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
                 const span = el.querySelector('span');
                 if (span) {
@@ -504,22 +543,33 @@
             }
         });
 
-        // Actualizar placeholder del input de ciudad
         document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
-        // Actualizar placeholder del select de sura (opción por defecto)
         const surahSelect = document.getElementById('surahSelect');
         const defaultOption = surahSelect.querySelector('option[value=""]');
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
-        // Actualizar mensaje de audioStatus si está vacío o es un mensaje estático
-        const audioStatus = document.getElementById('audioStatus');
-        if (audioStatus.textContent === '') {
-            // No hacer nada
-        } else {
-            // Si tiene un mensaje que no sea de estado, lo dejamos, pero mejor no sobreescribir
-        }
     }
+
+    // ================================================================
+    // SELECCIÓN DE IDIOMA CON BANDERAS
+    // ================================================================
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentLang = this.dataset.lang;
+            updateUILanguage();
+            loadDuas();
+            if (currentSurah) {
+                loadQuran(currentSurah);
+            } else {
+                const display = document.getElementById('quranDisplay');
+                display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+                document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+            }
+        });
+    });
 
     // ================================================================
     // PESTAÑAS
@@ -734,7 +784,6 @@
         }
         display.innerHTML = `<p style="text-align:center;color:#d4af37;">${getTranslation('loading')}</p>`;
 
-        // Determinar la edición según el idioma global
         let edition = '';
         if (currentLang === 'es') edition = 'es.asad';
         else if (currentLang === 'fr') edition = 'fr.hamidullah';
@@ -777,7 +826,6 @@
 
                     display.innerHTML = html;
                     document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
-                    // Cargar audio
                     loadAudioForSurah(surahNumber);
                 } else {
                     display.innerHTML = `<p style="color:#ff6b6b;">${getTranslation('error_load')}</p>`;
@@ -932,33 +980,10 @@
     }
 
     // ================================================================
-    // CAMBIO DE IDIOMA GLOBAL
-    // ================================================================
-    document.getElementById('globalLangSelect').addEventListener('change', function() {
-        currentLang = this.value;
-        // Actualizar interfaz
-        updateUILanguage();
-        // Recargar duas
-        loadDuas();
-        // Si hay una sura seleccionada, recargar Corán
-        if (currentSurah) {
-            loadQuran(currentSurah);
-        } else {
-            // Actualizar placeholder
-            const display = document.getElementById('quranDisplay');
-            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
-            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
-        }
-        // Actualizar mensaje de audioStatus si está en un estado fijo (por ejemplo, error o ready)
-        // Podríamos hacerlo, pero lo dejamos
-    });
-
-    // ================================================================
     // INICIO
     // ================================================================
     window.onload = function() {
-        // Establecer idioma por defecto (es)
-        document.getElementById('globalLangSelect').value = 'es';
+        // Idioma por defecto: español (botón activo ya está marcado en HTML)
         currentLang = 'es';
         updateUILanguage();
         loadSurahList();
