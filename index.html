@@ -241,52 +241,6 @@
             text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
 
-        /* ===== INDICADOR DE LOCALIZACIÓN Y COOKIES ===== */
-        .status-bar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(20, 40, 20, 0.3);
-            backdrop-filter: blur(8px);
-            padding: 10px 18px;
-            border-radius: 30px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            font-size: 0.8rem;
-            color: #b8956a;
-            gap: 8px;
-        }
-        .status-bar .status-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .status-bar .status-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #4a7a4a;
-        }
-        .status-bar .status-dot.active { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
-        .status-bar .status-dot.inactive { background: #ff6b6b; }
-        .status-bar .status-dot.cookie-ok { background: #d4af37; }
-        .status-bar .status-dot.cookie-no { background: #ff6b6b; }
-        .status-bar .refresh-location {
-            background: rgba(212, 175, 55, 0.2);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #d4af37;
-            padding: 4px 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: 0.3s;
-        }
-        .status-bar .refresh-location:hover {
-            background: rgba(212, 175, 55, 0.3);
-        }
-
         /* ===== CORÁN ===== */
         .quran-text-area {
             background: rgba(20, 40, 20, 0.4);
@@ -590,7 +544,7 @@
             opacity: 0.6;
         }
 
-        /* ===== BANNER DE COOKIES MEJORADO ===== */
+        /* ===== BANNER DE COOKIES ===== */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -645,7 +599,6 @@
         }
         .cookie-banner .reject-btn:hover { background: rgba(255,255,255,0.05); }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .prayer-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .prayer-card .time { font-size: 1.2rem; }
@@ -663,7 +616,6 @@
             .dua-selector button { font-size: 0.75rem; padding: 6px 12px; }
             .tabs { gap: 4px; padding: 4px; }
             .tab-btn { font-size: 0.75rem; padding: 10px 0; min-width: 50px; }
-            .status-bar { font-size: 0.7rem; padding: 8px 12px; }
         }
     </style>
 </head>
@@ -687,19 +639,6 @@
 
     <h1>Al-Quds</h1>
     <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
-
-    <!-- BARRA DE ESTADO (localización + cookies) -->
-    <div class="status-bar" id="statusBar">
-        <span class="status-item">
-            <span class="status-dot" id="locationDot"></span>
-            <span id="locationStatus">Ubicación: buscando...</span>
-        </span>
-        <span class="status-item">
-            <span class="status-dot" id="cookieDot"></span>
-            <span id="cookieStatus">Cookies: --</span>
-        </span>
-        <button class="refresh-location" id="refreshLocationBtn">⟳ Actualizar</button>
-    </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="tab1" data-i18n="tab_prayers">Rezos</button>
@@ -857,13 +796,7 @@
             cat_familia: 'Familia',
             cat_viaje: 'Viaje',
             cat_general: 'Generales',
-            cat_manana_tarde: 'Mañana y Tarde',
-            location_ok: '📍 Ubicación activa',
-            location_error: '⚠️ Ubicación no disponible',
-            location_searching: '🔍 Buscando...',
-            cookies_accepted: '🍪 Cookies aceptadas',
-            cookies_rejected: '🚫 Cookies rechazadas',
-            cookies_pending: '⏳ Cookies pendientes'
+            cat_manana_tarde: 'Mañana y Tarde'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -914,13 +847,7 @@
             cat_familia: 'Famille',
             cat_viaje: 'Voyage',
             cat_general: 'Générales',
-            cat_manana_tarde: 'Matin et Soir',
-            location_ok: '📍 Localisation active',
-            location_error: '⚠️ Localisation indisponible',
-            location_searching: '🔍 Recherche...',
-            cookies_accepted: '🍪 Cookies acceptées',
-            cookies_rejected: '🚫 Cookies refusées',
-            cookies_pending: '⏳ Cookies en attente'
+            cat_manana_tarde: 'Matin et Soir'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -971,13 +898,7 @@
             cat_familia: 'Family',
             cat_viaje: 'Travel',
             cat_general: 'General',
-            cat_manana_tarde: 'Morning & Evening',
-            location_ok: '📍 Location active',
-            location_error: '⚠️ Location unavailable',
-            location_searching: '🔍 Searching...',
-            cookies_accepted: '🍪 Cookies accepted',
-            cookies_rejected: '🚫 Cookies rejected',
-            cookies_pending: '⏳ Cookies pending'
+            cat_manana_tarde: 'Morning & Evening'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -1028,13 +949,7 @@
             cat_familia: 'العائلة',
             cat_viaje: 'السفر',
             cat_general: 'عامة',
-            cat_manana_tarde: 'الصباح والمساء',
-            location_ok: '📍 الموقع نشط',
-            location_error: '⚠️ الموقع غير متوفر',
-            location_searching: '🔍 جاري البحث...',
-            cookies_accepted: '🍪 تم قبول ملفات تعريف الارتباط',
-            cookies_rejected: '🚫 تم رفض ملفات تعريف الارتباط',
-            cookies_pending: '⏳ في انتظار الموافقة'
+            cat_manana_tarde: 'الصباح والمساء'
         }
     };
 
@@ -1374,38 +1289,6 @@
         const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
         loadDuasByCategory(activeCat);
         actualizarInfoQibla();
-        // Actualizar barra de estado
-        updateStatusBar();
-    }
-
-    // ================================================================
-    // BARRA DE ESTADO (localización y cookies)
-    // ================================================================
-    function updateStatusBar() {
-        // Localización
-        const locDot = document.getElementById('locationDot');
-        const locText = document.getElementById('locationStatus');
-        if (userLat && userLng) {
-            locDot.className = 'status-dot active';
-            locText.textContent = getTranslation('location_ok') + ` (${currentCity})`;
-        } else {
-            locDot.className = 'status-dot inactive';
-            locText.textContent = getTranslation('location_error');
-        }
-
-        // Cookies
-        const cookieDot = document.getElementById('cookieDot');
-        const cookieText = document.getElementById('cookieStatus');
-        if (cookiesAccepted) {
-            cookieDot.className = 'status-dot cookie-ok';
-            cookieText.textContent = getTranslation('cookies_accepted');
-        } else if (localStorage.getItem('cookiesAccepted') === 'false') {
-            cookieDot.className = 'status-dot cookie-no';
-            cookieText.textContent = getTranslation('cookies_rejected');
-        } else {
-            cookieDot.className = 'status-dot inactive';
-            cookieText.textContent = getTranslation('cookies_pending');
-        }
     }
 
     // ================================================================
@@ -1421,9 +1304,9 @@
             cookiesAccepted = false;
             document.getElementById('cookieBanner').classList.remove('visible');
         } else {
+            // Mostrar el banner de cookies
             document.getElementById('cookieBanner').classList.add('visible');
         }
-        updateStatusBar();
     }
 
     function acceptCookies() {
@@ -1432,7 +1315,6 @@
         document.getElementById('cookieBanner').classList.remove('visible');
         saveCurrentPreferences();
         getUserLocation();
-        updateStatusBar();
     }
 
     function rejectCookies() {
@@ -1440,7 +1322,6 @@
         cookiesAccepted = false;
         document.getElementById('cookieBanner').classList.remove('visible');
         getUserLocation();
-        updateStatusBar();
     }
 
     function saveCurrentPreferences() {
@@ -1473,7 +1354,6 @@
                 document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
-                updateStatusBar();
                 return true;
             }
         } catch(e) {}
@@ -1497,7 +1377,6 @@
                 document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
             }
             if (cookiesAccepted) saveCurrentPreferences();
-            updateStatusBar();
         });
     });
 
@@ -1530,16 +1409,10 @@
     // UBICACIÓN Y HORARIOS
     // ================================================================
     function getUserLocation() {
-        // Mostrar buscando
-        document.getElementById('locationStatus').textContent = getTranslation('location_searching');
-        document.getElementById('locationDot').className = 'status-dot inactive';
-
+        // Si ya tenemos datos restaurados, no pedir geolocalización de nuevo
         if (cookiesAccepted) {
             const restored = restorePreferences();
-            if (restored) {
-                updateStatusBar();
-                return;
-            }
+            if (restored) return;
         }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -1549,20 +1422,17 @@
                     reverseGeocode(userLat, userLng);
                     calcularQibla(userLat, userLng);
                     if (cookiesAccepted) saveCurrentPreferences();
-                    updateStatusBar();
                 },
                 () => {
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
                     calcularQibla(userLat, userLng);
-                    updateStatusBar();
                 }
             );
         } else {
             document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
             calcularQibla(userLat, userLng);
-            updateStatusBar();
         }
     }
 
@@ -1578,13 +1448,11 @@
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
                 if (cookiesAccepted) saveCurrentPreferences();
-                updateStatusBar();
             })
             .catch(() => {
                 document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
-                updateStatusBar();
             });
     }
 
@@ -1704,15 +1572,9 @@
                     fetchPrayerTimes(lat, lng);
                     calcularQibla(lat, lng);
                     if (cookiesAccepted) saveCurrentPreferences();
-                    updateStatusBar();
                 } else alert(getTranslation('city_not_found'));
             })
             .catch(() => alert(getTranslation('search_error')));
-    });
-
-    // Botón de actualizar ubicación
-    document.getElementById('refreshLocationBtn').addEventListener('click', function() {
-        getUserLocation();
     });
 
     // ================================================================
@@ -2183,8 +2045,11 @@
     document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
 
     window.onload = function() {
+        // Primero verificar cookies
         checkCookies();
+        // Cargar listas
         loadSurahList();
+        // Si ya hay cookies aceptadas y preferencias, restaurar, sino pedir ubicación
         if (!cookiesAccepted || !restorePreferences()) {
             getUserLocation();
         }
