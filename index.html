@@ -109,15 +109,43 @@
 
         /* ===== DUA ===== */
         .dua-container { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
+        .dua-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .dua-selector button {
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #d4af37;
+            background: transparent;
+            color: #b8956a;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .dua-selector button:hover {
+            background: #1a2f1a;
+            color: #fff;
+        }
+        .dua-selector button.active {
+            background: #d4af37;
+            color: #0a1f0a;
+            border-color: #d4af37;
+        }
         .dua-category-title {
             color: #d4af37;
             font-size: 1.3rem;
             font-weight: bold;
-            margin: 20px 0 10px 0;
+            margin: 10px 0 15px 0;
             border-bottom: 2px solid #d4af37;
             padding-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
         .dua-item { 
             background: #1a2f1a; 
@@ -286,6 +314,7 @@
             .cookie-banner p { min-width: unset; }
             #compassCanvas { width: 180px; height: 180px; }
             .qibla-angle { font-size: 1.5rem; }
+            .dua-selector button { font-size: 0.75rem; padding: 6px 10px; }
         }
     </style>
 </head>
@@ -354,6 +383,17 @@
     <div id="tab3" class="tab-content">
         <div class="dua-container">
             <h3 style="color:#d4af37; text-align:center; margin-bottom:15px;" data-i18n="dua_title">Súplicas (Duas)</h3>
+            <!-- Selector de categorías -->
+            <div class="dua-selector" id="duaCategorySelector">
+                <button class="active" data-cat="rizq" data-i18n="cat_rizq">Rizq</button>
+                <button data-cat="istighfar" data-i18n="cat_istighfar">Istighfar</button>
+                <button data-cat="proteccion" data-i18n="cat_proteccion">Protección</button>
+                <button data-cat="salud" data-i18n="cat_salud">Salud</button>
+                <button data-cat="familia" data-i18n="cat_familia">Familia</button>
+                <button data-cat="viaje" data-i18n="cat_viaje">Viaje</button>
+                <button data-cat="general" data-i18n="cat_general">Generales</button>
+                <button data-cat="manana_tarde" data-i18n="cat_manana_tarde">Mañana/Tarde</button>
+            </div>
             <div id="duaList"></div>
         </div>
     </div>
@@ -450,8 +490,8 @@
             select_reciter: 'Selecciona un recitador.',
             translation_not_available: '[Traducción no disponible]',
             // Categorías de Duas
-            cat_rizq: 'Sustento (Rizq)',
-            cat_istighfar: 'Perdón (Istighfar)',
+            cat_rizq: 'Rizq (Sustento)',
+            cat_istighfar: 'Istighfar (Perdón)',
             cat_proteccion: 'Protección',
             cat_salud: 'Salud',
             cat_familia: 'Familia',
@@ -501,8 +541,8 @@
             search_error: 'Erreur de recherche.',
             select_reciter: 'Choisissez un récitateur.',
             translation_not_available: '[Traduction non disponible]',
-            cat_rizq: 'Subsistance (Rizq)',
-            cat_istighfar: 'Pardon (Istighfar)',
+            cat_rizq: 'Rizq (Subsistance)',
+            cat_istighfar: 'Istighfar (Pardon)',
             cat_proteccion: 'Protection',
             cat_salud: 'Santé',
             cat_familia: 'Famille',
@@ -552,8 +592,8 @@
             search_error: 'Search error.',
             select_reciter: 'Select a reciter.',
             translation_not_available: '[Translation not available]',
-            cat_rizq: 'Sustenance (Rizq)',
-            cat_istighfar: 'Forgiveness (Istighfar)',
+            cat_rizq: 'Rizq (Sustenance)',
+            cat_istighfar: 'Istighfar (Forgiveness)',
             cat_proteccion: 'Protection',
             cat_salud: 'Health',
             cat_familia: 'Family',
@@ -821,52 +861,52 @@
     };
 
     // ================================================================
-    // LISTA DE DUAS CON CATEGORÍAS (40+)
+    // LISTA DE DUAS CON CATEGORÍAS
     // ================================================================
     const duas = [
-        // Rizq (Sustento)
+        // Rizq (Sustento) - índices 0-4
         { category: 'rizq', title: { es: 'Dua por el sustento', fr: 'Dua pour la subsistance', en: 'Dua for sustenance', ar: 'دعاء الرزق' }, arabic: duaTranslations.ar[0] },
         { category: 'rizq', title: { es: 'Dua por sustento lícito', fr: 'Dua pour une subsistance licite', en: 'Dua for lawful sustenance', ar: 'دعاء الرزق الحلال' }, arabic: duaTranslations.ar[1] },
         { category: 'rizq', title: { es: 'Dua por bendición en el alimento', fr: 'Dua pour la bénédiction dans la nourriture', en: 'Dua for blessing in food', ar: 'دعاء البركة في الطعام' }, arabic: duaTranslations.ar[2] },
         { category: 'rizq', title: { es: 'Dua por sustento abundante', fr: 'Dua pour une subsistance abondante', en: 'Dua for abundant sustenance', ar: 'دعاء الرزق الواسع' }, arabic: duaTranslations.ar[3] },
         { category: 'rizq', title: { es: 'Dua para no depender de la creación', fr: 'Dua pour ne pas dépendre de la création', en: 'Dua to not depend on creation', ar: 'دعاء عدم الحاجة للخلق' }, arabic: duaTranslations.ar[4] },
-        // Istighfar (Perdón)
+        // Istighfar (Perdón) - índices 5-9
         { category: 'istighfar', title: { es: 'Dua por perdón y purificación', fr: 'Dua pour le pardon et la purification', en: 'Dua for forgiveness and purification', ar: 'دعاء المغفرة والتطهير' }, arabic: duaTranslations.ar[5] },
         { category: 'istighfar', title: { es: 'Dua por perdón y salud', fr: 'Dua pour le pardon et la santé', en: 'Dua for forgiveness and health', ar: 'دعاء العفو والعافية' }, arabic: duaTranslations.ar[6] },
         { category: 'istighfar', title: { es: 'Dua por perdón de la injusticia propia', fr: 'Dua pour le pardon de l\'injustice personnelle', en: 'Dua for forgiveness of self-injustice', ar: 'دعاء ظلم النفس' }, arabic: duaTranslations.ar[7] },
         { category: 'istighfar', title: { es: 'Dua por perdón y protección del castigo', fr: 'Dua pour le pardon et la protection du châtiment', en: 'Dua for forgiveness and protection from punishment', ar: 'دعاء العفو من العذاب' }, arabic: duaTranslations.ar[8] },
         { category: 'istighfar', title: { es: 'Dua por perdón de lo hecho y lo omitido', fr: 'Dua pour le pardon de ce qui est fait et omis', en: 'Dua for forgiveness of done and undone', ar: 'دعاء ما عملت وما تركت' }, arabic: duaTranslations.ar[9] },
-        // Protección
+        // Protección - índices 10-14
         { category: 'proteccion', title: { es: 'Dua contra el mal', fr: 'Dua contre le mal', en: 'Dua against evil', ar: 'دعاء الشر' }, arabic: duaTranslations.ar[10] },
         { category: 'proteccion', title: { es: 'Dua contra la pobreza y la humillación', fr: 'Dua contre la pauvreté et l\'humiliation', en: 'Dua against poverty and humiliation', ar: 'دعاء الفقر والذل' }, arabic: duaTranslations.ar[11] },
         { category: 'proteccion', title: { es: 'Dua contra la ansiedad y la tristeza', fr: 'Dua contre l\'anxiété et la tristesse', en: 'Dua against anxiety and sorrow', ar: 'دعاء الهم والحزن' }, arabic: duaTranslations.ar[12] },
         { category: 'proteccion', title: { es: 'Dua contra la incredulidad y el castigo de la tumba', fr: 'Dua contre la mécréance et le châtiment de la tombe', en: 'Dua against disbelief and grave punishment', ar: 'دعاء الكفر وعذاب القبر' }, arabic: duaTranslations.ar[13] },
         { category: 'proteccion', title: { es: 'Dua contra los opresores y enemigos', fr: 'Dua contre les oppresseurs et les ennemis', en: 'Dua against oppressors and enemies', ar: 'دعاء الظالمين والأعداء' }, arabic: duaTranslations.ar[14] },
-        // Salud
+        // Salud - índices 15-19
         { category: 'salud', title: { es: 'Dua por salud en ambos mundos', fr: 'Dua pour la santé dans les deux mondes', en: 'Dua for health in both worlds', ar: 'دعاء العافية في الدنيا والآخرة' }, arabic: duaTranslations.ar[15] },
         { category: 'salud', title: { es: 'Dua por salud, seguridad y buena fe', fr: 'Dua pour la santé, la sécurité et la bonne foi', en: 'Dua for health, safety and good faith', ar: 'دعاء العافية والسلامة وحسن اليقين' }, arabic: duaTranslations.ar[16] },
         { category: 'salud', title: { es: 'Dua por salud en el cuerpo, oído y vista', fr: 'Dua pour la santé du corps, de l\'ouïe et de la vue', en: 'Dua for health in body, hearing and sight', ar: 'دعاء العافية في البدن والسمع والبصر' }, arabic: duaTranslations.ar[17] },
         { category: 'salud', title: { es: 'Dua por protección contra enfermedades', fr: 'Dua pour la protection contre les maladies', en: 'Dua for protection from diseases', ar: 'دعاء الوقاية من الأمراض' }, arabic: duaTranslations.ar[18] },
         { category: 'salud', title: { es: 'Dua por salud en el corazón y las acciones', fr: 'Dua pour la santé du cœur et des actions', en: 'Dua for health in heart and actions', ar: 'دعاء العافية في القلب والعمل' }, arabic: duaTranslations.ar[19] },
-        // Familia
+        // Familia - índices 20-24
         { category: 'familia', title: { es: 'Dua por protección de la familia', fr: 'Dua pour la protection de la famille', en: 'Dua for family protection', ar: 'دعاء حفظ العائلة' }, arabic: duaTranslations.ar[20] },
         { category: 'familia', title: { es: 'Dua por unidad y guía familiar', fr: 'Dua pour l\'unité et la guidance familiale', en: 'Dua for family unity and guidance', ar: 'دعاء جمع شمل العائلة' }, arabic: duaTranslations.ar[21] },
         { category: 'familia', title: { es: 'Dua por protección de hijos y cónyuge', fr: 'Dua pour la protection des enfants et du conjoint', en: 'Dua for protection of children and spouse', ar: 'دعاء حفظ الأولاد والزوجة' }, arabic: duaTranslations.ar[22] },
         { category: 'familia', title: { es: 'Dua por bendición del hogar', fr: 'Dua pour la bénédiction du foyer', en: 'Dua for blessing of the home', ar: 'دعاء بركة البيت' }, arabic: duaTranslations.ar[23] },
         { category: 'familia', title: { es: 'Dua por el amor de la familia hacia Allah', fr: 'Dua pour l\'amour de la famille envers Allah', en: 'Dua for family\'s love for Allah', ar: 'دعاء حب العائلة لله' }, arabic: duaTranslations.ar[24] },
-        // Viaje
+        // Viaje - índices 25-29
         { category: 'viaje', title: { es: 'Dua por seguridad en el viaje', fr: 'Dua pour la sécurité en voyage', en: 'Dua for safety during travel', ar: 'دعاء السلامة في السفر' }, arabic: duaTranslations.ar[25] },
         { category: 'viaje', title: { es: 'Dua por facilidad en el viaje', fr: 'Dua pour la facilité en voyage', en: 'Dua for ease in travel', ar: 'دعاء تيسير السفر' }, arabic: duaTranslations.ar[26] },
         { category: 'viaje', title: { es: 'Dua por protección y regreso seguro', fr: 'Dua pour la protection et le retour en sécurité', en: 'Dua for protection and safe return', ar: 'دعاء الحفظ في السفر والرجوع' }, arabic: duaTranslations.ar[27] },
         { category: 'viaje', title: { es: 'Dua por buen viaje y buena compañía', fr: 'Dua pour un bon voyage et une bonne compagnie', en: 'Dua for good journey and good company', ar: 'دعاء حسن السفر والصُحبة' }, arabic: duaTranslations.ar[28] },
         { category: 'viaje', title: { es: 'Dua por seguridad en el camino', fr: 'Dua pour la sécurité sur la route', en: 'Dua for safety on the road', ar: 'دعاء السلامة في الطريق' }, arabic: duaTranslations.ar[29] },
-        // Generales
+        // Generales - índices 30-34
         { category: 'general', title: { es: 'Dua por el bien en ambos mundos', fr: 'Dua pour le bien dans les deux mondes', en: 'Dua for good in both worlds', ar: 'دعاء خير الدنيا والآخرة' }, arabic: duaTranslations.ar[30] },
         { category: 'general', title: { es: 'Dua por el bien de lo hecho y lo no hecho', fr: 'Dua pour le bien de ce qui est fait et non fait', en: 'Dua for good of done and undone', ar: 'دعاء خير ما عملت' }, arabic: duaTranslations.ar[31] },
         { category: 'general', title: { es: 'Dua por constancia y buen juicio', fr: 'Dua pour la constance et le bon jugement', en: 'Dua for steadfastness and sound judgment', ar: 'دعاء الثبات والعزم' }, arabic: duaTranslations.ar[32] },
         { category: 'general', title: { es: 'Dua por el paraíso y protección del infierno', fr: 'Dua pour le Paradis et la protection de l\'Enfer', en: 'Dua for Paradise and protection from Hell', ar: 'دعاء الجنة والنار' }, arabic: duaTranslations.ar[33] },
         { category: 'general', title: { es: 'Dua por el amor a Allah', fr: 'Dua pour l\'amour d\'Allah', en: 'Dua for love of Allah', ar: 'دعاء حب الله' }, arabic: duaTranslations.ar[34] },
-        // Mañana y Tarde
+        // Mañana y Tarde - índices 35-39
         { category: 'manana_tarde', title: { es: 'Dua por el bien de la mañana y la noche', fr: 'Dua pour le bien du matin et du soir', en: 'Dua for the good of morning and night', ar: 'دعاء خير الصباح والمساء' }, arabic: duaTranslations.ar[35] },
         { category: 'manana_tarde', title: { es: 'Dua por el bien del día y la noche', fr: 'Dua pour le bien du jour et de la nuit', en: 'Dua for the good of day and night', ar: 'دعاء خير اليوم والليل' }, arabic: duaTranslations.ar[36] },
         { category: 'manana_tarde', title: { es: 'Dua por protección en la mañana y tarde', fr: 'Dua pour la protection au matin et au soir', en: 'Dua for protection in morning and evening', ar: 'دعاء الحفظ في الصباح والمساء' }, arabic: duaTranslations.ar[37] },
@@ -941,8 +981,14 @@
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
-        // Actualizar Duas al cambiar idioma
-        loadDuas();
+        // Actualizar textos de los botones de categorías
+        document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
+            const cat = btn.dataset.cat;
+            btn.textContent = getCategoryTitle(cat);
+        });
+        // Actualizar Duas al cambiar idioma (recargar la categoría activa)
+        const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
+        loadDuasByCategory(activeCat);
         // Actualizar textos de Qibla
         actualizarInfoQibla();
     }
@@ -1440,40 +1486,47 @@
     });
 
     // ================================================================
-    // CARGA DE DUAS (agrupadas por categoría)
+    // CARGA DE DUAS POR CATEGORÍA (con selector)
     // ================================================================
-    function loadDuas() {
+    function loadDuasByCategory(category) {
         const container = document.getElementById('duaList');
-        // Agrupar por categoría
-        const grupos = {};
-        duas.forEach((dua, index) => {
-            const cat = dua.category;
-            if (!grupos[cat]) grupos[cat] = [];
-            grupos[cat].push({ index, dua });
-        });
+        const filtered = duas.filter(d => d.category === category);
 
-        let html = '';
-        const ordenCategorias = ['rizq', 'istighfar', 'proteccion', 'salud', 'familia', 'viaje', 'general', 'manana_tarde'];
-        ordenCategorias.forEach(catKey => {
-            if (grupos[catKey]) {
-                const catTitle = getCategoryTitle(catKey);
-                html += `<div class="dua-category-title">${catTitle}</div>`;
-                grupos[catKey].forEach(({ index, dua }) => {
-                    const title = getDuaTitle(index);
-                    const translation = getDuaTranslation(index);
-                    html += `
-                        <div class="dua-item">
-                            <div class="dua-title">${title}</div>
-                            <div class="dua-arabic">${dua.arabic}</div>
-                            <div class="dua-translation">${translation}</div>
-                        </div>
-                    `;
-                });
-            }
+        if (filtered.length === 0) {
+            container.innerHTML = `<p style="text-align:center;color:#b8956a;">No hay duas en esta categoría.</p>`;
+            return;
+        }
+
+        const catTitle = getCategoryTitle(category);
+        let html = `<div class="dua-category-title">${catTitle}</div>`;
+        filtered.forEach((dua, index) => {
+            // Buscar el índice real en el array original para obtener la traducción
+            const originalIndex = duas.indexOf(dua);
+            const title = getDuaTitle(originalIndex);
+            const translation = getDuaTranslation(originalIndex);
+            html += `
+                <div class="dua-item">
+                    <div class="dua-title">${title}</div>
+                    <div class="dua-arabic">${dua.arabic}</div>
+                    <div class="dua-translation">${translation}</div>
+                </div>
+            `;
         });
 
         container.innerHTML = html;
     }
+
+    // ================================================================
+    // EVENTOS DEL SELECTOR DE CATEGORÍAS (DUA)
+    // ================================================================
+    document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#duaCategorySelector button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const cat = this.dataset.cat;
+            loadDuasByCategory(cat);
+        });
+    });
 
     // ================================================================
     // QIBLA - CÁLCULO Y BRÚJULA
@@ -1669,11 +1722,11 @@
     window.onload = function() {
         checkCookies();
         loadSurahList();
-        // Cargar Duas ya se hace al actualizar idioma
+        // Cargar categoría por defecto (Rizq)
         if (!cookiesAccepted || !restorePreferences()) {
             getUserLocation();
         }
-        updateUILanguage(); // esto llama a loadDuas()
+        updateUILanguage(); // esto llama a loadDuasByCategory con la categoría activa
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
         }, 500);
