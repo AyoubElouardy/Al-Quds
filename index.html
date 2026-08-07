@@ -199,11 +199,13 @@
     let currentSurah = '';
     let currentEdition = 'es.asad';
 
+    // Audio principal
     let audio = new Audio();
     let timingsData = null;
     let surahTimings = null;
     let isPlaying = false;
     let currentVerseHighlight = null;
+    let audioLoaded = false; // para saber si el audio está listo
 
     // ================================================================
     // 2. PESTAÑAS
@@ -221,7 +223,7 @@
     });
 
     // ================================================================
-    // 3. UBICACIÓN Y HORARIOS
+    // 3. UBICACIÓN Y HORARIOS (sin cambios)
     // ================================================================
     function getUserLocation() {
         if (navigator.geolocation) {
@@ -442,7 +444,10 @@
                 document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
 
                 clearHighlight();
-                loadAudioAndTimings(surahNumber);
+                // Cargar el audio para esta sura (independientemente de los timings)
+                loadAudioForSurah(surahNumber);
+                // Intentar cargar timings para resaltado (en segundo plano)
+                loadTimingsForSurah(surahNumber);
             } else {
                 display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
             }
@@ -453,51 +458,40 @@
     }
 
     // ================================================================
-    // 6. AUDIO Y TIMINGS
+    // 6. AUDIO (NUEVO) – Carga y reproducción
     // ================================================================
-    function loadTimings() {
-        return fetch('https://raw.githubusercontent.com/risala/quran-timings/main/timings.json')
-            .then(r => r.json())
-            .then(data => {
-                timingsData = data;
-                return data;
-            })
-            .catch(err => {
-                console.error('Error cargando timings:', err);
-                return null;
-            });
-    }
+    function loadAudioForSurah(surahNumber) {
+        // Construir URL con recitador fiable: Sudais
+        const reciter = 'ar.abdurrahmaan_as-sudais';
+        const audioUrl = `https://cdn.islamic.network/quran/audio/128/${reciter}/${String(surahNumber).padStart(3, '0')}.mp3`;
+        console.log('Cargando audio desde:', audioUrl);
 
-    function loadAudioAndTimings(surahNumber) {
-        if (!timingsData) {
-            loadTimings().then(() => {
-                loadAudioAndTimings(surahNumber);
-            });
-            return;
+        // Si el audio ya estaba sonando, lo paramos
+        if (isPlaying) {
+            audio.pause();
         }
 
-        const surahTimingsRaw = timingsData.surah?.[surahNumber];
-        if (surahTimingsRaw) {
-            surahTimings = surahTimingsRaw.map(t => ({
-                verse: t.verse,
-                start: t.start,
-                end: t.end
-            }));
-        } else {
-            surahTimings = null;
-        }
-
-        // Construir URL del audio según la sura
-        const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${String(surahNumber).padStart(3, '0')}.mp3`;
+        // Asignar nueva fuente
         audio.src = audioUrl;
         audio.load();
 
+        // Reiniciar controles
         document.getElementById('progressSlider').value = 0;
         document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
-        clearHighlight();
+        document.getElementById('playBtn').innerHTML = '&#9654;'; // play
+        isPlaying = false;
+        audioLoaded = false;
 
+        // Eventos
         audio.onloadedmetadata = function() {
+            audioLoaded = true;
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
+            // Intentar autoplay
+            audio.play().catch(e => {
+                console.log('Autoplay bloqueado. El usuario debe pulsar play.');
+                // Mostrar un pequeño mensaje en el reproductor
+                document.getElementById('surahInfo').textContent += ' (pulsa play)';
+            });
         };
 
         audio.ontimeupdate = function() {
@@ -505,7 +499,10 @@
             const progress = (audio.currentTime / audio.duration) * 100;
             document.getElementById('progressSlider').value = progress;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-            updateHighlight();
+            // Resaltado solo si tenemos timings
+            if (surahTimings) {
+                updateHighlight();
+            }
         };
 
         audio.onplay = function() {
@@ -526,21 +523,55 @@
             clearHighlight();
         };
 
-        // Intento de reproducción automática
-        audio.play().catch(e => {
-            console.log('Autoplay bloqueado, esperando interacción del usuario.');
-        });
-    }
-
-    function formatTime(seconds) {
-        if (isNaN(seconds)) return '00:00';
-        const min = Math.floor(seconds / 60);
-        const sec = Math.floor(seconds % 60);
-        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+        audio.onerror = function(e) {
+            console.error('Error al cargar el audio:', e);
+            document.getElementById('surahInfo').textContent = 'Error al cargar audio. Intenta otra sura.';
+            // Intentar con otro recitador? Podríamos, pero dejamos así.
+        };
     }
 
     // ================================================================
-    // 7. RESALTADO DEL VERSO ACTUAL
+    // 7. TIMINGS (para resaltado) – Carga en segundo plano
+    // ================================================================
+    function loadTimingsForSurah(surahNumber) {
+        if (!timingsData) {
+            // Si no tenemos el JSON completo, lo cargamos y luego pedimos esta sura
+            fetch('https://raw.githubusercontent.com/risala/quran-timings/main/timings.json')
+                .then(r => r.json())
+                .then(data => {
+                    timingsData = data;
+                    extractTimings(surahNumber);
+                })
+                .catch(err => {
+                    console.error('Error cargando timings:', err);
+                    surahTimings = null;
+                });
+        } else {
+            extractTimings(surahNumber);
+        }
+    }
+
+    function extractTimings(surahNumber) {
+        const raw = timingsData.surah?.[surahNumber];
+        if (raw) {
+            surahTimings = raw.map(t => ({
+                verse: t.verse,
+                start: t.start,
+                end: t.end
+            }));
+            console.log(`Timings cargados para sura ${surahNumber}`);
+        } else {
+            surahTimings = null;
+            console.log(`No hay timings para la sura ${surahNumber}`);
+        }
+        // Si el audio ya se está reproduciendo, actualizar resaltado
+        if (isPlaying && audio.currentTime > 0) {
+            updateHighlight();
+        }
+    }
+
+    // ================================================================
+    // 8. RESALTADO DEL VERSO ACTUAL
     // ================================================================
     function updateHighlight() {
         if (!surahTimings || !audio.currentTime) {
@@ -585,7 +616,7 @@
     }
 
     // ================================================================
-    // 8. CONTROLES DE AUDIO
+    // 9. CONTROLES DE AUDIO
     // ================================================================
     document.getElementById('playBtn').addEventListener('click', function() {
         if (audio.src) {
@@ -604,7 +635,7 @@
             const newTime = (this.value / 100) * audio.duration;
             audio.currentTime = newTime;
             document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-            updateHighlight();
+            if (surahTimings) updateHighlight();
         }
     });
 
@@ -628,8 +659,15 @@
         }
     });
 
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return '00:00';
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
     // ================================================================
-    // 9. EVENTOS DE SELECCIÓN
+    // 10. EVENTOS DE SELECCIÓN
     // ================================================================
     document.getElementById('surahSelect').addEventListener('change', function() {
         currentSurah = this.value;
@@ -649,12 +687,19 @@
     });
 
     // ================================================================
-    // 10. INICIO
+    // 11. INICIO
     // ================================================================
     window.onload = function() {
         loadSurahList();
         getUserLocation();
-        loadTimings();
+        // Pre-cargar timings en segundo plano
+        fetch('https://raw.githubusercontent.com/risala/quran-timings/main/timings.json')
+            .then(r => r.json())
+            .then(data => {
+                timingsData = data;
+                console.log('Timings precargados');
+            })
+            .catch(err => console.error('Error precargando timings:', err));
     };
 </script>
 </body>
