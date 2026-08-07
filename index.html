@@ -9,18 +9,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 20px; min-height: 100vh; }
         .container { max-width: 700px; margin: 0 auto; position: relative; }
-        
-        /* ===== IMAGEN DE PORTADA AÑADIDA ===== */
-        .portada-img {
-            display: block;
-            max-width: 45%; /* Controla el tamaño de la mezquita */
-            height: auto;
-            margin: 0 auto 15px auto; /* Centrado y espacio inferior */
-            border-radius: 25px; /* Bordes redondeados como icono */
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25); /* Brillo dorado suave */
-            background-color: #0a1f0a; /* Evita bordes blancos alrededor de la imagen */
-        }
-
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
 
@@ -201,9 +189,6 @@
             .audio-player-fixed button { font-size: 1.4rem; }
             .lang-selector { position: relative; justify-content: center; margin-bottom: 10px; gap: 4px; }
             .lang-btn { width: 30px; height: 30px; font-size: 16px; }
-            
-            /* Ajuste de imagen en pantallas pequeñas */
-            .portada-img { max-width: 60%; }
         }
     </style>
 </head>
@@ -224,9 +209,6 @@
             <span class="arabic-char">ع</span>
         </button>
     </div>
-
-    <!-- IMAGEN DE PORTADA AÑADIDA AQUÍ -->
-    <img src="portada-alquds.png" alt="Cúpula Dorada Mezquita Al-Quds" class="portada-img">
 
     <h1>Al-Quds</h1>
     <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
