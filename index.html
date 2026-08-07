@@ -8,9 +8,29 @@
         /* ===== ESTILOS GLOBALES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #0a1f0a; color: #e8d5b5; padding: 15px; padding-bottom: 20px; min-height: 100vh; }
-        .container { max-width: 700px; margin: 0 auto; }
+        .container { max-width: 700px; margin: 0 auto; position: relative; }
         h1 { text-align: center; color: #d4af37; font-size: 2rem; letter-spacing: 2px; text-shadow: 0 0 10px #d4af3740; }
         .subh1 { text-align: center; font-size: 0.9rem; color: #b8956a; margin-bottom: 15px; }
+
+        /* Selector de idioma fijo arriba a la derecha */
+        .lang-selector {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 100;
+        }
+        .lang-selector select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #1a2f1a;
+            color: #fff;
+            border: 1px solid #d4af37;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+        }
+        .lang-selector select option { background: #0a1f0a; }
+
         .tabs { display: flex; gap: 5px; margin: 20px 0; flex-wrap: wrap; }
         .tab-btn { flex: 1; padding: 12px 0; background: #142814; border: 1px solid #d4af37; color: #b8956a; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
         .tab-btn.active { background: #d4af37; color: #0a1f0a; border-color: #d4af37; }
@@ -35,7 +55,6 @@
         .quran-text-area { background: #142814; padding: 15px; border-radius: 20px; margin: 15px 0; }
         .quran-text-area .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
         .quran-text-area select { flex: 2; padding: 12px; border-radius: 30px; background: #1a2f1a; color: #fff; border: 1px solid #d4af37; font-size: 1rem; }
-        .quran-text-area .lang-select { flex: 1; min-width: 120px; }
         .quran-text-area .verse { display: flex; gap: 15px; margin: 8px 0; padding: 8px; border-bottom: 1px solid #2a4a2a; align-items: flex-start; }
         .quran-text-area .arabic { font-size: 1.4rem; color: #d4af37; width: 50%; text-align: right; line-height: 1.8; }
         .quran-text-area .translation { font-size: 0.95rem; color: #c5b08a; width: 50%; line-height: 1.6; }
@@ -133,55 +152,61 @@
             .quran-text-area .translation { width: 100%; }
             .audio-player-fixed .controls-row { gap: 8px; }
             .audio-player-fixed button { font-size: 1.4rem; }
+            .lang-selector { position: relative; text-align: right; margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Selector de idioma -->
+    <div class="lang-selector">
+        <select id="globalLangSelect">
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+        </select>
+    </div>
+
     <h1>Al-Quds</h1>
     <div class="subh1" id="fechaLocation">Cargando ubicación...</div>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="tab1">Rezos</button>
-        <button class="tab-btn" data-tab="tab2">Corán</button>
-        <button class="tab-btn" data-tab="tab3">Dua</button>
+        <button class="tab-btn active" data-tab="tab1" data-i18n="tab_prayers">Rezos</button>
+        <button class="tab-btn" data-tab="tab2" data-i18n="tab_quran">Corán</button>
+        <button class="tab-btn" data-tab="tab3" data-i18n="tab_dua">Dua</button>
     </div>
 
     <!-- TAB 1: REZOS -->
     <div id="tab1" class="tab-content active">
         <div class="city-input">
             <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid">
-            <button id="searchBtn">Buscar</button>
+            <button id="searchBtn" data-i18n="search_btn">Buscar</button>
         </div>
-        <div class="countdown-box">Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
+        <div class="countdown-box" data-i18n="next_prayer">Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
         <div class="prayer-grid" id="prayerTimesContainer">
-            <div class="prayer-card"><div class="name">Fajr</div><div class="time" id="Fajr">--:--</div></div>
-            <div class="prayer-card"><div class="name">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
-            <div class="prayer-card"><div class="name">Asr</div><div class="time" id="Asr">--:--</div></div>
-            <div class="prayer-card"><div class="name">Maghrib</div><div class="time" id="Maghrib">--:--</div></div>
-            <div class="prayer-card"><div class="name">Isha</div><div class="time" id="Isha">--:--</div></div>
-            <div class="prayer-card"><div class="name">Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_fajr">Fajr</div><div class="time" id="Fajr">--:--</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_dhuhr">Dhuhr</div><div class="time" id="Dhuhr">--:--</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_asr">Asr</div><div class="time" id="Asr">--:--</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_maghrib">Maghrib</div><div class="time" id="Maghrib">--:--</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_isha">Isha</div><div class="time" id="Isha">--:--</div></div>
+            <div class="prayer-card"><div class="name" data-i18n="prayer_qibla">Qibla</div><div class="time" style="font-size:1rem;">Makkah</div></div>
         </div>
     </div>
 
     <!-- TAB 2: CORÁN -->
     <div id="tab2" class="tab-content">
         <div class="quran-text-area">
-            <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;">El Sagrado Corán</h3>
+            <h3 style="color:#d4af37; text-align:center; margin-bottom:10px;" data-i18n="quran_title">El Sagrado Corán</h3>
             <div class="controls">
                 <select id="surahSelect">
-                    <option value="">Selecciona una Sura</option>
+                    <option value="" data-i18n="select_surah">Selecciona una Sura</option>
                 </select>
-                <select id="langSelect" class="lang-select">
-                    <option value="es.asad">Español</option>
-                    <option value="en.sahih">Inglés</option>
-                    <option value="fr.hamidullah">Francés</option>
-                    <option value="de.bubenheim">Alemán</option>
-                </select>
+                <!-- El selector de idioma se ha movido al global, así que lo quitamos -->
             </div>
             <div id="audioStatus" style="text-align:center; color:#b8956a; margin:5px 0;"></div>
             <div id="quranDisplay">
-                <p style="text-align:center; color:#b8956a;">Elige una sura y un idioma.</p>
+                <p style="text-align:center; color:#b8956a;" data-i18n="quran_placeholder">Elige una sura y un idioma.</p>
             </div>
         </div>
     </div>
@@ -189,17 +214,17 @@
     <!-- TAB 3: DUA -->
     <div id="tab3" class="tab-content">
         <div class="dua-container">
-            <h3 style="color:#d4af37; text-align:center; margin-bottom:15px;">Súplicas (Duas)</h3>
+            <h3 style="color:#d4af37; text-align:center; margin-bottom:15px;" data-i18n="dua_title">Súplicas (Duas)</h3>
             <div id="duaList"></div>
         </div>
     </div>
 
-    <div class="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
+    <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
 <!-- REPRODUCTOR FIJO -->
 <div class="audio-player-fixed" id="audioPlayerFixed">
-    <div class="surah-info" id="surahInfo">Selecciona una sura para escuchar</div>
+    <div class="surah-info" id="surahInfo" data-i18n="select_surah_audio">Selecciona una sura para escuchar</div>
     <div class="controls-row">
         <button id="prevSurahBtn">&#8249;&#8249;</button>
         <button id="playBtn">&#9654;</button>
@@ -211,6 +236,202 @@
 
 <script>
     // ================================================================
+    // TRADUCCIONES DE LA INTERFAZ
+    // ================================================================
+    const i18n = {
+        es: {
+            tab_prayers: 'Rezos',
+            tab_quran: 'Corán',
+            tab_dua: 'Dua',
+            search_btn: 'Buscar',
+            next_prayer: 'Próximo rezo: ',
+            prayer_fajr: 'Fajr',
+            prayer_dhuhr: 'Dhuhr',
+            prayer_asr: 'Asr',
+            prayer_maghrib: 'Maghrib',
+            prayer_isha: 'Isha',
+            prayer_qibla: 'Qibla',
+            quran_title: 'El Sagrado Corán',
+            select_surah: 'Selecciona una Sura',
+            quran_placeholder: 'Elige una sura para leer.',
+            select_surah_audio: 'Selecciona una sura para escuchar',
+            dua_title: 'Súplicas (Duas)',
+            footer: 'Al-Quds · Horarios aproximados · Adhan automático',
+            loading: 'Cargando...',
+            error_network: 'Error de red. Intenta de nuevo.',
+            error_load: 'Error al cargar la sura en el idioma seleccionado.',
+            audio_loading: '⏳ Cargando audio...',
+            audio_ready: '✅ Audio listo. Pulsa play.',
+            audio_playing: '▶️ Reproduciendo...',
+            audio_paused: '⏸️ Pausado',
+            audio_ended: '✅ Finalizado',
+            audio_error: '❌ Error al cargar el audio. Intenta otra sura.',
+            audio_play_error: '❌ No se pudo reproducir.',
+            city_placeholder: 'Ej: Madrid, Barcelona',
+            gps_denied: '(GPS denegado)',
+            no_gps: '(sin GPS)',
+            city_not_found: 'Ciudad no encontrada.',
+            search_error: 'Error en la búsqueda.',
+            select_reciter: 'Selecciona un recitador.',
+            translation_not_available: '[Traducción no disponible]'
+        },
+        fr: {
+            tab_prayers: 'Prières',
+            tab_quran: 'Coran',
+            tab_dua: 'Dua',
+            search_btn: 'Chercher',
+            next_prayer: 'Prochaine prière: ',
+            prayer_fajr: 'Fajr',
+            prayer_dhuhr: 'Dhuhr',
+            prayer_asr: 'Asr',
+            prayer_maghrib: 'Maghrib',
+            prayer_isha: 'Isha',
+            prayer_qibla: 'Qibla',
+            quran_title: 'Le Saint Coran',
+            select_surah: 'Choisissez une Sourate',
+            quran_placeholder: 'Choisissez une sourate à lire.',
+            select_surah_audio: 'Choisissez une sourate à écouter',
+            dua_title: 'Invocations (Douas)',
+            footer: 'Al-Quds · Horaires approximatifs · Adhan automatique',
+            loading: 'Chargement...',
+            error_network: 'Erreur réseau. Réessayez.',
+            error_load: 'Erreur lors du chargement de la sourate dans la langue sélectionnée.',
+            audio_loading: '⏳ Chargement audio...',
+            audio_ready: '✅ Audio prêt. Appuyez sur play.',
+            audio_playing: '▶️ En cours...',
+            audio_paused: '⏸️ En pause',
+            audio_ended: '✅ Terminé',
+            audio_error: '❌ Erreur de chargement audio. Essayez une autre sourate.',
+            audio_play_error: '❌ Impossible de lire.',
+            city_placeholder: 'Ex: Paris, Lyon',
+            gps_denied: '(GPS refusé)',
+            no_gps: '(sans GPS)',
+            city_not_found: 'Ville introuvable.',
+            search_error: 'Erreur de recherche.',
+            select_reciter: 'Choisissez un récitateur.',
+            translation_not_available: '[Traduction non disponible]'
+        },
+        en: {
+            tab_prayers: 'Prayers',
+            tab_quran: 'Quran',
+            tab_dua: 'Dua',
+            search_btn: 'Search',
+            next_prayer: 'Next prayer: ',
+            prayer_fajr: 'Fajr',
+            prayer_dhuhr: 'Dhuhr',
+            prayer_asr: 'Asr',
+            prayer_maghrib: 'Maghrib',
+            prayer_isha: 'Isha',
+            prayer_qibla: 'Qibla',
+            quran_title: 'The Holy Quran',
+            select_surah: 'Select a Surah',
+            quran_placeholder: 'Choose a surah to read.',
+            select_surah_audio: 'Select a surah to listen',
+            dua_title: 'Supplications (Duas)',
+            footer: 'Al-Quds · Approximate times · Automatic Adhan',
+            loading: 'Loading...',
+            error_network: 'Network error. Try again.',
+            error_load: 'Error loading the surah in the selected language.',
+            audio_loading: '⏳ Loading audio...',
+            audio_ready: '✅ Audio ready. Press play.',
+            audio_playing: '▶️ Playing...',
+            audio_paused: '⏸️ Paused',
+            audio_ended: '✅ Finished',
+            audio_error: '❌ Error loading audio. Try another surah.',
+            audio_play_error: '❌ Could not play.',
+            city_placeholder: 'e.g. London, New York',
+            gps_denied: '(GPS denied)',
+            no_gps: '(no GPS)',
+            city_not_found: 'City not found.',
+            search_error: 'Search error.',
+            select_reciter: 'Select a reciter.',
+            translation_not_available: '[Translation not available]'
+        },
+        ar: {
+            tab_prayers: 'الصلوات',
+            tab_quran: 'القرآن',
+            tab_dua: 'الدعاء',
+            search_btn: 'بحث',
+            next_prayer: 'الصلاة القادمة: ',
+            prayer_fajr: 'الفجر',
+            prayer_dhuhr: 'الظهر',
+            prayer_asr: 'العصر',
+            prayer_maghrib: 'المغرب',
+            prayer_isha: 'العشاء',
+            prayer_qibla: 'القبلة',
+            quran_title: 'القرآن الكريم',
+            select_surah: 'اختر سورة',
+            quran_placeholder: 'اختر سورة للقراءة.',
+            select_surah_audio: 'اختر سورة للاستماع',
+            dua_title: 'الأدعية',
+            footer: 'القدس · أوقات تقريبية · أذان تلقائي',
+            loading: 'جاري التحميل...',
+            error_network: 'خطأ في الشبكة. حاول مرة أخرى.',
+            error_load: 'خطأ في تحميل السورة باللغة المختارة.',
+            audio_loading: '⏳ جاري تحميل الصوت...',
+            audio_ready: '✅ الصوت جاهز. اضغط تشغيل.',
+            audio_playing: '▶️ جاري التشغيل...',
+            audio_paused: '⏸️ متوقف مؤقت',
+            audio_ended: '✅ انتهى',
+            audio_error: '❌ خطأ في تحميل الصوت. جرب سورة أخرى.',
+            audio_play_error: '❌ تعذر التشغيل.',
+            city_placeholder: 'مثال: الرياض، القاهرة',
+            gps_denied: '(تم رفض GPS)',
+            no_gps: '(بدون GPS)',
+            city_not_found: 'لم يتم العثور على المدينة.',
+            search_error: 'خطأ في البحث.',
+            select_reciter: 'اختر قارئاً.',
+            translation_not_available: '[الترجمة غير متوفرة]'
+        }
+    };
+
+    // ================================================================
+    // TRADUCCIONES DE DUAS POR IDIOMA
+    // ================================================================
+    const duaTranslations = {
+        es: [
+            'Alabado sea Allah que nos devolvió la vida después de habernos hecho morir y a Él es el retorno.',
+            'En Tu nombre, oh Allah, muero y vivo.',
+            'En el nombre de Allah, confío en Allah, y no hay poder ni fuerza sino en Allah.',
+            'En el nombre de Allah entramos, en el nombre de Allah salimos, y en nuestro Señor confiamos.',
+            'En el nombre de Allah y con la bendición de Allah.',
+            'Alabado sea Allah que nos ha alimentado, nos ha dado de beber y nos ha hecho musulmanes.',
+            'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
+            '¡Tu perdón, oh Allah!'
+        ],
+        fr: [
+            'Louange à Allah qui nous a rendus vivants après nous avoir fait mourir et c\'est vers Lui le retour.',
+            'En Ton nom, ô Allah, je meurs et je vis.',
+            'Au nom d\'Allah, je place ma confiance en Allah, et il n\'y a de force ni de puissance qu\'en Allah.',
+            'Au nom d\'Allah nous entrons, au nom d\'Allah nous sortons, et en notre Seigneur nous plaçons notre confiance.',
+            'Au nom d\'Allah et par la bénédiction d\'Allah.',
+            'Louange à Allah qui nous a nourris, nous a abreuvés et nous a faits musulmans.',
+            'Ô Allah, je cherche refuge en Toi contre toute impureté et toute action malveillante.',
+            'Ton pardon, ô Allah !'
+        ],
+        en: [
+            'Praise be to Allah who gave us life after having taken it from us and unto Him is the resurrection.',
+            'In Your name, O Allah, I die and I live.',
+            'In the name of Allah, I put my trust in Allah, and there is no power nor strength except in Allah.',
+            'In the name of Allah we enter, in the name of Allah we leave, and upon our Lord we place our trust.',
+            'In the name of Allah and with the blessing of Allah.',
+            'Praise be to Allah who fed us, gave us drink, and made us Muslims.',
+            'O Allah, I seek refuge in You from all evil and evil actions.',
+            'Your forgiveness, O Allah!'
+        ],
+        ar: [
+            'الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور',
+            'باسمك اللهم أموت وأحيا',
+            'بسم الله، توكلت على الله، ولا حول ولا قوة إلا بالله',
+            'بسم الله ولجنا، وبسم الله خرجنا، وعلى ربنا توكلنا',
+            'بسم الله وعلى بركة الله',
+            'الحمد لله الذي أطعمنا وسقانا وجعلنا مسلمين',
+            'اللهم إني أعوذ بك من الخبث والخبائث',
+            'غفرانك'
+        ]
+    };
+
+    // ================================================================
     // VARIABLES GLOBALES
     // ================================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -220,54 +441,85 @@
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
     let currentSurah = '';
-    let currentEdition = 'es.asad';
+    let currentLang = 'es'; // idioma global
 
     let audio = new Audio();
     let isPlaying = false;
 
-    // ===== LISTA DE DUAS =====
+    // ===== LISTA DE DUAS (estática) =====
     const duas = [
-        {
-            title: 'Dua al despertar',
-            arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',
-            translation: 'Alabado sea Allah que nos devolvió la vida después de habernos hecho morir y a Él es el retorno.'
-        },
-        {
-            title: 'Dua al dormir',
-            arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
-            translation: 'En Tu nombre, oh Allah, muero y vivo.'
-        },
-        {
-            title: 'Dua al salir de casa',
-            arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ',
-            translation: 'En el nombre de Allah, confío en Allah, y no hay poder ni fuerza sino en Allah.'
-        },
-        {
-            title: 'Dua al entrar a casa',
-            arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا',
-            translation: 'En el nombre de Allah entramos, en el nombre de Allah salimos, y en nuestro Señor confiamos.'
-        },
-        {
-            title: 'Dua antes de comer',
-            arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ',
-            translation: 'En el nombre de Allah y con la bendición de Allah.'
-        },
-        {
-            title: 'Dua después de comer',
-            arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',
-            translation: 'Alabado sea Allah que nos ha alimentado, nos ha dado de beber y nos ha hecho musulmanes.'
-        },
-        {
-            title: 'Dua al entrar al baño',
-            arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',
-            translation: 'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.'
-        },
-        {
-            title: 'Dua al salir del baño',
-            arabic: 'غُفْرَانَكَ',
-            translation: '¡Tu perdón, oh Allah!'
-        }
+        { title: { es: 'Dua al despertar', fr: 'Dua au réveil', en: 'Dua upon waking', ar: 'دعاء الاستيقاظ' },
+          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ' },
+        { title: { es: 'Dua al dormir', fr: 'Dua avant de dormir', en: 'Dua before sleeping', ar: 'دعاء النوم' },
+          arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا' },
+        { title: { es: 'Dua al salir de casa', fr: 'Dua en quittant la maison', en: 'Dua leaving home', ar: 'دعاء الخروج من المنزل' },
+          arabic: 'بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ' },
+        { title: { es: 'Dua al entrar a casa', fr: 'Dua en entrant à la maison', en: 'Dua entering home', ar: 'دعاء دخول المنزل' },
+          arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا' },
+        { title: { es: 'Dua antes de comer', fr: 'Dua avant de manger', en: 'Dua before eating', ar: 'دعاء قبل الأكل' },
+          arabic: 'بِسْمِ اللهِ وَعَلَى بَرَكَةِ اللهِ' },
+        { title: { es: 'Dua después de comer', fr: 'Dua après avoir mangé', en: 'Dua after eating', ar: 'دعاء بعد الأكل' },
+          arabic: 'اَلْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ' },
+        { title: { es: 'Dua al entrar al baño', fr: 'Dua en entrant aux toilettes', en: 'Dua entering bathroom', ar: 'دعاء دخول الخلاء' },
+          arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ' },
+        { title: { es: 'Dua al salir del baño', fr: 'Dua en sortant des toilettes', en: 'Dua leaving bathroom', ar: 'دعاء الخروج من الخلاء' },
+          arabic: 'غُفْرَانَكَ' }
     ];
+
+    // ================================================================
+    // FUNCIONES DE INTERNACIONALIZACIÓN
+    // ================================================================
+    function getTranslation(key) {
+        return i18n[currentLang]?.[key] || i18n['es'][key] || key;
+    }
+
+    function getDuaTranslation(index) {
+        return duaTranslations[currentLang]?.[index] || duaTranslations['es'][index] || duas[index].arabic;
+    }
+
+    function getDuaTitle(index) {
+        return duas[index].title[currentLang] || duas[index].title['es'] || 'Dua';
+    }
+
+    // ================================================================
+    // ACTUALIZAR IDIOMA DE LA INTERFAZ
+    // ================================================================
+    function updateUILanguage() {
+        // Actualizar todos los elementos con data-i18n
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            let text = getTranslation(key);
+            // Para el countdown-box, tiene un span dentro, así que reemplazamos solo el texto antes del span
+            if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
+                const span = el.querySelector('span');
+                if (span) {
+                    el.childNodes.forEach(node => {
+                        if (node.nodeType === 3) node.textContent = text;
+                    });
+                } else {
+                    el.textContent = text;
+                }
+            } else {
+                el.textContent = text;
+            }
+        });
+
+        // Actualizar placeholder del input de ciudad
+        document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+        // Actualizar placeholder del select de sura (opción por defecto)
+        const surahSelect = document.getElementById('surahSelect');
+        const defaultOption = surahSelect.querySelector('option[value=""]');
+        if (defaultOption) {
+            defaultOption.textContent = getTranslation('select_surah');
+        }
+        // Actualizar mensaje de audioStatus si está vacío o es un mensaje estático
+        const audioStatus = document.getElementById('audioStatus');
+        if (audioStatus.textContent === '') {
+            // No hacer nada
+        } else {
+            // Si tiene un mensaje que no sea de estado, lo dejamos, pero mejor no sobreescribir
+        }
+    }
 
     // ================================================================
     // PESTAÑAS
@@ -282,7 +534,6 @@
             const tabId = this.dataset.tab;
             document.getElementById(tabId).classList.add('active');
 
-            // Mostrar/ocultar reproductor solo en Corán
             if (tabId === 'tab2') {
                 player.classList.add('visible');
             } else {
@@ -304,12 +555,12 @@
                     reverseGeocode(userLat, userLng);
                 },
                 () => {
-                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (GPS denegado) · ${new Date().toLocaleDateString('es-ES')}`;
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
                     fetchPrayerTimes(userLat, userLng);
                 }
             );
         } else {
-            document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} (sin GPS) · ${new Date().toLocaleDateString('es-ES')}`;
+            document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
             fetchPrayerTimes(userLat, userLng);
         }
     }
@@ -445,9 +696,9 @@
                     currentCity = data[0].display_name.split(',')[0];
                     document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
                     fetchPrayerTimes(lat, lng);
-                } else alert('Ciudad no encontrada.');
+                } else alert(getTranslation('city_not_found'));
             })
-            .catch(() => alert('Error en la búsqueda.'));
+            .catch(() => alert(getTranslation('search_error')));
     });
 
     // ================================================================
@@ -471,61 +722,71 @@
     }
 
     // ================================================================
-    // CARGA DE CORÁN (TEXTO + AUDIO)
+    // CARGA DE CORÁN (TEXTO + AUDIO) con idioma global
     // ================================================================
-    function loadQuran(surahNumber, edition) {
+    function loadQuran(surahNumber) {
         const display = document.getElementById('quranDisplay');
         if (!surahNumber) {
-            display.innerHTML = '<p style="text-align:center;color:#b8956a;">Elige una sura para leer.</p>';
-            document.getElementById('surahInfo').textContent = 'Selecciona una sura para escuchar';
+            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
             document.getElementById('audioStatus').textContent = '';
             return;
         }
-        display.innerHTML = '<p style="text-align:center;color:#d4af37;">Cargando...</p>';
+        display.innerHTML = `<p style="text-align:center;color:#d4af37;">${getTranslation('loading')}</p>`;
+
+        // Determinar la edición según el idioma global
+        let edition = '';
+        if (currentLang === 'es') edition = 'es.asad';
+        else if (currentLang === 'fr') edition = 'fr.hamidullah';
+        else if (currentLang === 'en') edition = 'en.sahih';
+        else edition = ''; // árabe solo texto
 
         const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
-        const translationUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}`;
+        const translationUrl = edition ? `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}` : null;
 
-        Promise.all([
-            fetch(arabicUrl).then(r => r.json()),
-            fetch(translationUrl).then(r => r.json())
-        ]).then(([arabicData, transData]) => {
-            if (arabicData.code === 200 && transData.code === 200) {
-                const arabicVerses = arabicData.data.ayahs;
-                const transVerses = transData.data.ayahs;
+        const promises = [fetch(arabicUrl).then(r => r.json())];
+        if (translationUrl) promises.push(fetch(translationUrl).then(r => r.json()));
 
-                const transMap = {};
-                transVerses.forEach(v => {
-                    transMap[v.numberInSurah] = v.text;
-                });
+        Promise.all(promises)
+            .then(([arabicData, transData]) => {
+                if (arabicData.code === 200) {
+                    const arabicVerses = arabicData.data.ayahs;
+                    let transMap = {};
+                    if (transData && transData.code === 200) {
+                        transData.data.ayahs.forEach(v => {
+                            transMap[v.numberInSurah] = v.text;
+                        });
+                    }
 
-                let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
+                    let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
 
-                arabicVerses.forEach(v => {
-                    const num = v.numberInSurah;
-                    const aText = v.text;
-                    const tText = transMap[num] || '[Traducción no disponible]';
-                    html += `<div class="verse" data-verse="${num}">
-                                <div class="arabic">
-                                    <span class="verse-number">${num}</span>
-                                    ${aText}
-                                </div>
-                                <div class="translation">${tText}</div>
-                             </div>`;
-                });
+                    arabicVerses.forEach(v => {
+                        const num = v.numberInSurah;
+                        const aText = v.text;
+                        const tText = transMap[num] || (edition ? getTranslation('translation_not_available') : '');
+                        html += `<div class="verse" data-verse="${num}">
+                                    <div class="arabic">
+                                        <span class="verse-number">${num}</span>
+                                        ${aText}
+                                    </div>`;
+                        if (edition) {
+                            html += `<div class="translation">${tText}</div>`;
+                        }
+                        html += `</div>`;
+                    });
 
-                display.innerHTML = html;
-                document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
-
-                // Cargar el audio
-                loadAudioForSurah(surahNumber);
-            } else {
-                display.innerHTML = `<p style="color:#ff6b6b;">Error al cargar la sura en el idioma seleccionado.</p>`;
-            }
-        }).catch(err => {
-            console.error(err);
-            display.innerHTML = '<p style="color:#ff6b6b;">Error de red. Intenta de nuevo.</p>';
-        });
+                    display.innerHTML = html;
+                    document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
+                    // Cargar audio
+                    loadAudioForSurah(surahNumber);
+                } else {
+                    display.innerHTML = `<p style="color:#ff6b6b;">${getTranslation('error_load')}</p>`;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                display.innerHTML = `<p style="color:#ff6b6b;">${getTranslation('error_network')}</p>`;
+            });
     }
 
     // ================================================================
@@ -541,7 +802,7 @@
         audio.load();
 
         const statusDiv = document.getElementById('audioStatus');
-        statusDiv.textContent = '⏳ Cargando audio...';
+        statusDiv.textContent = getTranslation('audio_loading');
         document.getElementById('progressSlider').value = 0;
         document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
         document.getElementById('playBtn').innerHTML = '&#9654;';
@@ -549,7 +810,7 @@
 
         audio.onloadedmetadata = function() {
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-            statusDiv.textContent = '✅ Audio listo. Pulsa play.';
+            statusDiv.textContent = getTranslation('audio_ready');
         };
 
         audio.ontimeupdate = function() {
@@ -562,13 +823,13 @@
         audio.onplay = function() {
             isPlaying = true;
             document.getElementById('playBtn').innerHTML = '&#9208;';
-            statusDiv.textContent = '▶️ Reproduciendo...';
+            statusDiv.textContent = getTranslation('audio_playing');
         };
 
         audio.onpause = function() {
             isPlaying = false;
             document.getElementById('playBtn').innerHTML = '&#9654;';
-            statusDiv.textContent = '⏸️ Pausado';
+            statusDiv.textContent = getTranslation('audio_paused');
         };
 
         audio.onended = function() {
@@ -576,12 +837,12 @@
             document.getElementById('playBtn').innerHTML = '&#9654;';
             document.getElementById('progressSlider').value = 0;
             document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
-            statusDiv.textContent = '✅ Finalizado';
+            statusDiv.textContent = getTranslation('audio_ended');
         };
 
         audio.onerror = function(e) {
             console.error('Error de audio:', e);
-            statusDiv.textContent = '❌ Error al cargar el audio. Intenta otra sura.';
+            statusDiv.textContent = getTranslation('audio_error');
             document.getElementById('playBtn').innerHTML = '&#9654;';
             isPlaying = false;
             document.getElementById('surahInfo').textContent = 'Error de audio';
@@ -600,13 +861,13 @@
     // ================================================================
     document.getElementById('playBtn').addEventListener('click', function() {
         if (!audio.src) {
-            alert('Primero selecciona una sura.');
+            alert(getTranslation('select_surah_audio'));
             return;
         }
         if (audio.paused) {
             audio.play().catch(e => {
                 console.log('Error al reproducir:', e);
-                document.getElementById('audioStatus').textContent = '❌ No se pudo reproducir.';
+                document.getElementById('audioStatus').textContent = getTranslation('audio_play_error');
             });
         } else {
             audio.pause();
@@ -646,31 +907,24 @@
     // ================================================================
     document.getElementById('surahSelect').addEventListener('change', function() {
         currentSurah = this.value;
-        const lang = document.getElementById('langSelect').value;
-        currentEdition = lang;
         if (isPlaying) audio.pause();
-        loadQuran(currentSurah, lang);
-    });
-
-    document.getElementById('langSelect').addEventListener('change', function() {
-        if (currentSurah) {
-            currentEdition = this.value;
-            loadQuran(currentSurah, this.value);
-        }
+        loadQuran(currentSurah);
     });
 
     // ================================================================
-    // CARGA DE DUAS
+    // CARGA DE DUAS (con idioma actual)
     // ================================================================
     function loadDuas() {
         const container = document.getElementById('duaList');
         let html = '';
         duas.forEach((dua, index) => {
+            const title = getDuaTitle(index);
+            const translation = getDuaTranslation(index);
             html += `
                 <div class="dua-item">
-                    <div class="dua-title">${dua.title}</div>
+                    <div class="dua-title">${title}</div>
                     <div class="dua-arabic">${dua.arabic}</div>
-                    <div class="dua-translation">${dua.translation}</div>
+                    <div class="dua-translation">${translation}</div>
                 </div>
             `;
         });
@@ -678,12 +932,38 @@
     }
 
     // ================================================================
+    // CAMBIO DE IDIOMA GLOBAL
+    // ================================================================
+    document.getElementById('globalLangSelect').addEventListener('change', function() {
+        currentLang = this.value;
+        // Actualizar interfaz
+        updateUILanguage();
+        // Recargar duas
+        loadDuas();
+        // Si hay una sura seleccionada, recargar Corán
+        if (currentSurah) {
+            loadQuran(currentSurah);
+        } else {
+            // Actualizar placeholder
+            const display = document.getElementById('quranDisplay');
+            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+        }
+        // Actualizar mensaje de audioStatus si está en un estado fijo (por ejemplo, error o ready)
+        // Podríamos hacerlo, pero lo dejamos
+    });
+
+    // ================================================================
     // INICIO
     // ================================================================
     window.onload = function() {
+        // Establecer idioma por defecto (es)
+        document.getElementById('globalLangSelect').value = 'es';
+        currentLang = 'es';
+        updateUILanguage();
         loadSurahList();
         getUserLocation();
-        loadDuas();  // Cargar las súplicas
+        loadDuas();
     };
 </script>
 </body>
