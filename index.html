@@ -544,7 +544,7 @@
             opacity: 0.6;
         }
 
-        /* ===== BANNER DE COOKIES SIEMPRE VISIBLE HASTA ACEPTAR/RECHAZAR ===== */
+        /* ===== BANNER DE COOKIES ===== */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -554,8 +554,8 @@
             backdrop-filter: blur(16px);
             border-top: 3px solid #d4af37;
             padding: 20px 24px;
-            z-index: 2000;
-            display: none;
+            z-index: 9999;
+            display: none;  /* Oculto por defecto, se muestra con clase .visible */
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
@@ -563,7 +563,9 @@
             box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
             font-size: 0.95rem;
         }
-        .cookie-banner.visible { display: flex; }
+        .cookie-banner.visible {
+            display: flex;
+        }
         .cookie-banner p {
             flex: 1;
             min-width: 200px;
@@ -734,8 +736,8 @@
     </div>
 </div>
 
-<!-- BANNER DE COOKIES (SIEMPRE VISIBLE HASTA RESPUESTA) -->
-<div class="cookie-banner visible" id="cookieBanner">
+<!-- BANNER DE COOKIES (INICIALMENTE OCULTO, SE MUESTRA CON JS) -->
+<div class="cookie-banner" id="cookieBanner">
     <p><strong>🍪 ¡Hola!</strong> Para ofrecerte la mejor experiencia, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante para nosotros.</p>
     <div class="cookie-buttons">
         <button class="accept-btn" id="acceptCookies">Aceptar</button>
@@ -1223,13 +1225,13 @@
     // ================================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     let prayerTimes = {};
-    let userLat = 40.4165, userLng = -3.7026; // Madrid por defecto (si rechaza cookies)
+    let userLat = 40.4165, userLng = -3.7026; // Madrid por defecto
     let currentCity = 'Madrid';
     let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
     adhanAudio.preload = 'auto';
     let currentSurah = '';
     let currentLang = 'es';
-    let cookiesAccepted = false; // True solo si el usuario ha aceptado explícitamente
+    let cookiesAccepted = false;
 
     let audio = new Audio();
     let isPlaying = false;
@@ -1297,26 +1299,25 @@
     }
 
     // ================================================================
-    // GESTIÓN DE COOKIES (siempre muestra el banner al cargar)
+    // GESTIÓN DE COOKIES (el banner siempre se muestra hasta que el usuario elija)
     // ================================================================
     function checkCookies() {
-        // Siempre mostrar el banner al cargar la página, independientemente de si ya había respuesta previa
-        // Pero si ya hay una respuesta guardada, la aplicamos y ocultamos el banner.
         const stored = localStorage.getItem('cookiesAccepted');
+        const banner = document.getElementById('cookieBanner');
         if (stored === 'true') {
             cookiesAccepted = true;
-            document.getElementById('cookieBanner').classList.remove('visible');
-            // Restaurar preferencias y ubicación
-            restorePreferences();
+            banner.classList.remove('visible'); // ocultar banner
+            restorePreferences(); // restaurar preferencias y ubicación
         } else if (stored === 'false') {
             cookiesAccepted = false;
-            document.getElementById('cookieBanner').classList.remove('visible');
-            // Usar ubicación por defecto (Madrid)
-            usarUbicacionPorDefecto();
+            banner.classList.remove('visible');
+            usarUbicacionPorDefecto(); // ubicación por defecto
         } else {
-            // No hay cookie, mostrar banner y bloquear carga de ubicación
-            document.getElementById('cookieBanner').classList.add('visible');
+            // No hay respuesta, mostrar banner (se asegura que esté visible)
+            cookiesAccepted = false;
+            banner.classList.add('visible');
             // No cargar ubicación hasta que responda
+            document.getElementById('fechaLocation').innerHTML = '📍 Acepta las cookies para cargar tu ubicación.';
         }
     }
 
@@ -1333,7 +1334,6 @@
         localStorage.setItem('cookiesAccepted', 'false');
         cookiesAccepted = false;
         document.getElementById('cookieBanner').classList.remove('visible');
-        // Usar ubicación por defecto (Madrid)
         usarUbicacionPorDefecto();
     }
 
@@ -1438,7 +1438,6 @@
     // ================================================================
     function getUserLocation() {
         if (!cookiesAccepted) {
-            // Si no hay cookies, no pedir ubicación
             usarUbicacionPorDefecto();
             return;
         }
@@ -2082,21 +2081,15 @@
     document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
 
     window.onload = function() {
-        // Primero verificar cookies (esto decide si mostrar banner o no)
+        // 1. Verificar cookies (esto mostrará el banner si no hay respuesta)
         checkCookies();
-        // Cargar listas de suras y Duas
+        // 2. Cargar listas de suras y Duas
         loadSurahList();
-        // Si no hay cookies aceptadas, no cargar ubicación (se hará tras aceptar)
-        // Si ya están aceptadas, checkCookies llama a restorePreferences o getUserLocation
-        // Pero si no hay cookie, no hacemos nada más (el banner está visible)
-        if (cookiesAccepted) {
-            // Ya se llamó a getUserLocation desde checkCookies o restorePreferences
-        } else {
-            // Mostrar ubicación por defecto (Madrid) solo si no hay cookie
-            // Pero si no hay cookie, mostramos "Cargando ubicación..." hasta que acepte
-            document.getElementById('fechaLocation').innerHTML = '📍 Acepta las cookies para cargar tu ubicación.';
-        }
+        // 3. Si ya hay cookies aceptadas, checkCookies llamó a restorePreferences o getUserLocation
+        //    Si no hay respuesta, el banner está visible y no se carga ubicación.
+        // 4. Actualizar idioma
         updateUILanguage();
+        // 5. Iniciar brújula si es necesario
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
         }, 500);
