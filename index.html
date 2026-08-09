@@ -555,7 +555,7 @@
             border-top: 3px solid #d4af37;
             padding: 20px 24px;
             z-index: 9999;
-            display: none;  /* Oculto por defecto, se muestra con clase .visible */
+            display: none;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
@@ -990,49 +990,41 @@
     // ================================================================
     const duaTranslations = {
         es: [
-            // Rizq (Sustento) - índices 0-4
             'Oh Allah, te pido el sustento, la suficiencia y la bendición en lo que nos has concedido.',
             'Oh Allah, provee para mí un sustento lícito y puro, y no me hagas dependiente de nadie.',
             'Oh Allah, bendice nuestro alimento y danos el sustento de Tu generosidad.',
             'Oh Allah, te pido el sustento abundante, la salud duradera y la muerte en la fe.',
             'Oh Allah, no me hagas depender de la creación, y provee para mí desde donde no espero.',
-            // Istighfar (Perdón) - índices 5-9
             'Oh Allah, perdona mis pecados y errores, y límpiame como se limpia la tela blanca.',
             'Oh Allah, te pido el perdón y la salud en mi religión, mi vida y mi familia.',
             'Oh Allah, he sido injusto conmigo mismo, así que perdóname, pues solo Tú perdonas los pecados.',
             'Oh Allah, te pido el perdón y la protección contra el castigo del fuego y la tumba.',
             'Oh Allah, te pido el perdón de lo que he hecho y lo que he dejado de hacer.',
-            // Protección - índices 10-14
             'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
             'Oh Allah, me refugio en Ti de la pobreza, la miseria y la humillación.',
             'Oh Allah, me refugio en Ti de la ansiedad, la tristeza y la debilidad.',
             'Oh Allah, me refugio en Ti de la incredulidad, la pobreza y el castigo de la tumba.',
             'Oh Allah, me refugio en Ti de la opresión de los opresores y de las maquinaciones de los enemigos.',
-            // Salud - índices 15-19
             'Oh Allah, te pido la salud en este mundo y en el más allá.',
             'Oh Allah, te pido la salud, la seguridad y la buena fe en todo momento.',
             'Oh Allah, te pido la salud en mi cuerpo, en mi audición y en mi vista.',
             'Oh Allah, te pido la salud, la seguridad y la protección contra toda enfermedad.',
             'Oh Allah, te pido la salud en mi corazón y en mis acciones.',
-            // Familia - índices 20-24
             'Oh Allah, protege a mi familia y a mis seres queridos, y bendícenos con Tu misericordia.',
             'Oh Allah, reúne a mi familia en el bien y guíanos hacia lo que amas.',
             'Oh Allah, protege a mis hijos y a mi cónyuge de todo mal.',
             'Oh Allah, bendice nuestro hogar y nuestra unión familiar.',
             'Oh Allah, haz que mi familia sea de los que aman y son amados por Ti.',
-            // Viaje - índices 25-29
             'Oh Allah, te pido la seguridad en el viaje y la bendición en el destino.',
             'Oh Allah, haz que este viaje sea fácil y llévanos a nuestro destino con bien.',
             'Oh Allah, te pido la protección durante el viaje y el regreso a salvo.',
             'Oh Allah, te pido el buen viaje y la buena compañía.',
             'Oh Allah, te pido la seguridad en el camino y la protección contra todo peligro.',
-            // Generales - índices 30-34
             'Oh Allah, te pido el bien en este mundo y en el más allá.',
             'Oh Allah, te pido el bien de lo que he hecho y el bien de lo que no he hecho.',
             'Oh Allah, te pido la constancia en el bien y el buen juicio.',
             'Oh Allah, te pido el paraíso y la protección del infierno.',
             'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Ti.',
-            // Mañana y Tarde - índices 35-39
             'Oh Allah, te pido el bien de la mañana y el bien de la noche.',
             'Oh Allah, te pido el bien del día y el bien de la noche que sigue.',
             'Oh Allah, te pido la protección en la mañana y en la tarde.',
@@ -1040,49 +1032,41 @@
             'Oh Allah, te pido el bien en el día y en la noche, y me refugio en Ti de su mal.'
         ],
         fr: [
-            // Rizq
             'Ô Allah, je Te demande la subsistance, la suffisance et la bénédiction dans ce que Tu nous as accordé.',
             'Ô Allah, accorde-moi une subsistance licite et pure, et ne me rends pas dépendant de personne.',
             'Ô Allah, bénis notre nourriture et donne-nous la subsistance de Ta générosité.',
             'Ô Allah, je Te demande la subsistance abondante, la santé durable et la mort dans la foi.',
             'Ô Allah, ne me rends pas dépendant de la création, et pourvois-moi d\'où je ne m\'y attends pas.',
-            // Istighfar
             'Ô Allah, pardonne mes péchés et mes erreurs, et purifie-moi comme on purifie le vêtement blanc.',
             'Ô Allah, je Te demande le pardon et la santé dans ma religion, ma vie et ma famille.',
             'Ô Allah, j\'ai été injuste envers moi-même, alors pardonne-moi, car Toi seul pardonnes les péchés.',
             'Ô Allah, je Te demande le pardon et la protection contre le châtiment du feu et de la tombe.',
             'Ô Allah, je Te demande le pardon de ce que j\'ai fait et de ce que j\'ai laissé faire.',
-            // Protection
             'Ô Allah, je cherche refuge en Toi contre tout mal et les mauvaises actions.',
             'Ô Allah, je cherche refuge en Toi contre la pauvreté, la misère et l\'humiliation.',
             'Ô Allah, je cherche refuge en Toi contre l\'anxiété, la tristesse et la faiblesse.',
             'Ô Allah, je cherche refuge en Toi contre la mécréance, la pauvreté et le châtiment de la tombe.',
             'Ô Allah, je cherche refuge en Toi contre l\'oppression des oppresseurs et les manœuvres des ennemis.',
-            // Santé
             'Ô Allah, je Te demande la santé dans ce monde et dans l\'au-delà.',
             'Ô Allah, je Te demande la santé, la sécurité et la bonne foi en tout temps.',
             'Ô Allah, je Te demande la santé dans mon corps, dans mon ouïe et dans ma vue.',
             'Ô Allah, je Te demande la santé, la sécurité et la protection contre toute maladie.',
             'Ô Allah, je Te demande la santé dans mon cœur et dans mes actions.',
-            // Famille
             'Ô Allah, protège ma famille et mes proches, et bénis-nous de Ta miséricorde.',
             'Ô Allah, réunis ma famille dans le bien et guide-nous vers ce que Tu aimes.',
             'Ô Allah, protège mes enfants et mon conjoint de tout mal.',
             'Ô Allah, bénis notre foyer et notre union familiale.',
             'Ô Allah, fais que ma famille soit de ceux qui T\'aiment et sont aimés par Toi.',
-            // Voyage
             'Ô Allah, je Te demande la sécurité pendant le voyage et la bénédiction à destination.',
             'Ô Allah, rends ce voyage facile et amène-nous à destination en toute sécurité.',
             'Ô Allah, je Te demande la protection pendant le voyage et le retour en sécurité.',
             'Ô Allah, je Te demande le bon voyage et la bonne compagnie.',
             'Ô Allah, je Te demande la sécurité sur la route et la protection contre tout danger.',
-            // Générales
             'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-delà.',
             'Ô Allah, je Te demande le bien de ce que j\'ai fait et le bien de ce que je n\'ai pas fait.',
             'Ô Allah, je Te demande la constance dans le bien et le bon jugement.',
             'Ô Allah, je Te demande le Paradis et la protection de l\'Enfer.',
             'Ô Allah, je Te demande l\'amour de Toi, l\'amour de ceux qui T\'aiment et l\'amour des œuvres qui me rapprochent de Toi.',
-            // Matin et Soir
             'Ô Allah, je Te demande le bien du matin et le bien de la nuit.',
             'Ô Allah, je Te demande le bien du jour et le bien de la nuit qui suit.',
             'Ô Allah, je Te demande la protection au matin et au soir.',
@@ -1090,49 +1074,41 @@
             'Ô Allah, je Te demande le bien dans le jour et dans la nuit, et je cherche refuge en Toi contre leur mal.'
         ],
         en: [
-            // Rizq
             'O Allah, I ask You for sustenance, sufficiency, and blessing in what You have granted us.',
             'O Allah, provide me with lawful and pure sustenance, and do not make me dependent on anyone.',
             'O Allah, bless our food and give us sustenance from Your generosity.',
             'O Allah, I ask You for abundant sustenance, lasting health, and death in faith.',
             'O Allah, do not make me dependent on creation, and provide for me from where I do not expect.',
-            // Istighfar
             'O Allah, forgive my sins and mistakes, and purify me as white cloth is purified.',
             'O Allah, I ask You for forgiveness and health in my religion, my life, and my family.',
             'O Allah, I have been unjust to myself, so forgive me, for only You forgive sins.',
             'O Allah, I ask You for forgiveness and protection from the punishment of the Fire and the grave.',
             'O Allah, I ask You for forgiveness for what I have done and what I have left undone.',
-            // Protection
             'O Allah, I seek refuge in You from all evil and evil actions.',
             'O Allah, I seek refuge in You from poverty, misery, and humiliation.',
             'O Allah, I seek refuge in You from anxiety, sorrow, and weakness.',
             'O Allah, I seek refuge in You from disbelief, poverty, and the punishment of the grave.',
             'O Allah, I seek refuge in You from the oppression of oppressors and the plots of enemies.',
-            // Health
             'O Allah, I ask You for health in this world and the Hereafter.',
             'O Allah, I ask You for health, safety, and good faith at all times.',
             'O Allah, I ask You for health in my body, my hearing, and my sight.',
             'O Allah, I ask You for health, safety, and protection from all diseases.',
             'O Allah, I ask You for health in my heart and in my actions.',
-            // Family
             'O Allah, protect my family and loved ones, and bless us with Your mercy.',
             'O Allah, gather my family in goodness and guide us to what You love.',
             'O Allah, protect my children and spouse from all evil.',
             'O Allah, bless our home and our family unity.',
             'O Allah, make my family among those who love You and are loved by You.',
-            // Travel
             'O Allah, I ask You for safety during travel and blessing at the destination.',
             'O Allah, make this journey easy and bring us to our destination safely.',
             'O Allah, I ask You for protection during travel and a safe return.',
             'O Allah, I ask You for a good journey and good company.',
             'O Allah, I ask You for safety on the road and protection from all danger.',
-            // General
             'O Allah, I ask You for the good of this world and the Hereafter.',
             'O Allah, I ask You for the good of what I have done and the good of what I have not done.',
             'O Allah, I ask You for steadfastness in good and sound judgment.',
             'O Allah, I ask You for Paradise and protection from Hell.',
             'O Allah, I ask You for love of You, love of those who love You, and love of deeds that bring me closer to You.',
-            // Morning & Evening
             'O Allah, I ask You for the good of the morning and the good of the night.',
             'O Allah, I ask You for the good of the day and the good of the night that follows.',
             'O Allah, I ask You for protection in the morning and the evening.',
@@ -1140,49 +1116,41 @@
             'O Allah, I ask You for the good in the day and night, and I seek refuge in You from their evil.'
         ],
         ar: [
-            // Rizq
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الرِّزْقَ وَالْكَفَافَ وَالْبَرَكَةَ فِيمَا رَزَقْتَنَا',
             'اللَّهُمَّ ارْزُقْنِي رِزْقًا حَلَالًا طَيِّبًا وَلَا تَجْعَلْنِي مُحْتَاجًا إِلَى أَحَدٍ',
             'اللَّهُمَّ بَارِكْ لَنَا فِي طَعَامِنَا وَارْزُقْنَا مِنْ فَضْلِكَ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الرِّزْقَ الْوَاسِعَ وَالصِّحَّةَ الدَّائِمَةَ وَالْمَوْتَ عَلَى الْإِيمَانِ',
             'اللَّهُمَّ لَا تَجْعَلْنِي مُحْتَاجًا إِلَى الْخَلْقِ وَارْزُقْنِي مِنْ حَيْثُ لَا أَحْتَسِبُ',
-            // Istighfar
             'اللَّهُمَّ اغْفِرْ لِي ذُنُوبِي وَخَطَايَايَ وَطَهِّرْنِي كَمَا يُطَهَّرُ الثَّوْبُ الْأَبْيَضُ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي',
             'اللَّهُمَّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ مِنْ عَذَابِ النَّارِ وَعَذَابِ الْقَبْرِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ عَمَّا عَمِلْتُ وَعَمَّا تَرَكْتُ',
-            // Protection
             'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ كُلِّ سُوءٍ وَمِنَ الْأَعْمَالِ الْخَبِيثَةِ',
             'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْفَقْرِ وَالْبُؤْسِ وَالذُّلِّ',
             'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالضَّعْفِ',
             'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ وَعَذَابِ الْقَبْرِ',
             'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ ظُلْمِ الظَّالِمِينَ وَكَيْدِ الْأَعْدَاءِ',
-            // Health
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ وَالسَّلَامَةَ وَحُسْنَ الْيَقِينِ فِي كُلِّ حِينٍ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي بَدَنِي وَفِي سَمْعِي وَفِي بَصَرِي',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ وَالسَّلَامَةَ وَالْوِقَايَةَ مِنْ كُلِّ دَاءٍ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي قَلْبِي وَفِي عَمَلِي',
-            // Family
             'اللَّهُمَّ احْفَظْ أَهْلِي وَأَحِبَّتِي وَبَارِكْ لَنَا بِرَحْمَتِكَ',
             'اللَّهُمَّ اجْمَعْ شَمْلَ أَهْلِي عَلَى الْخَيْرِ وَاهْدِنَا إِلَى مَا تُحِبُّ',
             'اللَّهُمَّ احْفَظْ أَوْلَادِي وَزَوْجَتِي مِنْ كُلِّ سُوءٍ',
             'اللَّهُمَّ بَارِكْ لَنَا فِي بَيْتِنَا وَفِي أُسْرَتِنَا',
             'اللَّهُمَّ اجْعَلْ أَهْلِي مِنْ أَهْلِ مَنْ يُحِبُّونَكَ وَيُحِبُّهُمْ لَكَ',
-            // Travel
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ السَّلَامَةَ فِي السَّفَرِ وَالْبَرَكَةَ فِي الْمَقْصِدِ',
             'اللَّهُمَّ هَوِّنْ عَلَيْنَا هَذَا السَّفَرَ وَبَلِّغْنَا مَقْصِدَنَا بِخَيْرٍ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْحِفْظَ فِي السَّفَرِ وَالرُّجُوعَ بِسَلَامٍ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُسْنَ السَّفَرِ وَحُسْنَ الصُّحْبَةِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ السَّلَامَةَ فِي الطَّرِيقِ وَالْوِقَايَةَ مِنْ كُلِّ مَخَاوِفَ',
-            // General
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الدُّنْيَا وَالْآخِرَةِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ مَا عَمِلْتُ وَخَيْرَ مَا لَمْ أَعْمَلْ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الثَّبَاتَ فِي الْخَيْرِ وَالْعَزْمَ عَلَى الرُّشْدِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ حُبَّكَ وَحُبَّ مَنْ يُحِبُّكَ وَحُبَّ الْعَمَلِ الَّذِي يُقَرِّبُنِي إِلَيْكَ',
-            // Morning & Evening
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الصَّبَاحِ وَخَيْرَ الْمَسَاءِ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْيَوْمِ وَخَيْرَ اللَّيْلِ بَعْدَهُ',
             'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْحِفْظَ فِي الصَّبَاحِ وَفِي الْمَسَاءِ',
@@ -1257,7 +1225,7 @@
     let currentSurah = '';
     let currentLang = 'es';
     let cookiesAccepted = false;
-    let locationEnabled = false; // indica si se ha habilitado la ubicación por cookies
+    let locationEnabled = false;
 
     let audio = new Audio();
     let isPlaying = false;
@@ -1328,6 +1296,15 @@
             document.getElementById('cookieWarning').style.display = 'block';
             document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
         }
+
+        // Recargar Corán si hay una sura seleccionada
+        if (currentSurah) {
+            loadQuran(currentSurah);
+        } else {
+            const display = document.getElementById('quranDisplay');
+            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+        }
     }
 
     // ================================================================
@@ -1369,7 +1346,6 @@
         // Deshabilitar búsqueda de ciudad
         document.getElementById('searchBtn').disabled = true;
         document.getElementById('cityInput').disabled = true;
-        // Mostrar mensaje en el campo de ciudad
         document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
     }
 
@@ -1387,7 +1363,6 @@
         locationEnabled = true;
         document.getElementById('cookieBanner').classList.remove('visible');
         habilitarFuncionalidad();
-        // Guardar preferencias actuales y obtener ubicación
         saveCurrentPreferences();
         getUserLocation();
     }
@@ -1450,13 +1425,6 @@
             this.classList.add('active');
             currentLang = this.dataset.lang;
             updateUILanguage();
-            if (currentSurah) {
-                loadQuran(currentSurah);
-            } else {
-                const display = document.getElementById('quranDisplay');
-                display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
-                document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
-            }
             if (cookiesAccepted) saveCurrentPreferences();
         });
     });
@@ -1494,11 +1462,9 @@
             mostrarMensajeSinCookies();
             return;
         }
-        // Primero intentar restaurar preferencias guardadas
         if (restorePreferences()) {
             return;
         }
-        // Si no hay preferencias guardadas, pedir geolocalización
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
@@ -1903,7 +1869,6 @@
         container.innerHTML = html;
     }
 
-    // Eventos de selector de categorías
     document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('#duaCategorySelector button').forEach(b => b.classList.remove('active'));
@@ -1945,7 +1910,6 @@
         document.getElementById('qiblaDirectionText').textContent = dir;
     }
 
-    // Dibujo de la brújula mejorado
     const canvas = document.getElementById('compassCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -1958,7 +1922,6 @@
 
         ctx.clearRect(0, 0, w, h);
 
-        // Sombra exterior
         const shadow = ctx.createRadialGradient(cx, cy, radio*0.8, cx, cy, radio*1.2);
         shadow.addColorStop(0, 'rgba(212, 175, 55, 0.05)');
         shadow.addColorStop(1, 'rgba(212, 175, 55, 0)');
@@ -1967,7 +1930,6 @@
         ctx.fillStyle = shadow;
         ctx.fill();
 
-        // Fondo del círculo
         const grad = ctx.createRadialGradient(cx-radio*0.3, cy-radio*0.3, radio*0.1, cx, cy, radio);
         grad.addColorStop(0, '#1e3a1e');
         grad.addColorStop(0.7, '#0d1f0d');
@@ -1976,7 +1938,6 @@
         ctx.arc(cx, cy, radio, 0, 2 * Math.PI);
         ctx.fillStyle = grad;
         ctx.fill();
-        // Borde brillante
         ctx.strokeStyle = '#d4af37';
         ctx.lineWidth = 2.5;
         ctx.shadowColor = '#d4af37';
@@ -1984,7 +1945,6 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Marcas de los puntos cardinales
         const puntos = [
             { ang: 0, label: 'N', color: '#ff4d4d' },
             { ang: 90, label: 'E', color: '#b8956a' },
@@ -2009,7 +1969,6 @@
             ctx.fill();
         });
 
-        // Líneas de los 45°
         for (let i = 0; i < 8; i++) {
             const ang = i * 45 * Math.PI / 180;
             const x1 = cx + radio * 0.70 * Math.sin(ang);
@@ -2024,7 +1983,6 @@
             ctx.stroke();
         }
 
-        // Flecha de la Qibla
         let anguloFinal = 0;
         if (headingAvailable) {
             anguloFinal = (qiblaAngle - deviceHeading) * Math.PI / 180;
@@ -2067,7 +2025,6 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Círculo central con brillo
         const gradCenter = ctx.createRadialGradient(cx-4, cy-4, 2, cx, cy, 16);
         gradCenter.addColorStop(0, '#d4af37');
         gradCenter.addColorStop(0.6, '#b8952a');
@@ -2141,15 +2098,9 @@
     document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
 
     window.onload = function() {
-        // 1. Verificar cookies (esto mostrará el banner si no hay respuesta)
         checkCookies();
-        // 2. Cargar listas de suras y Duas
         loadSurahList();
-        // 3. Si ya hay cookies aceptadas, checkCookies llamó a restorePreferences o getUserLocation
-        //    Si no hay respuesta, el banner está visible y no se carga ubicación.
-        // 4. Actualizar idioma
         updateUILanguage();
-        // 5. Iniciar brújula si es necesario
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
         }, 500);
