@@ -830,10 +830,10 @@
 
 <!-- BANNER DE COOKIES (INICIALMENTE OCULTO, SE MUESTRA CON JS) -->
 <div class="cookie-banner" id="cookieBanner">
-    <p><strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante.</p>
+    <p data-i18n="cookie_message"><strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante.</p>
     <div class="cookie-buttons">
-        <button class="accept-btn" id="acceptCookies">Aceptar</button>
-        <button class="reject-btn" id="rejectCookies">Rechazar</button>
+        <button class="accept-btn" id="acceptCookies" data-i18n="cookie_accept">Aceptar</button>
+        <button class="reject-btn" id="rejectCookies" data-i18n="cookie_reject">Rechazar</button>
     </div>
 </div>
 
@@ -897,7 +897,10 @@
             cookies_required: 'Acepta las cookies para ver los horarios de oración.',
             location_disabled: 'Ubicación deshabilitada por rechazo de cookies.',
             allah_title: 'Los 99 Nombres de Allah',
-            allah_subtitle: 'Asma\'ul Husna - Los Nombres Más Bellos'
+            allah_subtitle: 'Asma\'ul Husna - Los Nombres Más Bellos',
+            cookie_message: '<strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante.',
+            cookie_accept: 'Aceptar',
+            cookie_reject: 'Rechazar'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -954,7 +957,10 @@
             cookies_required: 'Acceptez les cookies pour voir les horaires de prière.',
             location_disabled: 'Localisation désactivée par refus des cookies.',
             allah_title: 'Les 99 Noms d\'Allah',
-            allah_subtitle: 'Asma\'ul Husna - Les Plus Beaux Noms'
+            allah_subtitle: 'Asma\'ul Husna - Les Plus Beaux Noms',
+            cookie_message: '<strong>🍪 Bonjour !</strong> Pour vous offrir les horaires de prière selon votre localisation, nous avons besoin de votre consentement pour utiliser des cookies et mémoriser vos préférences (langue, ville, localisation). Votre vie privée est importante.',
+            cookie_accept: 'Accepter',
+            cookie_reject: 'Refuser'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -1011,7 +1017,10 @@
             cookies_required: 'Accept cookies to see prayer times.',
             location_disabled: 'Location disabled due to cookie rejection.',
             allah_title: 'The 99 Names of Allah',
-            allah_subtitle: 'Asma\'ul Husna - The Most Beautiful Names'
+            allah_subtitle: 'Asma\'ul Husna - The Most Beautiful Names',
+            cookie_message: '<strong>🍪 Hello!</strong> To provide you with prayer times based on your location, we need your consent to use cookies and remember your preferences (language, city, location). Your privacy is important.',
+            cookie_accept: 'Accept',
+            cookie_reject: 'Reject'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -1068,7 +1077,10 @@
             cookies_required: 'اقبل ملفات الارتباط لمشاهدة أوقات الصلاة.',
             location_disabled: 'تم تعطيل الموقع بسبب رفض ملفات الارتباط.',
             allah_title: 'أسماء الله الحسنى',
-            allah_subtitle: 'أسماء الله الحسنى - الأسماء الأكثر جمالاً'
+            allah_subtitle: 'أسماء الله الحسنى - الأسماء الأكثر جمالاً',
+            cookie_message: '<strong>🍪 مرحباً!</strong> لتقديم أوقات الصلاة بناءً على موقعك، نحتاج إلى موافقتك لاستخدام ملفات الارتباط وتذكر تفضيلاتك (اللغة، المدينة، الموقع). خصوصيتك مهمة.',
+            cookie_accept: 'قبول',
+            cookie_reject: 'رفض'
         }
     };
 
@@ -1447,18 +1459,65 @@
     }
 
     // ================================================================
+    // REFRESCAR PESTAÑA ACTIVA
+    // ================================================================
+    function refreshCurrentTab() {
+        const activeTab = document.querySelector('.tab-content.active');
+        if (!activeTab) return;
+
+        const tabId = activeTab.id;
+        if (tabId === 'tab2') {
+            // Corán
+            if (currentSurah) {
+                loadQuran(currentSurah);
+            } else {
+                // Solo actualizar placeholder (ya se hace en updateUILanguage)
+                const display = document.getElementById('quranDisplay');
+                display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+                document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+                document.getElementById('audioStatus').textContent = '';
+            }
+        } else if (tabId === 'tab3') {
+            // Duas
+            const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
+            loadDuasByCategory(activeCat);
+        } else if (tabId === 'tab5') {
+            // Nombres de Allah
+            loadAllahNames();
+        } else if (tabId === 'tab4') {
+            // Qibla
+            actualizarInfoQibla();
+            dibujarBrújula();
+        }
+        // Para tab1 (rezos) solo se actualizan los textos estáticos en updateUILanguage
+    }
+
+    // ================================================================
     // ACTUALIZAR IDIOMA DE LA INTERFAZ
     // ================================================================
     function updateUILanguage() {
+        // Actualizar todos los elementos con data-i18n
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
             let text = getTranslation(key);
+            // Caso especial para el countdown-box que tiene un span dentro
             if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
                 const span = el.querySelector('span');
                 if (span) {
-                    el.childNodes.forEach(node => {
-                        if (node.nodeType === 3) node.textContent = text;
+                    // Reemplazar solo el texto antes del span
+                    const parts = el.childNodes;
+                    let foundSpan = false;
+                    parts.forEach(node => {
+                        if (node.nodeType === 3) {
+                            node.textContent = text;
+                        } else if (node === span) {
+                            foundSpan = true;
+                        }
                     });
+                    if (!foundSpan) {
+                        // Si no hay span, poner todo el texto
+                        el.textContent = text;
+                    }
                 } else {
                     el.textContent = text;
                 }
@@ -1467,39 +1526,56 @@
             }
         });
 
+        // Actualizar placeholder del input de ciudad
         document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+
+        // Actualizar opción por defecto del select de suras
         const surahSelect = document.getElementById('surahSelect');
         const defaultOption = surahSelect.querySelector('option[value=""]');
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
-        // Actualizar textos de los botones de categorías
+
+        // Actualizar categorías de duas
         document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
             const cat = btn.dataset.cat;
             btn.textContent = getCategoryTitle(cat);
         });
-        // Actualizar Duas (recargar la categoría activa)
-        const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
-        loadDuasByCategory(activeCat);
-        actualizarInfoQibla();
+
+        // Actualizar fecha y ubicación
+        updateLocationDisplay();
+
+        // Forzar recarga de la pestaña activa
+        refreshCurrentTab();
+
+        // Si está visible la brújula, actualizar también las direcciones
+        if (document.getElementById('tab4').classList.contains('active')) {
+            actualizarInfoQibla();
+            dibujarBrújula();
+        }
 
         // Actualizar mensaje de cookies si está deshabilitado
         if (!locationEnabled) {
             document.getElementById('cookieWarning').style.display = 'block';
             document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
-        }
-
-        // Recargar Corán si hay una sura seleccionada
-        if (currentSurah) {
-            loadQuran(currentSurah);
         } else {
-            const display = document.getElementById('quranDisplay');
-            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
-            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+            document.getElementById('cookieWarning').style.display = 'none';
         }
+    }
 
-        // Recargar nombres de Allah
-        loadAllahNames();
+    // ================================================================
+    // ACTUALIZAR SUBTÍTULO (ubicación + fecha) con idioma
+    // ================================================================
+    function updateLocationDisplay() {
+        const el = document.getElementById('fechaLocation');
+        if (!currentCity) {
+            el.textContent = getTranslation('loading');
+            return;
+        }
+        const localeMap = { es: 'es-ES', fr: 'fr-FR', en: 'en-US', ar: 'ar-SA' };
+        const locale = localeMap[currentLang] || 'es-ES';
+        const dateStr = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+        el.textContent = `📍 ${currentCity} · ${dateStr}`;
     }
 
     // ================================================================
@@ -1512,7 +1588,6 @@
             cookiesAccepted = true;
             locationEnabled = true;
             banner.classList.remove('visible');
-            // Restaurar preferencias y ubicación
             const restored = restorePreferences();
             if (!restored) {
                 getUserLocation();
@@ -1523,7 +1598,6 @@
             banner.classList.remove('visible');
             mostrarMensajeSinCookies();
         } else {
-            // No hay respuesta, mostrar banner
             cookiesAccepted = false;
             locationEnabled = false;
             banner.classList.add('visible');
@@ -1535,10 +1609,8 @@
         document.getElementById('fechaLocation').innerHTML = `📍 ${getTranslation('cookies_required')}`;
         document.getElementById('cookieWarning').style.display = 'block';
         document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
-        // Ocultar horarios
         document.getElementById('prayerGrid').style.display = 'none';
         document.getElementById('countdownTimer').textContent = '--:--:--';
-        // Deshabilitar búsqueda de ciudad
         document.getElementById('searchBtn').disabled = true;
         document.getElementById('cityInput').disabled = true;
         document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
@@ -1598,7 +1670,7 @@
                 userLat = lat;
                 userLng = lng;
                 document.getElementById('cityInput').value = city;
-                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                updateLocationDisplay();
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
                 habilitarFuncionalidad();
@@ -1639,15 +1711,22 @@
 
             if (tabId === 'tab2') {
                 player.classList.add('visible');
+                // Si hay sura, recargar por si acaso
+                if (currentSurah) loadQuran(currentSurah);
             } else {
                 player.classList.remove('visible');
                 if (isPlaying) audio.pause();
             }
             if (tabId === 'tab4') {
                 iniciarBrújula();
+                actualizarInfoQibla();
             }
             if (tabId === 'tab5') {
                 loadAllahNames();
+            }
+            if (tabId === 'tab3') {
+                const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
+                loadDuasByCategory(activeCat);
             }
         });
     });
@@ -1695,7 +1774,7 @@
                 const city = addr.city || addr.town || addr.village || addr.county || 'tu ciudad';
                 currentCity = city;
                 document.getElementById('cityInput').value = city;
-                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                updateLocationDisplay();
                 fetchPrayerTimes(lat, lng);
                 calcularQibla(lat, lng);
                 if (cookiesAccepted) saveCurrentPreferences();
@@ -1828,7 +1907,7 @@
                     const lng = parseFloat(data[0].lon);
                     userLat = lat; userLng = lng;
                     currentCity = data[0].display_name.split(',')[0];
-                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                    updateLocationDisplay();
                     fetchPrayerTimes(lat, lng);
                     calcularQibla(lat, lng);
                     if (cookiesAccepted) saveCurrentPreferences();
@@ -2163,7 +2242,7 @@
         ctx.shadowBlur = 0;
 
         const puntos = [
-            { ang: 0, label: 'N', color: '#ff4d4d' },
+            { ang: 0, label: getTranslation('compass_north'), color: '#ff4d4d' },
             { ang: 90, label: 'E', color: '#b8956a' },
             { ang: 180, label: 'S', color: '#b8956a' },
             { ang: 270, label: 'O', color: '#b8956a' }
