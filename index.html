@@ -397,6 +397,69 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
+        /* ===== NOMBRES DE ALLAH ===== */
+        .allah-container {
+            background: rgba(20, 40, 20, 0.4);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 24px;
+            margin: 15px 0;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+        .allah-container .title {
+            color: #d4af37;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .allah-container .subtitle {
+            text-align: center;
+            color: #b8956a;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .allah-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        .allah-item {
+            background: rgba(26, 47, 26, 0.5);
+            backdrop-filter: blur(4px);
+            padding: 12px 8px;
+            border-radius: 16px;
+            text-align: center;
+            border-left: 3px solid #d4af37;
+            transition: all 0.2s;
+        }
+        .allah-item:hover {
+            transform: scale(1.03);
+            background: rgba(212, 175, 55, 0.1);
+            border-left-width: 5px;
+        }
+        .allah-item .number {
+            color: #5a7a5a;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .allah-item .arabic-name {
+            font-size: 1.6rem;
+            font-family: 'Amiri', 'Times New Roman', serif;
+            color: #d4af37;
+            line-height: 1.4;
+        }
+        .allah-item .meaning {
+            font-size: 0.85rem;
+            color: #c5b08a;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+
         /* ===== QIBLA / BRÚJULA MEJORADA ===== */
         .qibla-container {
             background: rgba(20, 40, 20, 0.4);
@@ -631,6 +694,8 @@
             .dua-selector button { font-size: 0.75rem; padding: 6px 12px; }
             .tabs { gap: 4px; padding: 4px; }
             .tab-btn { font-size: 0.75rem; padding: 10px 0; min-width: 50px; }
+            .allah-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .allah-item .arabic-name { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -660,6 +725,7 @@
         <button class="tab-btn" data-tab="tab2" data-i18n="tab_quran">Corán</button>
         <button class="tab-btn" data-tab="tab3" data-i18n="tab_dua">Dua</button>
         <button class="tab-btn" data-tab="tab4" data-i18n="tab_qibla">Qibla</button>
+        <button class="tab-btn" data-tab="tab5" data-i18n="tab_allah">Nombres de Allah</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -738,6 +804,15 @@
         </div>
     </div>
 
+    <!-- TAB 5: NOMBRES DE ALLAH -->
+    <div id="tab5" class="tab-content">
+        <div class="allah-container">
+            <div class="title" data-i18n="allah_title">Los 99 Nombres de Allah</div>
+            <div class="subtitle" data-i18n="allah_subtitle">Asma'ul Husna - Los Nombres Más Bellos</div>
+            <div id="allahList" class="allah-grid"></div>
+        </div>
+    </div>
+
     <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
@@ -772,6 +847,7 @@
             tab_quran: 'Corán',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
+            tab_allah: 'Nombres de Allah',
             search_btn: 'Buscar',
             next_prayer: 'Próximo rezo: ',
             prayer_fajr: 'Fajr',
@@ -819,13 +895,16 @@
             cat_manana_tarde: 'Mañana y Tarde',
             cookies_placeholder: 'Se requiere aceptar cookies para guardar preferencias.',
             cookies_required: 'Acepta las cookies para ver los horarios de oración.',
-            location_disabled: 'Ubicación deshabilitada por rechazo de cookies.'
+            location_disabled: 'Ubicación deshabilitada por rechazo de cookies.',
+            allah_title: 'Los 99 Nombres de Allah',
+            allah_subtitle: 'Asma\'ul Husna - Los Nombres Más Bellos'
         },
         fr: {
             tab_prayers: 'Prières',
             tab_quran: 'Coran',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
+            tab_allah: 'Noms d\'Allah',
             search_btn: 'Chercher',
             next_prayer: 'Prochaine prière: ',
             prayer_fajr: 'Fajr',
@@ -873,13 +952,16 @@
             cat_manana_tarde: 'Matin et Soir',
             cookies_placeholder: 'Acceptez les cookies pour enregistrer vos préférences.',
             cookies_required: 'Acceptez les cookies pour voir les horaires de prière.',
-            location_disabled: 'Localisation désactivée par refus des cookies.'
+            location_disabled: 'Localisation désactivée par refus des cookies.',
+            allah_title: 'Les 99 Noms d\'Allah',
+            allah_subtitle: 'Asma\'ul Husna - Les Plus Beaux Noms'
         },
         en: {
             tab_prayers: 'Prayers',
             tab_quran: 'Quran',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
+            tab_allah: 'Names of Allah',
             search_btn: 'Search',
             next_prayer: 'Next prayer: ',
             prayer_fajr: 'Fajr',
@@ -927,13 +1009,16 @@
             cat_manana_tarde: 'Morning & Evening',
             cookies_placeholder: 'Accept cookies to save your preferences.',
             cookies_required: 'Accept cookies to see prayer times.',
-            location_disabled: 'Location disabled due to cookie rejection.'
+            location_disabled: 'Location disabled due to cookie rejection.',
+            allah_title: 'The 99 Names of Allah',
+            allah_subtitle: 'Asma\'ul Husna - The Most Beautiful Names'
         },
         ar: {
             tab_prayers: 'الصلوات',
             tab_quran: 'القرآن',
             tab_dua: 'الدعاء',
             tab_qibla: 'القبلة',
+            tab_allah: 'أسماء الله',
             search_btn: 'بحث',
             next_prayer: 'الصلاة القادمة: ',
             prayer_fajr: 'الفجر',
@@ -981,7 +1066,9 @@
             cat_manana_tarde: 'الصباح والمساء',
             cookies_placeholder: 'قبل ملفات الارتباط لحفظ تفضيلاتك.',
             cookies_required: 'اقبل ملفات الارتباط لمشاهدة أوقات الصلاة.',
-            location_disabled: 'تم تعطيل الموقع بسبب رفض ملفات الارتباط.'
+            location_disabled: 'تم تعطيل الموقع بسبب رفض ملفات الارتباط.',
+            allah_title: 'أسماء الله الحسنى',
+            allah_subtitle: 'أسماء الله الحسنى - الأسماء الأكثر جمالاً'
         }
     };
 
@@ -1214,6 +1301,111 @@
     ];
 
     // ================================================================
+    // NOMBRES DE ALLAH (99 Asma'ul Husna)
+    // ================================================================
+    const allahNames = [
+        { arabic: 'الرحمن', translations: { es: 'El Misericordioso', fr: 'Le Miséricordieux', en: 'The Most Gracious', ar: 'الرحمن' } },
+        { arabic: 'الرحيم', translations: { es: 'El Compasivo', fr: 'Le Très Miséricordieux', en: 'The Most Merciful', ar: 'الرحيم' } },
+        { arabic: 'الملك', translations: { es: 'El Soberano', fr: 'Le Souverain', en: 'The King', ar: 'الملك' } },
+        { arabic: 'القدوس', translations: { es: 'El Santísimo', fr: 'Le Très Saint', en: 'The Holy', ar: 'القدوس' } },
+        { arabic: 'السلام', translations: { es: 'La Paz', fr: 'La Paix', en: 'The Peace', ar: 'السلام' } },
+        { arabic: 'المؤمن', translations: { es: 'El Fiel', fr: 'Le Sécurisant', en: 'The Faithful', ar: 'المؤمن' } },
+        { arabic: 'المهيمن', translations: { es: 'El Protector', fr: 'Le Prédominant', en: 'The Guardian', ar: 'المهيمن' } },
+        { arabic: 'العزيز', translations: { es: 'El Poderoso', fr: 'Le Tout-Puissant', en: 'The Almighty', ar: 'العزيز' } },
+        { arabic: 'الجبار', translations: { es: 'El Compulsivo', fr: 'Le Contraignant', en: 'The Compeller', ar: 'الجبار' } },
+        { arabic: 'المتكبر', translations: { es: 'El Soberbio', fr: 'Le Très Grand', en: 'The Majestic', ar: 'المتكبر' } },
+        { arabic: 'الخالق', translations: { es: 'El Creador', fr: 'Le Créateur', en: 'The Creator', ar: 'الخالق' } },
+        { arabic: 'البارئ', translations: { es: 'El Formador', fr: 'Le Créateur parfait', en: 'The Maker', ar: 'البارئ' } },
+        { arabic: 'المصور', translations: { es: 'El Modelador', fr: 'Le Donneur de forme', en: 'The Fashioner', ar: 'المصور' } },
+        { arabic: 'الغفار', translations: { es: 'El Perdonador', fr: 'Le Grand Pardonneur', en: 'The Forgiver', ar: 'الغفار' } },
+        { arabic: 'القهار', translations: { es: 'El Dominador', fr: 'Le Dominateur', en: 'The Subduer', ar: 'القهار' } },
+        { arabic: 'الوهاب', translations: { es: 'El Dador', fr: 'Le Donateur', en: 'The Bestower', ar: 'الوهاب' } },
+        { arabic: 'الرزاق', translations: { es: 'El Proveedor', fr: 'Le Pourvoyeur', en: 'The Provider', ar: 'الرزاق' } },
+        { arabic: 'الفتاح', translations: { es: 'El Abridor', fr: 'Celui qui ouvre', en: 'The Opener', ar: 'الفتاح' } },
+        { arabic: 'العليم', translations: { es: 'El Omnisciente', fr: 'Le Savant', en: 'The All-Knowing', ar: 'العليم' } },
+        { arabic: 'القابض', translations: { es: 'El Restringidor', fr: 'Celui qui retient', en: 'The Restrainer', ar: 'القابض' } },
+        { arabic: 'الباسط', translations: { es: 'El Expansivo', fr: 'Celui qui étend', en: 'The Expander', ar: 'الباسط' } },
+        { arabic: 'الخافض', translations: { es: 'El Humillador', fr: 'Celui qui abaisse', en: 'The Abaser', ar: 'الخافض' } },
+        { arabic: 'الرافع', translations: { es: 'El Elevador', fr: 'Celui qui élève', en: 'The Exalter', ar: 'الرافع' } },
+        { arabic: 'المعز', translations: { es: 'El Honrador', fr: 'Celui qui donne la gloire', en: 'The Honorer', ar: 'المعز' } },
+        { arabic: 'المذل', translations: { es: 'El Humillador', fr: 'Celui qui humilie', en: 'The Dishonorer', ar: 'المذل' } },
+        { arabic: 'السميع', translations: { es: 'El Oyente', fr: 'L\'Audient', en: 'The All-Hearing', ar: 'السميع' } },
+        { arabic: 'البصير', translations: { es: 'El Vidente', fr: 'Le Clairvoyant', en: 'The All-Seeing', ar: 'البصير' } },
+        { arabic: 'الحكم', translations: { es: 'El Juez', fr: 'Le Juge', en: 'The Judge', ar: 'الحكم' } },
+        { arabic: 'العدل', translations: { es: 'El Justo', fr: 'Le Juste', en: 'The Just', ar: 'العدل' } },
+        { arabic: 'اللطيف', translations: { es: 'El Sutil', fr: 'Le Subtil', en: 'The Subtle', ar: 'اللطيف' } },
+        { arabic: 'الخبير', translations: { es: 'El Conocedor', fr: 'Le Connaisseur', en: 'The All-Aware', ar: 'الخبير' } },
+        { arabic: 'الحليم', translations: { es: 'El Tolerante', fr: 'Le Clément', en: 'The Forbearing', ar: 'الحليم' } },
+        { arabic: 'العظيم', translations: { es: 'El Magnífico', fr: 'Le Très Grand', en: 'The Magnificent', ar: 'العظيم' } },
+        { arabic: 'الغفور', translations: { es: 'El Indulgente', fr: 'Le Pardonneur', en: 'The Forgiving', ar: 'الغفور' } },
+        { arabic: 'الشكور', translations: { es: 'El Agradecido', fr: 'Le Reconnaissant', en: 'The Appreciative', ar: 'الشكور' } },
+        { arabic: 'العلي', translations: { es: 'El Sublime', fr: 'Le Très Haut', en: 'The Most High', ar: 'العلي' } },
+        { arabic: 'الكبير', translations: { es: 'El Grande', fr: 'Le Grand', en: 'The Great', ar: 'الكبير' } },
+        { arabic: 'الحفيظ', translations: { es: 'El Preservador', fr: 'Le Préservateur', en: 'The Preserver', ar: 'الحفيظ' } },
+        { arabic: 'المقيت', translations: { es: 'El Sustentador', fr: 'Celui qui donne la subsistance', en: 'The Sustainer', ar: 'المقيت' } },
+        { arabic: 'الحسيب', translations: { es: 'El Contable', fr: 'Celui qui tient compte', en: 'The Reckoner', ar: 'الحسيب' } },
+        { arabic: 'الجليل', translations: { es: 'El Majestuoso', fr: 'Le Majestueux', en: 'The Sublime', ar: 'الجليل' } },
+        { arabic: 'الكريم', translations: { es: 'El Generoso', fr: 'Le Généreux', en: 'The Generous', ar: 'الكريم' } },
+        { arabic: 'الرقيب', translations: { es: 'El Vigilante', fr: 'Le Vigilant', en: 'The Watchful', ar: 'الرقيب' } },
+        { arabic: 'المجيب', translations: { es: 'El Responsivo', fr: 'Celui qui répond', en: 'The Responsive', ar: 'المجيب' } },
+        { arabic: 'الواسع', translations: { es: 'El Vasto', fr: 'Le Vaste', en: 'The Vast', ar: 'الواسع' } },
+        { arabic: 'الحكيم', translations: { es: 'El Sabio', fr: 'Le Sage', en: 'The Wise', ar: 'الحكيم' } },
+        { arabic: 'الودود', translations: { es: 'El Amoroso', fr: 'Le Bienveillant', en: 'The Loving', ar: 'الودود' } },
+        { arabic: 'المجيد', translations: { es: 'El Glorioso', fr: 'Le Glorieux', en: 'The Glorious', ar: 'المجيد' } },
+        { arabic: 'الباعث', translations: { es: 'El Resucitador', fr: 'Celui qui ressuscite', en: 'The Resurrector', ar: 'الباعث' } },
+        { arabic: 'الشهيد', translations: { es: 'El Testigo', fr: 'Le Témoin', en: 'The Witness', ar: 'الشهيد' } },
+        { arabic: 'الحق', translations: { es: 'La Verdad', fr: 'La Vérité', en: 'The Truth', ar: 'الحق' } },
+        { arabic: 'الوكيل', translations: { es: 'El Administrador', fr: 'Le Protecteur', en: 'The Trustee', ar: 'الوكيل' } },
+        { arabic: 'القوي', translations: { es: 'El Fuerte', fr: 'Le Très Fort', en: 'The Strong', ar: 'القوي' } },
+        { arabic: 'المتين', translations: { es: 'El Firme', fr: 'Le Solide', en: 'The Firm', ar: 'المتين' } },
+        { arabic: 'الولي', translations: { es: 'El Protector', fr: 'Le Protecteur', en: 'The Protector', ar: 'الولي' } },
+        { arabic: 'الحميد', translations: { es: 'El Digno de Alabanza', fr: 'Le Digne de Louange', en: 'The Praiseworthy', ar: 'الحميد' } },
+        { arabic: 'المحصي', translations: { es: 'El Contador', fr: 'Celui qui dénombre', en: 'The Reckoner', ar: 'المحصي' } },
+        { arabic: 'المبدئ', translations: { es: 'El Iniciador', fr: 'Celui qui commence', en: 'The Originator', ar: 'المبدئ' } },
+        { arabic: 'المعيد', translations: { es: 'El Restaurador', fr: 'Celui qui restaure', en: 'The Restorer', ar: 'المعيد' } },
+        { arabic: 'المحيي', translations: { es: 'El Vivificador', fr: 'Celui qui donne la vie', en: 'The Giver of Life', ar: 'المحيي' } },
+        { arabic: 'المميت', translations: { es: 'El Causante de la Muerte', fr: 'Celui qui donne la mort', en: 'The Taker of Life', ar: 'المميت' } },
+        { arabic: 'الحي', translations: { es: 'El Viviente', fr: 'Le Vivant', en: 'The Living', ar: 'الحي' } },
+        { arabic: 'القيوم', translations: { es: 'El Subsistente', fr: 'Celui qui subsiste', en: 'The Self-Subsisting', ar: 'القيوم' } },
+        { arabic: 'الواجد', translations: { es: 'El Encontrador', fr: 'Celui qui trouve', en: 'The Finder', ar: 'الواجد' } },
+        { arabic: 'الماجد', translations: { es: 'El Noble', fr: 'Le Glorieux', en: 'The Noble', ar: 'الماجد' } },
+        { arabic: 'الواحد', translations: { es: 'El Único', fr: 'L\'Unique', en: 'The One', ar: 'الواحد' } },
+        { arabic: 'الاحد', translations: { es: 'El Singular', fr: 'Le Seul', en: 'The Singular', ar: 'الاحد' } },
+        { arabic: 'الصمد', translations: { es: 'El Eterno', fr: 'L\'Éternel', en: 'The Eternal', ar: 'الصمد' } },
+        { arabic: 'القادر', translations: { es: 'El Poderoso', fr: 'Le Capable', en: 'The Able', ar: 'القادر' } },
+        { arabic: 'المقتدر', translations: { es: 'El Poderoso Absoluto', fr: 'Le Tout Puissant', en: 'The Powerful', ar: 'المقتدر' } },
+        { arabic: 'المقدم', translations: { es: 'El Avanzador', fr: 'Celui qui avance', en: 'The Advancer', ar: 'المقدم' } },
+        { arabic: 'المؤخر', translations: { es: 'El Retrasador', fr: 'Celui qui retarde', en: 'The Delayer', ar: 'المؤخر' } },
+        { arabic: 'الأول', translations: { es: 'El Primero', fr: 'Le Premier', en: 'The First', ar: 'الأول' } },
+        { arabic: 'الأخر', translations: { es: 'El Último', fr: 'Le Dernier', en: 'The Last', ar: 'الأخر' } },
+        { arabic: 'الظاهر', translations: { es: 'El Manifiesto', fr: 'L\'Apparent', en: 'The Manifest', ar: 'الظاهر' } },
+        { arabic: 'الباطن', translations: { es: 'El Oculto', fr: 'Le Caché', en: 'The Hidden', ar: 'الباطن' } },
+        { arabic: 'الوالي', translations: { es: 'El Gobernador', fr: 'Le Protecteur', en: 'The Governor', ar: 'الوالي' } },
+        { arabic: 'المتعالي', translations: { es: 'El Supremo', fr: 'Le Très-Haut', en: 'The Exalted', ar: 'المتعالي' } },
+        { arabic: 'البر', translations: { es: 'El Bondadoso', fr: 'Le Bienfaisant', en: 'The Beneficent', ar: 'البر' } },
+        { arabic: 'التواب', translations: { es: 'El Aceptador del Arrepentimiento', fr: 'Celui qui accueille le repentir', en: 'The Acceptor of Repentance', ar: 'التواب' } },
+        { arabic: 'المنتقم', translations: { es: 'El Vengador', fr: 'Le Vengeur', en: 'The Avenger', ar: 'المنتقم' } },
+        { arabic: 'العفو', translations: { es: 'El Perdonador', fr: 'Le Pardonneur', en: 'The Pardoner', ar: 'العفو' } },
+        { arabic: 'الرؤوف', translations: { es: 'El Compasivo', fr: 'Le Très Compatissant', en: 'The Compassionate', ar: 'الرؤوف' } },
+        { arabic: 'مالك الملك', translations: { es: 'El Propietario de la Soberanía', fr: 'Le Maître de la Royauté', en: 'The Owner of Dominion', ar: 'مالك الملك' } },
+        { arabic: 'ذو الجلال والإكرام', translations: { es: 'El Dueño de la Majestad y la Generosidad', fr: 'Le Possesseur de la Gloire et de l\'Honneur', en: 'The Possessor of Majesty and Generosity', ar: 'ذو الجلال والإكرام' } },
+        { arabic: 'المقسط', translations: { es: 'El Equitativo', fr: 'L\'Équitable', en: 'The Equitable', ar: 'المقسط' } },
+        { arabic: 'الجامع', translations: { es: 'El Reunidor', fr: 'Celui qui rassemble', en: 'The Gatherer', ar: 'الجامع' } },
+        { arabic: 'الغني', translations: { es: 'El Rico', fr: 'Le Riche', en: 'The Rich', ar: 'الغني' } },
+        { arabic: 'المغني', translations: { es: 'El Enriquecedor', fr: 'Celui qui enrichit', en: 'The Enricher', ar: 'المغني' } },
+        { arabic: 'المانع', translations: { es: 'El Impedidor', fr: 'Celui qui empêche', en: 'The Withholder', ar: 'المانع' } },
+        { arabic: 'الضار', translations: { es: 'El Dañador', fr: 'Celui qui cause le mal', en: 'The Distresser', ar: 'الضار' } },
+        { arabic: 'النافع', translations: { es: 'El Benefactor', fr: 'Celui qui profite', en: 'The Benefiter', ar: 'النافع' } },
+        { arabic: 'النور', translations: { es: 'La Luz', fr: 'La Lumière', en: 'The Light', ar: 'النور' } },
+        { arabic: 'الهادي', translations: { es: 'El Guía', fr: 'Le Guide', en: 'The Guide', ar: 'الهادي' } },
+        { arabic: 'البديع', translations: { es: 'El Primordial', fr: 'Le Créateur original', en: 'The Incomparable', ar: 'البديع' } },
+        { arabic: 'الباقي', translations: { es: 'El Eterno', fr: 'L\'Éternel', en: 'The Everlasting', ar: 'الباقي' } },
+        { arabic: 'الوارث', translations: { es: 'El Heredero', fr: 'L\'Héritier', en: 'The Inheritor', ar: 'الوارث' } },
+        { arabic: 'الرشيد', translations: { es: 'El Guía a la Rectitud', fr: 'Le Guide vers la droiture', en: 'The Guide to Right Path', ar: 'الرشيد' } },
+        { arabic: 'الصبور', translations: { es: 'El Paciente', fr: 'Le Patient', en: 'The Patient', ar: 'الصبور' } }
+    ];
+
+    // ================================================================
     // VARIABLES GLOBALES
     // ================================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -1305,6 +1497,9 @@
             display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
             document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
         }
+
+        // Recargar nombres de Allah
+        loadAllahNames();
     }
 
     // ================================================================
@@ -1450,6 +1645,9 @@
             }
             if (tabId === 'tab4') {
                 iniciarBrújula();
+            }
+            if (tabId === 'tab5') {
+                loadAllahNames();
             }
         });
     });
@@ -1877,6 +2075,25 @@
             loadDuasByCategory(cat);
         });
     });
+
+    // ================================================================
+    // NOMBRES DE ALLAH
+    // ================================================================
+    function loadAllahNames() {
+        const container = document.getElementById('allahList');
+        let html = '';
+        allahNames.forEach((name, index) => {
+            const meaning = name.translations[currentLang] || name.translations['es'] || name.arabic;
+            html += `
+                <div class="allah-item">
+                    <span class="number">${index + 1}</span>
+                    <div class="arabic-name">${name.arabic}</div>
+                    <div class="meaning">${meaning}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
 
     // ================================================================
     // QIBLA - BRÚJULA MEJORADA
