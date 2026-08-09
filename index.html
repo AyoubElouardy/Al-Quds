@@ -461,64 +461,6 @@
         .legend-dot.north { background: #ff4d4d; }
         .legend-dot.qibla { background: #d4af37; }
 
-        /* ===== 99 NOMBRES ===== */
-        .names-container {
-            background: rgba(20, 40, 20, 0.4);
-            backdrop-filter: blur(8px);
-            padding: 20px;
-            border-radius: 24px;
-            margin: 15px 0;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-        }
-        .names-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .name-card {
-            background: rgba(26, 47, 26, 0.5);
-            backdrop-filter: blur(4px);
-            padding: 14px 8px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.12);
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-        .name-card:hover {
-            transform: translateY(-3px);
-            border-color: #d4af37;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
-        }
-        .name-card .number {
-            font-size: 0.7rem;
-            color: #6a8a6a;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-        .name-card .arabic {
-            font-size: 1.8rem;
-            color: #d4af37;
-            font-family: 'Amiri', 'Times New Roman', serif;
-            line-height: 1.4;
-            margin: 4px 0;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
-        }
-        .name-card .translit {
-            font-size: 0.85rem;
-            color: #c5b08a;
-            font-weight: 500;
-            margin: 2px 0;
-        }
-        .name-card .meaning {
-            font-size: 0.8rem;
-            color: #e8d5b5;
-            margin-top: 4px;
-            opacity: 0.9;
-        }
-
         /* ===== REPRODUCTOR FIJO ===== */
         .audio-player-fixed {
             position: fixed;
@@ -613,7 +555,7 @@
             border-top: 3px solid #d4af37;
             padding: 20px 24px;
             z-index: 9999;
-            display: none;
+            display: none;  /* Oculto por defecto, se muestra con clase .visible */
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
@@ -660,6 +602,7 @@
         }
         .cookie-banner .reject-btn:hover { background: rgba(255,255,255,0.05); }
 
+        /* Mensaje de cookies no aceptadas */
         .cookie-warning {
             text-align: center;
             color: #b8956a;
@@ -688,8 +631,6 @@
             .dua-selector button { font-size: 0.75rem; padding: 6px 12px; }
             .tabs { gap: 4px; padding: 4px; }
             .tab-btn { font-size: 0.75rem; padding: 10px 0; min-width: 50px; }
-            .names-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-            .name-card .arabic { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -719,7 +660,6 @@
         <button class="tab-btn" data-tab="tab2" data-i18n="tab_quran">Corán</button>
         <button class="tab-btn" data-tab="tab3" data-i18n="tab_dua">Dua</button>
         <button class="tab-btn" data-tab="tab4" data-i18n="tab_qibla">Qibla</button>
-        <button class="tab-btn" data-tab="tab5" data-i18n="tab_names">99 Nombres</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -798,15 +738,6 @@
         </div>
     </div>
 
-    <!-- TAB 5: 99 NOMBRES DE ALLAH -->
-    <div id="tab5" class="tab-content">
-        <div class="names-container">
-            <h3 style="color:#d4af37; text-align:center; margin-bottom:5px; font-weight:300; letter-spacing:2px;" data-i18n="names_title">Los 99 Nombres de Allah</h3>
-            <p style="text-align:center; color:#b8956a; font-size:0.9rem; margin-bottom:10px;" data-i18n="names_subtitle">Al-Asma' ul-Husna</p>
-            <div id="namesGrid" class="names-grid"></div>
-        </div>
-    </div>
-
     <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
@@ -841,9 +772,6 @@
             tab_quran: 'Corán',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
-            tab_names: '99 Nombres',
-            names_title: 'Los 99 Nombres de Allah',
-            names_subtitle: 'Al-Asma\' ul-Husna',
             search_btn: 'Buscar',
             next_prayer: 'Próximo rezo: ',
             prayer_fajr: 'Fajr',
@@ -898,9 +826,6 @@
             tab_quran: 'Coran',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
-            tab_names: '99 Noms',
-            names_title: 'Les 99 Noms d\'Allah',
-            names_subtitle: 'Al-Asma\' ul-Husna',
             search_btn: 'Chercher',
             next_prayer: 'Prochaine prière: ',
             prayer_fajr: 'Fajr',
@@ -955,9 +880,6 @@
             tab_quran: 'Quran',
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
-            tab_names: '99 Names',
-            names_title: 'The 99 Names of Allah',
-            names_subtitle: 'Al-Asma\' ul-Husna',
             search_btn: 'Search',
             next_prayer: 'Next prayer: ',
             prayer_fajr: 'Fajr',
@@ -1012,9 +934,6 @@
             tab_quran: 'القرآن',
             tab_dua: 'الدعاء',
             tab_qibla: 'القبلة',
-            tab_names: '99 اسماً',
-            names_title: 'أسماء الله الحسنى',
-            names_subtitle: 'الأسماء الحسنى',
             search_btn: 'بحث',
             next_prayer: 'الصلاة القادمة: ',
             prayer_fajr: 'الفجر',
@@ -1071,49 +990,49 @@
     // ================================================================
     const duaTranslations = {
         es: [
-            // Rizq
+            // Rizq (Sustento) - índices 0-4
             'Oh Allah, te pido el sustento, la suficiencia y la bendición en lo que nos has concedido.',
             'Oh Allah, provee para mí un sustento lícito y puro, y no me hagas dependiente de nadie.',
             'Oh Allah, bendice nuestro alimento y danos el sustento de Tu generosidad.',
             'Oh Allah, te pido el sustento abundante, la salud duradera y la muerte en la fe.',
             'Oh Allah, no me hagas depender de la creación, y provee para mí desde donde no espero.',
-            // Istighfar
+            // Istighfar (Perdón) - índices 5-9
             'Oh Allah, perdona mis pecados y errores, y límpiame como se limpia la tela blanca.',
             'Oh Allah, te pido el perdón y la salud en mi religión, mi vida y mi familia.',
             'Oh Allah, he sido injusto conmigo mismo, así que perdóname, pues solo Tú perdonas los pecados.',
             'Oh Allah, te pido el perdón y la protección contra el castigo del fuego y la tumba.',
             'Oh Allah, te pido el perdón de lo que he hecho y lo que he dejado de hacer.',
-            // Protección
+            // Protección - índices 10-14
             'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
             'Oh Allah, me refugio en Ti de la pobreza, la miseria y la humillación.',
             'Oh Allah, me refugio en Ti de la ansiedad, la tristeza y la debilidad.',
             'Oh Allah, me refugio en Ti de la incredulidad, la pobreza y el castigo de la tumba.',
             'Oh Allah, me refugio en Ti de la opresión de los opresores y de las maquinaciones de los enemigos.',
-            // Salud
+            // Salud - índices 15-19
             'Oh Allah, te pido la salud en este mundo y en el más allá.',
             'Oh Allah, te pido la salud, la seguridad y la buena fe en todo momento.',
             'Oh Allah, te pido la salud en mi cuerpo, en mi audición y en mi vista.',
             'Oh Allah, te pido la salud, la seguridad y la protección contra toda enfermedad.',
             'Oh Allah, te pido la salud en mi corazón y en mis acciones.',
-            // Familia
+            // Familia - índices 20-24
             'Oh Allah, protege a mi familia y a mis seres queridos, y bendícenos con Tu misericordia.',
             'Oh Allah, reúne a mi familia en el bien y guíanos hacia lo que amas.',
             'Oh Allah, protege a mis hijos y a mi cónyuge de todo mal.',
             'Oh Allah, bendice nuestro hogar y nuestra unión familiar.',
             'Oh Allah, haz que mi familia sea de los que aman y son amados por Ti.',
-            // Viaje
+            // Viaje - índices 25-29
             'Oh Allah, te pido la seguridad en el viaje y la bendición en el destino.',
             'Oh Allah, haz que este viaje sea fácil y llévanos a nuestro destino con bien.',
             'Oh Allah, te pido la protección durante el viaje y el regreso a salvo.',
             'Oh Allah, te pido el buen viaje y la buena compañía.',
             'Oh Allah, te pido la seguridad en el camino y la protección contra todo peligro.',
-            // Generales
+            // Generales - índices 30-34
             'Oh Allah, te pido el bien en este mundo y en el más allá.',
             'Oh Allah, te pido el bien de lo que he hecho y el bien de lo que no he hecho.',
             'Oh Allah, te pido la constancia en el bien y el buen juicio.',
             'Oh Allah, te pido el paraíso y la protección del infierno.',
             'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Ti.',
-            // Mañana y Tarde
+            // Mañana y Tarde - índices 35-39
             'Oh Allah, te pido el bien de la mañana y el bien de la noche.',
             'Oh Allah, te pido el bien del día y el bien de la noche que sigue.',
             'Oh Allah, te pido la protección en la mañana y en la tarde.',
@@ -1327,64 +1246,920 @@
     ];
 
     // ================================================================
-    // LISTA DE LOS 99 NOMBRES DE ALLAH
+    // VARIABLES GLOBALES
     // ================================================================
-    const nombresAllah = [
-        {id:1, arabic:'الرَّحْمَٰنُ', translit:'Ar-Rahman', es:'El Misericordioso', fr:'Le Tout Miséricordieux', en:'The Most Gracious', ar:'الرَّحْمَٰنُ'},
-        {id:2, arabic:'الرَّحِيمُ', translit:'Ar-Rahim', es:'El Compasivo', fr:'Le Très Miséricordieux', en:'The Most Merciful', ar:'الرَّحِيمُ'},
-        {id:3, arabic:'الْمَلِكُ', translit:'Al-Malik', es:'El Rey', fr:'Le Roi', en:'The King', ar:'الْمَلِكُ'},
-        {id:4, arabic:'الْقُدُّوسُ', translit:'Al-Quddus', es:'El Santísimo', fr:'Le Très Saint', en:'The Holy', ar:'الْقُدُّوسُ'},
-        {id:5, arabic:'السَّلَامُ', translit:'As-Salam', es:'La Paz', fr:'La Paix', en:'The Peace', ar:'السَّلَامُ'},
-        {id:6, arabic:'الْمُؤْمِنُ', translit:'Al-Mu\'min', es:'El Fiel', fr:'Le Croyant', en:'The Faithful', ar:'الْمُؤْمِنُ'},
-        {id:7, arabic:'الْمُهَيْمِنُ', translit:'Al-Muhaymin', es:'El Protector', fr:'Le Protecteur', en:'The Guardian', ar:'الْمُهَيْمِنُ'},
-        {id:8, arabic:'الْعَزِيزُ', translit:'Al-Aziz', es:'El Poderoso', fr:'Le Puissant', en:'The Almighty', ar:'الْعَزِيزُ'},
-        {id:9, arabic:'الْجَبَّارُ', translit:'Al-Jabbar', es:'El Compulsor', fr:'Le Contraignant', en:'The Compeller', ar:'الْجَبَّارُ'},
-        {id:10, arabic:'الْمُتَكَبِّرُ', translit:'Al-Mutakabbir', es:'El Soberbio', fr:'Le Superbe', en:'The Majestic', ar:'الْمُتَكَبِّرُ'},
-        {id:11, arabic:'الْخَالِقُ', translit:'Al-Khaliq', es:'El Creador', fr:'Le Créateur', en:'The Creator', ar:'الْخَالِقُ'},
-        {id:12, arabic:'الْبَارِئُ', translit:'Al-Bari\'', es:'El Formador', fr:'Le Formateur', en:'The Maker', ar:'الْبَارِئُ'},
-        {id:13, arabic:'الْمُصَوِّرُ', translit:'Al-Musawwir', es:'El Modelador', fr:'Le Modeleur', en:'The Fashioner', ar:'الْمُصَوِّرُ'},
-        {id:14, arabic:'الْغَفَّارُ', translit:'Al-Ghaffar', es:'El Perdonador', fr:'Le Pardonneur', en:'The Forgiving', ar:'الْغَفَّارُ'},
-        {id:15, arabic:'الْقَهَّارُ', translit:'Al-Qahhar', es:'El Dominador', fr:'Le Dominateur', en:'The Subduer', ar:'الْقَهَّارُ'},
-        {id:16, arabic:'الْوَهَّابُ', translit:'Al-Wahhab', es:'El Dadivoso', fr:'Le Donateur', en:'The Bestower', ar:'الْوَهَّابُ'},
-        {id:17, arabic:'الرَّزَّاقُ', translit:'Ar-Razzaq', es:'El Proveedor', fr:'Le Pourvoyeur', en:'The Provider', ar:'الرَّزَّاقُ'},
-        {id:18, arabic:'الْفَتَّاحُ', translit:'Al-Fattah', es:'El Abridor', fr:'L\'Ouvreur', en:'The Opener', ar:'الْفَتَّاحُ'},
-        {id:19, arabic:'الْعَلِيمُ', translit:'Al-Alim', es:'El Omnisciente', fr:'L\'Omniscient', en:'The All-Knowing', ar:'الْعَلِيمُ'},
-        {id:20, arabic:'الْقَابِضُ', translit:'Al-Qabid', es:'El Que Restringe', fr:'Le Restricteur', en:'The Restrainer', ar:'الْقَابِضُ'},
-        {id:21, arabic:'الْبَاسِطُ', translit:'Al-Basit', es:'El Que Expande', fr:'L\'Expansif', en:'The Expander', ar:'الْبَاسِطُ'},
-        {id:22, arabic:'الْخَافِضُ', translit:'Al-Khafid', es:'El Que Humilla', fr:'L\'Humiliateur', en:'The Abaser', ar:'الْخَافِضُ'},
-        {id:23, arabic:'الرَّافِعُ', translit:'Ar-Rafi\'', es:'El Que Exalta', fr:'L\'Élévateur', en:'The Exalter', ar:'الرَّافِعُ'},
-        {id:24, arabic:'الْمُعِزُّ', translit:'Al-Mu\'izz', es:'El Que Honra', fr:'Celui qui honore', en:'The Honorer', ar:'الْمُعِزُّ'},
-        {id:25, arabic:'الْمُذِلُّ', translit:'Al-Mudhill', es:'El Que Deshonra', fr:'Celui qui humilie', en:'The Dishonorer', ar:'الْمُذِلُّ'},
-        {id:26, arabic:'السَّمِيعُ', translit:'As-Sami\'', es:'El Oyente', fr:'L\'Audient', en:'The All-Hearing', ar:'السَّمِيعُ'},
-        {id:27, arabic:'الْبَصِيرُ', translit:'Al-Basir', es:'El Vidente', fr:'Le Clairvoyant', en:'The All-Seeing', ar:'الْبَصِيرُ'},
-        {id:28, arabic:'الْحَكَمُ', translit:'Al-Hakam', es:'El Juez', fr:'Le Juge', en:'The Judge', ar:'الْحَكَمُ'},
-        {id:29, arabic:'الْعَدْلُ', translit:'Al-Adl', es:'El Justo', fr:'Le Juste', en:'The Just', ar:'الْعَدْلُ'},
-        {id:30, arabic:'اللَّطِيفُ', translit:'Al-Latif', es:'El Sutil', fr:'Le Subtil', en:'The Subtle', ar:'اللَّطِيفُ'},
-        {id:31, arabic:'الْخَبِيرُ', translit:'Al-Khabir', es:'El Conocedor', fr:'L\'Informé', en:'The Aware', ar:'الْخَبِيرُ'},
-        {id:32, arabic:'الْحَلِيمُ', translit:'Al-Halim', es:'El Tolerante', fr:'Le Clément', en:'The Forbearing', ar:'الْحَلِيمُ'},
-        {id:33, arabic:'الْعَظِيمُ', translit:'Al-Azim', es:'El Magnífico', fr:'Le Magnifique', en:'The Great', ar:'الْعَظِيمُ'},
-        {id:34, arabic:'الْغَفُورُ', translit:'Al-Ghafur', es:'El Indulgente', fr:'L\'Indulgent', en:'The All-Forgiving', ar:'الْغَفُورُ'},
-        {id:35, arabic:'الشَّكُورُ', translit:'Ash-Shakur', es:'El Agradecido', fr:'Le Reconnaissant', en:'The Grateful', ar:'الشَّكُورُ'},
-        {id:36, arabic:'الْعَلِيُّ', translit:'Al-Ali', es:'El Altísimo', fr:'Le Très-Haut', en:'The Most High', ar:'الْعَلِيُّ'},
-        {id:37, arabic:'الْكَبِيرُ', translit:'Al-Kabir', es:'El Grande', fr:'Le Grand', en:'The Great', ar:'الْكَبِيرُ'},
-        {id:38, arabic:'الْحَفِيظُ', translit:'Al-Hafiz', es:'El Preservador', fr:'Le Préservateur', en:'The Preserver', ar:'الْحَفِيظُ'},
-        {id:39, arabic:'الْمُقِيتُ', translit:'Al-Muqit', es:'El Sustentador', fr:'Le Nourricier', en:'The Sustainer', ar:'الْمُقِيتُ'},
-        {id:40, arabic:'الْحَسِيبُ', translit:'Al-Hasib', es:'El Contador', fr:'Le Calculateur', en:'The Reckoner', ar:'الْحَسِيبُ'},
-        {id:41, arabic:'الْجَلِيلُ', translit:'Al-Jalil', es:'El Majestuoso', fr:'Le Majestueux', en:'The Majestic', ar:'الْجَلِيلُ'},
-        {id:42, arabic:'الْكَرِيمُ', translit:'Al-Karim', es:'El Generoso', fr:'Le Généreux', en:'The Generous', ar:'الْكَرِيمُ'},
-        {id:43, arabic:'الرَّقِيبُ', translit:'Ar-Raqib', es:'El Vigilante', fr:'Le Vigilant', en:'The Watchful', ar:'الرَّقِيبُ'},
-        {id:44, arabic:'الْمُجِيبُ', translit:'Al-Mujib', es:'El Que Responde', fr:'Celui qui répond', en:'The Responsive', ar:'الْمُجِيبُ'},
-        {id:45, arabic:'الْوَاسِعُ', translit:'Al-Wasi\'', es:'El Vasto', fr:'Le Vaste', en:'The All-Encompassing', ar:'الْوَاسِعُ'},
-        {id:46, arabic:'الْحَكِيمُ', translit:'Al-Hakim', es:'El Sabio', fr:'Le Sage', en:'The Wise', ar:'الْحَكِيمُ'},
-        {id:47, arabic:'الْوَدُودُ', translit:'Al-Wadud', es:'El Amante', fr:'L\'Aimant', en:'The Loving', ar:'الْوَدُودُ'},
-        {id:48, arabic:'الْمَجِيدُ', translit:'Al-Majid', es:'El Glorioso', fr:'Le Glorieux', en:'The Glorious', ar:'الْمَجِيدُ'},
-        {id:49, arabic:'الْبَاعِثُ', translit:'Al-Ba\'ith', es:'El Resucitador', fr:'Le Résurrecteur', en:'The Resurrector', ar:'الْبَاعِثُ'},
-        {id:50, arabic:'الشَّهِيدُ', translit:'Ash-Shahid', es:'El Testigo', fr:'Le Témoin', en:'The Witness', ar:'الشَّهِيدُ'},
-        {id:51, arabic:'الْحَقُّ', translit:'Al-Haqq', es:'La Verdad', fr:'La Vérité', en:'The Truth', ar:'الْحَقُّ'},
-        {id:52, arabic:'الْوَكِيلُ', translit:'Al-Wakil', es:'El Abogado', fr:'L\'Avocat', en:'The Trustee', ar:'الْوَكِيلُ'},
-        {id:53, arabic:'الْقَوِيُّ', translit:'Al-Qawiyy', es:'El Fuerte', fr:'Le Fort', en:'The Strong', ar:'الْقَوِيُّ'},
-        {id:54, arabic:'الْمَتِينُ', translit:'Al-Matin', es:'El Firme', fr:'Le Ferme', en:'The Firm', ar:'الْمَتِينُ'},
-        {id:55, arabic:'الْوَلِيُّ', translit:'Al-Waliyy', es:'El Protector', fr:'Le Protecteur', en:'The Friend', ar:'الْوَلِيُّ'},
-        {id:56, arabic:'الْحَمِيدُ', translit:'Al-Hamid', es:'El Loable', fr:'Le Louable', en:'The Praiseworthy', ar:'الْحَمِيدُ'},
-        {id:57, arabic:'الْمُحْصِي', translit:'Al-Muhsi', es:'El Numerador', fr:'Le Numérateur', en:'The Reckoner', ar:'الْمُحْصِي'},
-        {id:58, arabic:'الْمُبْدِئُ', translit:'Al-Mubdi\'', es:'El Originador', fr:'L\'Originateur
+    const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    let prayerTimes = {};
+    let userLat = 40.4165, userLng = -3.7026; // Madrid por defecto
+    let currentCity = 'Madrid';
+    let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
+    adhanAudio.preload = 'auto';
+    let currentSurah = '';
+    let currentLang = 'es';
+    let cookiesAccepted = false;
+    let locationEnabled = false; // indica si se ha habilitado la ubicación por cookies
+
+    let audio = new Audio();
+    let isPlaying = false;
+
+    // Variables para la brújula
+    let qiblaAngle = 0;
+    let deviceHeading = 0;
+    let headingAvailable = false;
+
+    // ================================================================
+    // FUNCIONES DE INTERNACIONALIZACIÓN
+    // ================================================================
+    function getTranslation(key) {
+        return i18n[currentLang]?.[key] || i18n['es'][key] || key;
+    }
+
+    function getDuaTranslation(index) {
+        return duaTranslations[currentLang]?.[index] || duaTranslations['es'][index] || duas[index].arabic;
+    }
+
+    function getDuaTitle(index) {
+        return duas[index].title[currentLang] || duas[index].title['es'] || 'Dua';
+    }
+
+    function getCategoryTitle(catKey) {
+        return getTranslation('cat_' + catKey);
+    }
+
+    // ================================================================
+    // ACTUALIZAR IDIOMA DE LA INTERFAZ
+    // ================================================================
+    function updateUILanguage() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            let text = getTranslation(key);
+            if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
+                const span = el.querySelector('span');
+                if (span) {
+                    el.childNodes.forEach(node => {
+                        if (node.nodeType === 3) node.textContent = text;
+                    });
+                } else {
+                    el.textContent = text;
+                }
+            } else {
+                el.textContent = text;
+            }
+        });
+
+        document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+        const surahSelect = document.getElementById('surahSelect');
+        const defaultOption = surahSelect.querySelector('option[value=""]');
+        if (defaultOption) {
+            defaultOption.textContent = getTranslation('select_surah');
+        }
+        // Actualizar textos de los botones de categorías
+        document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
+            const cat = btn.dataset.cat;
+            btn.textContent = getCategoryTitle(cat);
+        });
+        // Actualizar Duas (recargar la categoría activa)
+        const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
+        loadDuasByCategory(activeCat);
+        actualizarInfoQibla();
+
+        // Actualizar mensaje de cookies si está deshabilitado
+        if (!locationEnabled) {
+            document.getElementById('cookieWarning').style.display = 'block';
+            document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
+        }
+    }
+
+    // ================================================================
+    // GESTIÓN DE COOKIES
+    // ================================================================
+    function checkCookies() {
+        const stored = localStorage.getItem('cookiesAccepted');
+        const banner = document.getElementById('cookieBanner');
+        if (stored === 'true') {
+            cookiesAccepted = true;
+            locationEnabled = true;
+            banner.classList.remove('visible');
+            // Restaurar preferencias y ubicación
+            const restored = restorePreferences();
+            if (!restored) {
+                getUserLocation();
+            }
+        } else if (stored === 'false') {
+            cookiesAccepted = false;
+            locationEnabled = false;
+            banner.classList.remove('visible');
+            mostrarMensajeSinCookies();
+        } else {
+            // No hay respuesta, mostrar banner
+            cookiesAccepted = false;
+            locationEnabled = false;
+            banner.classList.add('visible');
+            mostrarMensajeSinCookies();
+        }
+    }
+
+    function mostrarMensajeSinCookies() {
+        document.getElementById('fechaLocation').innerHTML = `📍 ${getTranslation('cookies_required')}`;
+        document.getElementById('cookieWarning').style.display = 'block';
+        document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
+        // Ocultar horarios
+        document.getElementById('prayerGrid').style.display = 'none';
+        document.getElementById('countdownTimer').textContent = '--:--:--';
+        // Deshabilitar búsqueda de ciudad
+        document.getElementById('searchBtn').disabled = true;
+        document.getElementById('cityInput').disabled = true;
+        // Mostrar mensaje en el campo de ciudad
+        document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
+    }
+
+    function habilitarFuncionalidad() {
+        document.getElementById('prayerGrid').style.display = 'grid';
+        document.getElementById('cookieWarning').style.display = 'none';
+        document.getElementById('searchBtn').disabled = false;
+        document.getElementById('cityInput').disabled = false;
+        document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+    }
+
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        cookiesAccepted = true;
+        locationEnabled = true;
+        document.getElementById('cookieBanner').classList.remove('visible');
+        habilitarFuncionalidad();
+        // Guardar preferencias actuales y obtener ubicación
+        saveCurrentPreferences();
+        getUserLocation();
+    }
+
+    function rejectCookies() {
+        localStorage.setItem('cookiesAccepted', 'false');
+        cookiesAccepted = false;
+        locationEnabled = false;
+        document.getElementById('cookieBanner').classList.remove('visible');
+        mostrarMensajeSinCookies();
+    }
+
+    function saveCurrentPreferences() {
+        if (!cookiesAccepted) return;
+        try {
+            localStorage.setItem('pref_lang', currentLang);
+            localStorage.setItem('pref_city', currentCity);
+            localStorage.setItem('pref_lat', userLat);
+            localStorage.setItem('pref_lng', userLng);
+        } catch(e) {}
+    }
+
+    function restorePreferences() {
+        if (!cookiesAccepted) return false;
+        try {
+            const lang = localStorage.getItem('pref_lang');
+            const city = localStorage.getItem('pref_city');
+            const lat = parseFloat(localStorage.getItem('pref_lat'));
+            const lng = parseFloat(localStorage.getItem('pref_lng'));
+            if (lang && i18n[lang]) {
+                currentLang = lang;
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`.lang-btn[data-lang="${lang}"]`)?.classList.add('active');
+                updateUILanguage();
+            }
+            if (city && !isNaN(lat) && !isNaN(lng)) {
+                currentCity = city;
+                userLat = lat;
+                userLng = lng;
+                document.getElementById('cityInput').value = city;
+                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
+                habilitarFuncionalidad();
+                return true;
+            } else {
+                return false;
+            }
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // ================================================================
+    // SELECCIÓN DE IDIOMA
+    // ================================================================
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentLang = this.dataset.lang;
+            updateUILanguage();
+            if (currentSurah) {
+                loadQuran(currentSurah);
+            } else {
+                const display = document.getElementById('quranDisplay');
+                display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+                document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+            }
+            if (cookiesAccepted) saveCurrentPreferences();
+        });
+    });
+
+    // ================================================================
+    // PESTAÑAS
+    // ================================================================
+    const player = document.getElementById('audioPlayerFixed');
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            const tabId = this.dataset.tab;
+            document.getElementById(tabId).classList.add('active');
+
+            if (tabId === 'tab2') {
+                player.classList.add('visible');
+            } else {
+                player.classList.remove('visible');
+                if (isPlaying) audio.pause();
+            }
+            if (tabId === 'tab4') {
+                iniciarBrújula();
+            }
+        });
+    });
+
+    // ================================================================
+    // UBICACIÓN Y HORARIOS (solo si cookies aceptadas)
+    // ================================================================
+    function getUserLocation() {
+        if (!cookiesAccepted || !locationEnabled) {
+            mostrarMensajeSinCookies();
+            return;
+        }
+        // Primero intentar restaurar preferencias guardadas
+        if (restorePreferences()) {
+            return;
+        }
+        // Si no hay preferencias guardadas, pedir geolocalización
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    userLat = pos.coords.latitude;
+                    userLng = pos.coords.longitude;
+                    reverseGeocode(userLat, userLng);
+                    calcularQibla(userLat, userLng);
+                    if (cookiesAccepted) saveCurrentPreferences();
+                },
+                () => {
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
+                    fetchPrayerTimes(userLat, userLng);
+                    calcularQibla(userLat, userLng);
+                    habilitarFuncionalidad();
+                }
+            );
+        } else {
+            document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
+            fetchPrayerTimes(userLat, userLng);
+            calcularQibla(userLat, userLng);
+            habilitarFuncionalidad();
+        }
+    }
+
+    function reverseGeocode(lat, lng) {
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+            .then(r => r.json())
+            .then(data => {
+                const addr = data.address || {};
+                const city = addr.city || addr.town || addr.village || addr.county || 'tu ciudad';
+                currentCity = city;
+                document.getElementById('cityInput').value = city;
+                document.getElementById('fechaLocation').innerHTML = `📍 ${city} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
+                if (cookiesAccepted) saveCurrentPreferences();
+                habilitarFuncionalidad();
+            })
+            .catch(() => {
+                document.getElementById('fechaLocation').innerHTML = `📍 Coordenadas actuales · ${new Date().toLocaleDateString('es-ES')}`;
+                fetchPrayerTimes(lat, lng);
+                calcularQibla(lat, lng);
+                habilitarFuncionalidad();
+            });
+    }
+
+    function fetchPrayerTimes(lat, lng) {
+        const today = Math.floor(Date.now() / 1000);
+        const url = `https://api.aladhan.com/v1/timings/${today}?latitude=${lat}&longitude=${lng}&method=8`;
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                if (data.code === 200) {
+                    const timings = data.data.timings;
+                    prayerTimes = {
+                        Fajr: timings.Fajr,
+                        Dhuhr: timings.Dhuhr,
+                        Asr: timings.Asr,
+                        Maghrib: timings.Maghrib,
+                        Isha: timings.Isha
+                    };
+                    prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
+                    startCountdownAndAdhan();
+                    highlightCurrentPrayer();
+                }
+            })
+            .catch(err => console.error('Error horarios:', err));
+    }
+
+    function startCountdownAndAdhan() {
+        if (!locationEnabled) return;
+        setInterval(() => {
+            const now = new Date();
+            const todayStr = now.toISOString().split('T')[0];
+
+            let prayerDates = prayerIds.map(id => {
+                const [h, m] = prayerTimes[id].split(':').map(Number);
+                return { id, time: new Date(`${todayStr}T${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:00`) };
+            });
+            prayerDates.sort((a, b) => a.time - b.time);
+
+            let next = null;
+            for (let p of prayerDates) {
+                if (p.time > now) {
+                    next = p;
+                    break;
+                }
+            }
+            if (!next && prayerDates.length > 0) {
+                const first = prayerDates[0];
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const [h, m] = prayerTimes[first.id].split(':').map(Number);
+                tomorrow.setHours(h, m, 0, 0);
+                next = { id: first.id, time: tomorrow };
+            }
+
+            if (next) {
+                let diff = (next.time - now) / 1000;
+                if (diff < 0) diff = 0;
+                if (diff > 86400) diff = 86400;
+
+                const hrs = Math.floor(diff / 3600);
+                const mins = Math.floor((diff % 3600) / 60);
+                const secs = Math.floor(diff % 60);
+                document.getElementById('countdownTimer').innerText =
+                    `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            }
+
+            const currentMin = now.getHours() * 60 + now.getMinutes();
+            prayerIds.forEach(id => {
+                const [h, m] = prayerTimes[id].split(':').map(Number);
+                const prayerMin = h * 60 + m;
+                if (Math.abs(currentMin - prayerMin) <= 1) {
+                    if (!window._lastAdhan || window._lastAdhan !== id) {
+                        window._lastAdhan = id;
+                        playAdhan();
+                    }
+                }
+            });
+
+            highlightCurrentPrayer();
+        }, 1000);
+    }
+
+    function highlightCurrentPrayer() {
+        if (!locationEnabled) return;
+        const now = new Date();
+        const currentMin = now.getHours() * 60 + now.getMinutes();
+        let activeId = null, minDiff = Infinity;
+        prayerIds.forEach(id => {
+            const [h, m] = prayerTimes[id].split(':').map(Number);
+            const diff = currentMin - (h * 60 + m);
+            if (diff >= 0 && diff < minDiff) {
+                minDiff = diff;
+                activeId = id;
+            }
+            document.getElementById(id).parentElement.classList.remove('active');
+        });
+        if (activeId) document.getElementById(activeId).parentElement.classList.add('active');
+    }
+
+    function playAdhan() {
+        if (!locationEnabled) return;
+        try { adhanAudio.currentTime = 0; adhanAudio.play().catch(e => {}); } catch(e) {}
+    }
+
+    // ================================================================
+    // BÚSQUEDA DE CIUDAD
+    // ================================================================
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        if (!cookiesAccepted || !locationEnabled) {
+            alert(getTranslation('cookies_required'));
+            return;
+        }
+        const city = document.getElementById('cityInput').value.trim();
+        if (!city) return;
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const lat = parseFloat(data[0].lat);
+                    const lng = parseFloat(data[0].lon);
+                    userLat = lat; userLng = lng;
+                    currentCity = data[0].display_name.split(',')[0];
+                    document.getElementById('fechaLocation').innerHTML = `📍 ${currentCity} · ${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+                    fetchPrayerTimes(lat, lng);
+                    calcularQibla(lat, lng);
+                    if (cookiesAccepted) saveCurrentPreferences();
+                } else alert(getTranslation('city_not_found'));
+            })
+            .catch(() => alert(getTranslation('search_error')));
+    });
+
+    // ================================================================
+    // CORÁN
+    // ================================================================
+    function loadSurahList() {
+        const select = document.getElementById('surahSelect');
+        fetch('https://api.alquran.cloud/v1/surah')
+            .then(r => r.json())
+            .then(data => {
+                if (data.code === 200) {
+                    data.data.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.number;
+                        opt.textContent = `${s.number}. ${s.englishName} (${s.name})`;
+                        select.appendChild(opt);
+                    });
+                }
+            })
+            .catch(err => console.error('Error cargando suras:', err));
+    }
+
+    function loadQuran(surahNumber) {
+        const display = document.getElementById('quranDisplay');
+        if (!surahNumber) {
+            display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
+            document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+            document.getElementById('audioStatus').textContent = '';
+            return;
+        }
+        display.innerHTML = `<p style="text-align:center;color:#d4af37;">${getTranslation('loading')}</p>`;
+
+        let edition = '';
+        if (currentLang === 'es') edition = 'es.asad';
+        else if (currentLang === 'fr') edition = 'fr.hamidullah';
+        else if (currentLang === 'en') edition = 'en.sahih';
+        else edition = '';
+
+        const arabicUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}`;
+        const translationUrl = edition ? `https://api.alquran.cloud/v1/surah/${surahNumber}/${edition}` : null;
+
+        const promises = [fetch(arabicUrl).then(r => r.json())];
+        if (translationUrl) promises.push(fetch(translationUrl).then(r => r.json()));
+
+        Promise.all(promises)
+            .then(([arabicData, transData]) => {
+                if (arabicData.code === 200) {
+                    const arabicVerses = arabicData.data.ayahs;
+                    let transMap = {};
+                    if (transData && transData.code === 200) {
+                        transData.data.ayahs.forEach(v => {
+                            transMap[v.numberInSurah] = v.text;
+                        });
+                    }
+
+                    let html = `<div class="surah-name">${arabicData.data.englishName} - ${arabicData.data.name}</div>`;
+
+                    arabicVerses.forEach(v => {
+                        const num = v.numberInSurah;
+                        const aText = v.text;
+                        const tText = transMap[num] || (edition ? getTranslation('translation_not_available') : '');
+                        html += `<div class="verse" data-verse="${num}">
+                                    <div class="arabic">
+                                        <span class="verse-number">${num}</span>
+                                        ${aText}
+                                    </div>`;
+                        if (edition) {
+                            html += `<div class="translation">${tText}</div>`;
+                        }
+                        html += `</div>`;
+                    });
+
+                    display.innerHTML = html;
+                    document.getElementById('surahInfo').textContent = `${arabicData.data.englishName} (${arabicData.data.name})`;
+                    loadAudioForSurah(surahNumber);
+                } else {
+                    display.innerHTML = `<p style="color:#ff6b6b;">${getTranslation('error_load')}</p>`;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                display.innerHTML = `<p style="color:#ff6b6b;">${getTranslation('error_network')}</p>`;
+            });
+    }
+
+    // ================================================================
+    // AUDIO
+    // ================================================================
+    function loadAudioForSurah(surahNumber) {
+        const audioUrl = `https://server8.mp3quran.net/afs/${String(surahNumber).padStart(3, '0')}.mp3`;
+        console.log('Cargando audio:', audioUrl);
+
+        if (isPlaying) audio.pause();
+
+        audio.src = audioUrl;
+        audio.load();
+
+        const statusDiv = document.getElementById('audioStatus');
+        statusDiv.textContent = getTranslation('audio_loading');
+        document.getElementById('progressSlider').value = 0;
+        document.getElementById('timeDisplay').textContent = '00:00 / 00:00';
+        document.getElementById('playBtn').innerHTML = '&#9654;';
+        isPlaying = false;
+
+        audio.onloadedmetadata = function() {
+            document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
+            statusDiv.textContent = getTranslation('audio_ready');
+        };
+
+        audio.ontimeupdate = function() {
+            if (!audio.duration) return;
+            const progress = (audio.currentTime / audio.duration) * 100;
+            document.getElementById('progressSlider').value = progress;
+            document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+        };
+
+        audio.onplay = function() {
+            isPlaying = true;
+            document.getElementById('playBtn').innerHTML = '&#9208;';
+            statusDiv.textContent = getTranslation('audio_playing');
+        };
+
+        audio.onpause = function() {
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '&#9654;';
+            statusDiv.textContent = getTranslation('audio_paused');
+        };
+
+        audio.onended = function() {
+            isPlaying = false;
+            document.getElementById('playBtn').innerHTML = '&#9654;';
+            document.getElementById('progressSlider').value = 0;
+            document.getElementById('timeDisplay').textContent = `00:00 / ${formatTime(audio.duration)}`;
+            statusDiv.textContent = getTranslation('audio_ended');
+        };
+
+        audio.onerror = function(e) {
+            console.error('Error de audio:', e);
+            statusDiv.textContent = getTranslation('audio_error');
+            document.getElementById('playBtn').innerHTML = '&#9654;';
+            isPlaying = false;
+            document.getElementById('surahInfo').textContent = 'Error de audio';
+        };
+    }
+
+    function formatTime(seconds) {
+        if (isNaN(seconds) || !isFinite(seconds)) return '00:00';
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
+    // Controles de audio
+    document.getElementById('playBtn').addEventListener('click', function() {
+        if (!audio.src) {
+            alert(getTranslation('select_surah_audio'));
+            return;
+        }
+        if (audio.paused) {
+            audio.play().catch(e => {
+                console.log('Error al reproducir:', e);
+                document.getElementById('audioStatus').textContent = getTranslation('audio_play_error');
+            });
+        } else {
+            audio.pause();
+        }
+    });
+
+    document.getElementById('progressSlider').addEventListener('input', function() {
+        if (audio.duration) {
+            const newTime = (this.value / 100) * audio.duration;
+            audio.currentTime = newTime;
+            document.getElementById('timeDisplay').textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+        }
+    });
+
+    document.getElementById('prevSurahBtn').addEventListener('click', function() {
+        const select = document.getElementById('surahSelect');
+        const options = select.options;
+        let idx = select.selectedIndex;
+        if (idx > 0) {
+            select.selectedIndex = idx - 1;
+            select.dispatchEvent(new Event('change'));
+        }
+    });
+
+    document.getElementById('nextSurahBtn').addEventListener('click', function() {
+        const select = document.getElementById('surahSelect');
+        const options = select.options;
+        let idx = select.selectedIndex;
+        if (idx < options.length - 1) {
+            select.selectedIndex = idx + 1;
+            select.dispatchEvent(new Event('change'));
+        }
+    });
+
+    document.getElementById('surahSelect').addEventListener('change', function() {
+        currentSurah = this.value;
+        if (isPlaying) audio.pause();
+        loadQuran(currentSurah);
+    });
+
+    // ================================================================
+    // DUAS
+    // ================================================================
+    function loadDuasByCategory(category) {
+        const container = document.getElementById('duaList');
+        const filtered = duas.filter(d => d.category === category);
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<p style="text-align:center;color:#b8956a;">No hay duas en esta categoría.</p>`;
+            return;
+        }
+
+        const catTitle = getCategoryTitle(category);
+        let html = `<div class="dua-category-title">${catTitle}</div>`;
+        filtered.forEach((dua) => {
+            const originalIndex = duas.indexOf(dua);
+            const title = getDuaTitle(originalIndex);
+            const translation = getDuaTranslation(originalIndex);
+            html += `
+                <div class="dua-item">
+                    <div class="dua-title">${title}</div>
+                    <div class="dua-arabic">${dua.arabic}</div>
+                    <div class="dua-translation">${translation}</div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // Eventos de selector de categorías
+    document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('#duaCategorySelector button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const cat = this.dataset.cat;
+            loadDuasByCategory(cat);
+        });
+    });
+
+    // ================================================================
+    // QIBLA - BRÚJULA MEJORADA
+    // ================================================================
+    function calcularQibla(lat, lng) {
+        const latMecca = 21.4225;
+        const lngMecca = 39.8262;
+        const phi1 = lat * Math.PI / 180;
+        const phi2 = latMecca * Math.PI / 180;
+        const deltaLambda = (lngMecca - lng) * Math.PI / 180;
+
+        const x = Math.cos(phi2) * Math.sin(deltaLambda);
+        const y = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(deltaLambda);
+        let angle = Math.atan2(x, y) * 180 / Math.PI;
+        angle = (angle + 360) % 360;
+        qiblaAngle = angle;
+        actualizarInfoQibla();
+        dibujarBrújula();
+    }
+
+    function actualizarInfoQibla() {
+        document.getElementById('qiblaAngleDisplay').textContent = `${Math.round(qiblaAngle)}°`;
+        const direcciones = {
+            es: ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'],
+            fr: ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'],
+            en: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'],
+            ar: ['ش', 'ش-ش', 'ش', 'ش-غ', 'غ', 'غ-ج', 'ج', 'ج-ش']
+        };
+        const idx = Math.round(qiblaAngle / 45) % 8;
+        const dir = direcciones[currentLang]?.[idx] || direcciones['es'][idx];
+        document.getElementById('qiblaDirectionText').textContent = dir;
+    }
+
+    // Dibujo de la brújula mejorado
+    const canvas = document.getElementById('compassCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function dibujarBrújula() {
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        const radio = Math.min(w, h) * 0.42;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // Sombra exterior
+        const shadow = ctx.createRadialGradient(cx, cy, radio*0.8, cx, cy, radio*1.2);
+        shadow.addColorStop(0, 'rgba(212, 175, 55, 0.05)');
+        shadow.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.beginPath();
+        ctx.arc(cx, cy, radio*1.2, 0, 2*Math.PI);
+        ctx.fillStyle = shadow;
+        ctx.fill();
+
+        // Fondo del círculo
+        const grad = ctx.createRadialGradient(cx-radio*0.3, cy-radio*0.3, radio*0.1, cx, cy, radio);
+        grad.addColorStop(0, '#1e3a1e');
+        grad.addColorStop(0.7, '#0d1f0d');
+        grad.addColorStop(1, '#0a1a0a');
+        ctx.beginPath();
+        ctx.arc(cx, cy, radio, 0, 2 * Math.PI);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        // Borde brillante
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 15;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Marcas de los puntos cardinales
+        const puntos = [
+            { ang: 0, label: 'N', color: '#ff4d4d' },
+            { ang: 90, label: 'E', color: '#b8956a' },
+            { ang: 180, label: 'S', color: '#b8956a' },
+            { ang: 270, label: 'O', color: '#b8956a' }
+        ];
+        ctx.font = 'bold 20px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        puntos.forEach(p => {
+            const rad = p.ang * Math.PI / 180;
+            const x = cx + radio * 0.88 * Math.sin(rad);
+            const y = cy - radio * 0.88 * Math.cos(rad);
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 10;
+            ctx.fillText(p.label, x, y);
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.arc(cx + radio * 0.78 * Math.sin(rad), cy - radio * 0.78 * Math.cos(rad), 5, 0, 2*Math.PI);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+        });
+
+        // Líneas de los 45°
+        for (let i = 0; i < 8; i++) {
+            const ang = i * 45 * Math.PI / 180;
+            const x1 = cx + radio * 0.70 * Math.sin(ang);
+            const y1 = cy - radio * 0.70 * Math.cos(ang);
+            const x2 = cx + radio * 0.92 * Math.sin(ang);
+            const y2 = cy - radio * 0.92 * Math.cos(ang);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = 'rgba(42, 74, 42, 0.5)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        // Flecha de la Qibla
+        let anguloFinal = 0;
+        if (headingAvailable) {
+            anguloFinal = (qiblaAngle - deviceHeading) * Math.PI / 180;
+        } else {
+            anguloFinal = qiblaAngle * Math.PI / 180;
+        }
+
+        const largo = radio * 0.65;
+        const xFlecha = cx + largo * Math.sin(anguloFinal);
+        const yFlecha = cy - largo * Math.cos(anguloFinal);
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(xFlecha, yFlecha);
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 6;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 25;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        const angFlecha = Math.atan2(xFlecha - cx, -(yFlecha - cy));
+        const headLen = 24;
+        const headAngle = 0.45;
+        ctx.beginPath();
+        ctx.moveTo(xFlecha, yFlecha);
+        ctx.lineTo(
+            xFlecha - headLen * Math.cos(angFlecha - headAngle),
+            yFlecha - headLen * Math.sin(angFlecha - headAngle)
+        );
+        ctx.moveTo(xFlecha, yFlecha);
+        ctx.lineTo(
+            xFlecha - headLen * Math.cos(angFlecha + headAngle),
+            yFlecha - headLen * Math.sin(angFlecha + headAngle)
+        );
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 5;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 20;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Círculo central con brillo
+        const gradCenter = ctx.createRadialGradient(cx-4, cy-4, 2, cx, cy, 16);
+        gradCenter.addColorStop(0, '#d4af37');
+        gradCenter.addColorStop(0.6, '#b8952a');
+        gradCenter.addColorStop(1, '#0a1f0a');
+        ctx.beginPath();
+        ctx.arc(cx, cy, 16, 0, 2 * Math.PI);
+        ctx.fillStyle = gradCenter;
+        ctx.shadowColor = '#d4af37';
+        ctx.shadowBlur = 20;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = '#d4af37';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = '#0a1f0a';
+        ctx.fill();
+    }
+
+    // ================================================================
+    // ORIENTACIÓN DEL DISPOSITIVO
+    // ================================================================
+    function iniciarBrújula() {
+        if (window.DeviceOrientationEvent) {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(state => {
+                        if (state === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                        } else {
+                            headingAvailable = false;
+                            dibujarBrújula();
+                        }
+                    })
+                    .catch(() => {
+                        headingAvailable = false;
+                        dibujarBrújula();
+                    });
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
+        } else {
+            headingAvailable = false;
+            dibujarBrújula();
+        }
+        dibujarBrújula();
+    }
+
+    function handleOrientation(event) {
+        let heading = 0;
+        if (event.webkitCompassHeading !== undefined && event.webkitCompassHeading !== null) {
+            heading = event.webkitCompassHeading;
+        } else if (event.alpha !== null) {
+            heading = event.alpha;
+        } else {
+            headingAvailable = false;
+            dibujarBrújula();
+            return;
+        }
+        headingAvailable = true;
+        deviceHeading = heading;
+        dibujarBrújula();
+    }
+
+    // ================================================================
+    // BOTONES DE COOKIES E INICIO
+    // ================================================================
+    document.getElementById('acceptCookies').addEventListener('click', acceptCookies);
+    document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
+
+    window.onload = function() {
+        // 1. Verificar cookies (esto mostrará el banner si no hay respuesta)
+        checkCookies();
+        // 2. Cargar listas de suras y Duas
+        loadSurahList();
+        // 3. Si ya hay cookies aceptadas, checkCookies llamó a restorePreferences o getUserLocation
+        //    Si no hay respuesta, el banner está visible y no se carga ubicación.
+        // 4. Actualizar idioma
+        updateUILanguage();
+        // 5. Iniciar brújula si es necesario
+        setTimeout(() => {
+            if (qiblaAngle !== 0) dibujarBrújula();
+        }, 500);
+    };
+
+    window.addEventListener('resize', () => {
+        if (document.getElementById('tab4').classList.contains('active')) {
+            dibujarBrújula();
+        }
+    });
+</script>
+</body>
+</html>
