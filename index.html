@@ -524,7 +524,7 @@
         .legend-dot.north { background: #ff4d4d; }
         .legend-dot.qibla { background: #d4af37; }
 
-        /* ===== HISTORIAS DEL ISLAM ===== */
+        /* ===== HISTORIAS DEL ISLAM (ACORDEÓN) ===== */
         .stories-container {
             background: rgba(20, 40, 20, 0.4);
             backdrop-filter: blur(8px);
@@ -534,40 +534,72 @@
             border: 1px solid rgba(212, 175, 55, 0.1);
             box-shadow: 0 8px 30px rgba(0,0,0,0.25);
         }
-        .stories-container .story-title {
+        .stories-container .stories-title {
             color: #d4af37;
             font-size: 1.3rem;
-            font-weight: 600;
-            margin: 15px 0 8px;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            padding-bottom: 6px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
         }
         .story-item {
-            background: rgba(26, 47, 26, 0.5);
+            background: rgba(26, 47, 26, 0.4);
             backdrop-filter: blur(4px);
-            padding: 18px;
             border-radius: 18px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             border-left: 4px solid #d4af37;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             transition: all 0.3s;
+            overflow: hidden;
+            cursor: pointer;
         }
-        .story-item:hover { transform: translateX(4px); border-left-width: 6px; }
-        .story-item .story-arabic-name {
-            font-size: 1.6rem;
-            font-family: 'Amiri', 'Times New Roman', serif;
+        .story-item:hover { border-left-width: 6px; background: rgba(26, 47, 26, 0.6); }
+        .story-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .story-header .story-title {
             color: #d4af37;
-            text-align: right;
-            margin-bottom: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .story-item .story-text {
+        .story-header .story-arabic-name {
+            font-size: 1.4rem;
+            font-family: 'Amiri', 'Times New Roman', serif;
+            color: #b8956a;
+        }
+        .story-header .toggle-icon {
+            color: #b8956a;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-left: auto;
+            padding-left: 10px;
+        }
+        .story-item.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .story-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 20px;
+        }
+        .story-item.open .story-body {
+            max-height: 5000px; /* aumentado para historias largas */
+            padding: 0 20px 20px 20px;
+        }
+        .story-body .story-text {
             color: #c5b08a;
             font-size: 1rem;
             line-height: 1.8;
             margin-top: 6px;
         }
-        .story-item .story-text p {
+        .story-body .story-text p {
             margin-bottom: 0.8rem;
         }
 
@@ -743,6 +775,9 @@
             .tab-btn { font-size: 0.75rem; padding: 10px 0; min-width: 50px; }
             .allah-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .allah-item .arabic-name { font-size: 1.3rem; }
+            .story-header { flex-wrap: wrap; }
+            .story-header .story-title { font-size: 1rem; }
+            .story-header .story-arabic-name { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -861,10 +896,10 @@
         </div>
     </div>
 
-    <!-- TAB 6: HISTORIAS DEL ISLAM (NUEVO) -->
+    <!-- TAB 6: HISTORIAS DEL ISLAM (NUEVO CON ACORDEÓN) -->
     <div id="tab6" class="tab-content">
         <div class="stories-container">
-            <h3 style="color:#d4af37; text-align:center; margin-bottom:15px; font-weight:300; letter-spacing:2px;" data-i18n="stories_title">Historias del Islam</h3>
+            <div class="stories-title" data-i18n="stories_title">Historias del Islam</div>
             <div id="storiesList"></div>
         </div>
     </div>
@@ -1482,7 +1517,7 @@
     ];
 
     // ================================================================
-    // HISTORIAS DEL ISLAM (NUEVO)
+    // HISTORIAS DEL ISLAM (versión muy extensa y detallada)
     // ================================================================
     const stories = [
         {
@@ -1495,10 +1530,10 @@
                 ar: 'آدم وحواء'
             },
             text: {
-                es: `<p>Allah creó a Adán (AS) de barro y le insufló Su espíritu. Luego creó a su esposa Hawá (Eva) de su costilla para que fuera su compañera. Ambos vivieron en el Jardín del Edén, donde disfrutaban de todo excepto de un árbol. Iblis (Satanás) los engañó y desobedecieron a Allah comiendo del árbol. Se arrepintieron y Allah los perdonó, pero los envió a la Tierra como Su primera humanidad, con la promesa de guía y el camino de regreso a Él.</p>`,
-                fr: `<p>Allah créa Adam (AS) à partir d'argile et lui insuffla Son esprit. Puis Il créa son épouse Hawâ (Ève) de sa côte pour qu'elle soit sa compagne. Ils vécurent dans le Jardin d'Éden, où ils jouissaient de tout sauf d'un arbre. Iblis (Satan) les trompa et ils désobéirent à Allah en mangeant de l'arbre. Ils se repentirent et Allah les pardonna, mais Il les envoya sur Terre comme Sa première humanité, avec la promesse de guidance et du chemin de retour vers Lui.</p>`,
-                en: `<p>Allah created Adam (AS) from clay and breathed His spirit into him. Then He created his wife Hawā (Eve) from his rib to be his companion. They lived in the Garden of Eden, enjoying everything except one tree. Iblis (Satan) deceived them and they disobeyed Allah by eating from the tree. They repented and Allah forgave them, but He sent them to Earth as His first humanity, with the promise of guidance and the way back to Him.</p>`,
-                ar: `<p>خلق الله آدم (عليه السلام) من طين ونفخ فيه من روحه، ثم خلق زوجته حواء من ضلعه لتكون رفيقته. عاشا في جنة عدن، يتمتعان بكل شيء ما عدا شجرة واحدة. خدعهما إبليس فعصيا الله بأكل من الشجرة. تابا فغفر الله لهما، لكنه أرسلهما إلى الأرض كأول بشرية له، مع وعد بالهداية وطريق العودة إليه.</p>`
+                es: `<p>Allah, el Altísimo, creó a Adán (AS) con Sus propias manos de arcilla moldeada y le insufló Su espíritu, otorgándole vida, conocimiento y la capacidad de nombrar todas las cosas. Los ángeles se postraron ante él en señal de respeto, excepto Iblis, quien se enorgulleció y se negó. Adán y su esposa Hawá (Eva) fueron colocados en el Jardín del Edén, donde podían disfrutar de todo excepto de un árbol específico. Vivían en felicidad y comunión con Allah, pero Iblis, lleno de envidia y arrogancia, susurró a sus corazones y los engañó, haciéndoles creer que comer del árbol les otorgaría inmortalidad. Ambos comieron del árbol, y al instante su desnudez se hizo evidente, y sintieron vergüenza. Se arrepintieron profundamente y suplicaron perdón a Allah. Él, en Su infinita misericordia, aceptó su arrepentimiento, pero les dijo que descenderían a la Tierra, donde vivirían, morirían y serían juzgados. En la Tierra, Adán y Hawá poblaron la humanidad y establecieron la primera comunidad de creyentes, enseñando a sus hijos la adoración al Único Dios y la rectitud. Su historia es un recordatorio de que la tentación y el error son parte de la naturaleza humana, pero el arrepentimiento sincero y la misericordia de Allah siempre están abiertos a quienes buscan el perdón.</p>`,
+                fr: `<p>Allah, le Très-Haut, créa Adam (AS) de Ses propres mains à partir d'argile modelée et lui insuffla Son esprit, lui donnant la vie, la connaissance et la capacité de nommer toutes choses. Les anges se prosternèrent devant lui en signe de respect, sauf Iblis, qui s'enorgueillit et refusa. Adam et son épouse Hawâ (Ève) furent placés dans le Jardin d'Éden, où ils pouvaient jouir de tout sauf d'un arbre spécifique. Ils vivaient dans le bonheur et la communion avec Allah, mais Iblis, rempli d'envie et d'arrogance, murmura à leurs cœurs et les trompa, leur faisant croire que manger de l'arbre leur apporterait l'immortalité. Ils mangèrent tous deux de l'arbre, et aussitôt leur nudité devint évidente, et ils ressentirent de la honte. Ils se repentirent profondément et implorèrent le pardon d'Allah. Lui, dans Son infinie miséricorde, accepta leur repentir, mais leur dit qu'ils descendraient sur Terre, où ils vivraient, mourraient et seraient jugés. Sur Terre, Adam et Hawâ peuplèrent l'humanité et fondèrent la première communauté de croyants, enseignant à leurs enfants l'adoration du Dieu Unique et la droiture. Leur histoire est un rappel que la tentation et l'erreur font partie de la nature humaine, mais le repentir sincère et la miséricorde d'Allah sont toujours ouverts à ceux qui cherchent le pardon.</p>`,
+                en: `<p>Allah, the Most High, created Adam (AS) with His own hands from molded clay and breathed His spirit into him, granting him life, knowledge, and the ability to name all things. The angels prostrated before him in respect, except Iblis, who was arrogant and refused. Adam and his wife Hawā (Eve) were placed in the Garden of Eden, where they could enjoy everything except one specific tree. They lived in happiness and communion with Allah, but Iblis, filled with envy and arrogance, whispered to their hearts and deceived them, making them believe that eating from the tree would grant them immortality. They both ate from the tree, and instantly their nakedness became apparent, and they felt shame. They repented deeply and begged Allah for forgiveness. He, in His infinite mercy, accepted their repentance, but told them they would descend to Earth, where they would live, die, and be judged. On Earth, Adam and Hawā populated humanity and established the first community of believers, teaching their children the worship of the One God and righteousness. Their story is a reminder that temptation and error are part of human nature, but sincere repentance and Allah's mercy are always open to those who seek forgiveness.</p>`,
+                ar: `<p>خلق الله العلي آدم (عليه السلام) بيديه من طين ممسوح ونفخ فيه من روحه، ومنحه الحياة والعلم والقدرة على تسمية كل شيء. سجدت الملائكة له إكراماً، إلا إبليس فاستكبر وأبى. وضع آدم وزوجته حواء في جنة عدن، يتمتعان بكل شيء ما عدا شجرة معينة. كانا يعيشان في سعادة وقرب من الله، لكن إبليس، المملوء حسداً وكبراً، وسوس لهما وخدعهما، موهماً إياهما أن أكل الشجرة يمنحهما الخلود. أكلا من الشجرة فبدت لهما سوآتهما وأحسا بالخزي. تابا إلى الله واستغفراه، فتاب الله عليهما، لكنه قال لهما اهبطوا إلى الأرض حيث تعيشون وتموتون وتحاسبون. على الأرض، أنجب آدم وحواء البشرية وأسسا أول جماعة من المؤمنين، يعلمان أبناءهما عبادة الله الواحد والاستقامة. قصتهما تذكير بأن الفتنة والخطأ جزء من الطبيعة البشرية، لكن التوبة الصادقة ورحمة الله مفتوحة دائماً لمن يطلب الغفران.</p>`
             }
         },
         {
@@ -1511,10 +1546,10 @@
                 ar: 'نوح'
             },
             text: {
-                es: `<p>Nuh (AS) fue un profeta que llamó a su pueblo a adorar a un solo Dios durante 950 años, pero solo unos pocos creyeron. Allah le ordenó construir un arca y salvar a una pareja de cada especie. Su pueblo lo ridiculizó, pero cuando llegó el diluvio, los creyentes y los animales se salvaron en el arca, mientras los incrédulos perecieron. El arca se posó sobre el monte Judi, y la humanidad renació.</p>`,
-                fr: `<p>Nuh (AS) fut un prophète qui appela son peuple à adorer un seul Dieu pendant 950 ans, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche et de sauver un couple de chaque espèce. Son peuple le ridiculisa, mais lorsque le déluge arriva, les croyants et les animaux furent sauvés dans l'arche, tandis que les mécréants périrent. L'arche s'arrêta sur le mont Judi, et l'humanité renaquit.</p>`,
-                en: `<p>Nuh (AS) was a prophet who called his people to worship one God for 950 years, but only a few believed. Allah ordered him to build an ark and save a pair of every species. His people mocked him, but when the flood came, the believers and animals were saved in the ark, while the disbelievers perished. The ark settled on Mount Judi, and humanity was reborn.</p>`,
-                ar: `<p>دعا نوح (عليه السلام) قومه إلى عبادة الله وحده لمدة 950 عامًا، لكن آمن معه قليلون. أمره الله ببناء سفينة وإنقاذ زوجين من كل نوع. سخر منه قومه، ولكن لما جاء الطوفان نجا المؤمنون والحيوانات في السفينة، بينما هلك الكافرون. استقرت السفينة على جبل الجودي، وولدت البشرية من جديد.</p>`
+                es: `<p>Noé (Nuh) fue un profeta enviado a su pueblo, que se había desviado completamente y adoraba ídolos. Durante 950 años, Nuh llamó a su gente a adorar a un solo Dios, pero solo unos pocos creyeron en él. La mayoría lo rechazó, se burló de él y lo amenazó. Allah le ordenó construir un arca bajo Su supervisión, y cuando la gente lo vio construyendo, se mofaron aún más. Nuh les advirtió que un gran castigo caería sobre ellos, pero ellos persistieron en su incredulidad. Cuando el agua brotó de la tierra y del cielo, Allah ordenó a Nuh que subiera al arca con los creyentes y una pareja de cada especie animal. El diluvio cubrió la tierra, y todos los incrédulos perecieron, incluido uno de los hijos de Nuh que se negó a embarcar. El arca flotó hasta que las aguas retrocedieron y se posó sobre el monte Judi. Nuh y los creyentes descendieron y repoblaron la tierra, estableciendo una nueva humanidad sobre la base del monoteísmo. La historia de Nuh enseña la paciencia en la llamada a la fe y la certeza de que la victoria final pertenece a los creyentes, aunque el castigo de los injustos es inevitable.</p>`,
+                fr: `<p>Noé (Nuh) fut un prophète envoyé à son peuple, qui s'était complètement égaré et adorait des idoles. Pendant 950 ans, Nuh appela son peuple à adorer un seul Dieu, mais seuls quelques-uns crurent en lui. La majorité le rejeta, se moqua de lui et le menaça. Allah lui ordonna de construire une arche sous Sa supervision, et lorsque les gens le virent construire, ils se moquèrent encore plus. Nuh les avertit qu'un grand châtiment s'abattrait sur eux, mais ils persistèrent dans leur incrédulité. Lorsque l'eau jaillit de la terre et du ciel, Allah ordonna à Nuh de monter dans l'arche avec les croyants et un couple de chaque espèce animale. Le déluge couvrit la terre, et tous les mécréants périrent, y compris un des fils de Nuh qui refusa d'embarquer. L'arche flotta jusqu'à ce que les eaux se retirent et se posa sur le mont Judi. Nuh et les croyants descendirent et repeuplèrent la terre, établissant une nouvelle humanité sur la base du monothéisme. L'histoire de Nuh enseigne la patience dans l'appel à la foi et la certitude que la victoire finale appartient aux croyants, même si le châtiment des injustes est inévitable.</p>`,
+                en: `<p>Noah (Nuh) was a prophet sent to his people, who had gone completely astray and worshipped idols. For 950 years, Nuh called his people to worship one God, but only a few believed in him. The majority rejected him, mocked him, and threatened him. Allah ordered him to build an ark under His supervision, and when people saw him building, they mocked him even more. Nuh warned them that a great punishment would befall them, but they persisted in their disbelief. When water gushed from the earth and the sky, Allah ordered Nuh to board the ark with the believers and a pair of every animal species. The flood covered the earth, and all the disbelievers perished, including one of Nuh's sons who refused to embark. The ark floated until the waters receded and settled on Mount Judi. Nuh and the believers descended and repopulated the earth, establishing a new humanity on the basis of monotheism. The story of Nuh teaches patience in calling to faith and the certainty that final victory belongs to the believers, even though the punishment of the unjust is inevitable.</p>`,
+                ar: `<p>كان نوح (عليه السلام) نبياً أرسل إلى قومه الذين ضلوا تماماً وعبدوا الأصنام. دعا نوح قومه إلى عبادة الله وحده لمدة 950 عاماً، لكن آمن معه قليلون. رفضه الأكثرون واستهزأوا به وهددوه. أمره الله ببناء سفينة تحت إشرافه، وعندما رآه الناس يبني، سخروا منه أكثر. حذرهم نوح من أن عذاباً عظيماً سينزل عليهم، لكنهم تمادوا في كفرهم. لما تفجرت المياه من الأرض والسماء، أمر الله نوحاً أن يصعد إلى السفينة مع المؤمنين وزوجين من كل نوع من الحيوانات. غمر الطوفان الأرض، وهلك جميع الكافرين، بما في ذلك أحد أبناء نوح الذي رفض الركوب. طافت السفينة حتى نضبت المياه واستقرت على جبل الجودي. نزل نوح والمؤمنون وأعادوا إعمار الأرض، مؤسسين بشرية جديدة على أساس التوحيد. قصة نوح تعلمنا الصبر في الدعوة إلى الإيمان، ويقين أن النصر النهائي للمؤمنين، وإن كان عذاب الظالمين محتماً.</p>`
             }
         },
         {
@@ -1527,10 +1562,10 @@
                 ar: 'إبراهيم'
             },
             text: {
-                es: `<p>Ibrahim (AS) fue un profeta que rompió los ídolos de su pueblo y los llamó al monoteísmo. Fue arrojado al fuego, pero Allah lo hizo fresco y seguro. Se le ordenó sacrificar a su hijo Ismail (AS), pero Allah lo reemplazó con un cordero, estableciendo la tradición del sacrificio. Construyó la Kaaba en Makkah con su hijo, y su legado de fe y entrega a la voluntad de Allah perdura hasta hoy.</p>`,
-                fr: `<p>Ibrahim (AS) fut un prophète qui brisa les idoles de son peuple et les appela au monothéisme. Il fut jeté au feu, mais Allah le rendit frais et sûr. Il lui fut ordonné de sacrifier son fils Ismaël (AS), mais Allah le remplaça par un bélier, établissant la tradition du sacrifice. Il construisit la Kaaba à La Mecque avec son fils, et son héritage de foi et de soumission à la volonté d'Allah perdure encore aujourd'hui.</p>`,
-                en: `<p>Ibrahim (AS) was a prophet who broke his people's idols and called them to monotheism. He was thrown into the fire, but Allah made it cool and safe. He was commanded to sacrifice his son Isma'il (AS), but Allah replaced him with a ram, establishing the tradition of sacrifice. He built the Kaaba in Makkah with his son, and his legacy of faith and submission to Allah's will endures to this day.</p>`,
-                ar: `<p>إبراهيم (عليه السلام) نبي كسر أصنام قومه ودعاهم إلى التوحيد. أُلقي في النار فجعلها الله برداً وسلاماً. أُمر بذبح ابنه إسماعيل (عليه السلام) ففداه الله بكبش، وأرسى سنة التضحية. بنى الكعبة في مكة مع ابنه، وما زال إرثه من الإيمان والتسليم لإرادة الله قائماً حتى اليوم.</p>`
+                es: `<p>Abraham (Ibrahim) fue un profeta excepcional, conocido como el "amigo de Allah". Desde joven, reflexionó sobre la creación y rechazó la idolatría de su pueblo. Rompió los ídolos en el templo, dejando solo al mayor, para demostrar la impotencia de esas estatuas. Por este acto, fue arrojado a una inmensa hoguera, pero Allah ordenó al fuego que fuera frío y seguro, y Abraham salió ileso. Más tarde, Allah le ordenó sacrificar a su hijo Ismail (AS), y ambos se sometieron con total entrega; cuando Abraham estaba a punto de ejecutar la orden, Allah lo detuvo y lo reemplazó con un cordero, estableciendo así la tradición del sacrificio (Eid al-Adha). Abraham y su hijo Ismail construyeron la Kaaba en Makkah, elevando sus cimientos y suplicando a Allah que hiciera de ese lugar un santuario de paz y guía para la humanidad. La historia de Abraham es un ejemplo supremo de fe, entrega total a la voluntad de Dios y sacrificio por la verdad.</p>`,
+                fr: `<p>Abraham (Ibrahim) fut un prophète exceptionnel, connu comme "l'ami d'Allah". Dès son jeune âge, il réfléchit sur la création et rejeta l'idolâtrie de son peuple. Il brisa les idoles dans le temple, ne laissant que la plus grande, pour montrer l'impuissance de ces statues. Pour cet acte, il fut jeté dans un immense brasier, mais Allah ordonna au feu d'être froid et sûr, et Abraham en sortit indemne. Plus tard, Allah lui ordonna de sacrifier son fils Ismaël (AS), et tous deux se soumirent avec un total abandon ; alors qu'Abraham s'apprêtait à exécuter l'ordre, Allah l'arrêta et le remplaça par un bélier, établissant ainsi la tradition du sacrifice (Aïd al-Adha). Abraham et son fils Ismaël construisirent la Kaaba à La Mecque, élevant ses fondations et implorant Allah de faire de ce lieu un sanctuaire de paix et de guidance pour l'humanité. L'histoire d'Abraham est un exemple suprême de foi, d'abandon total à la volonté de Dieu et de sacrifice pour la vérité.</p>`,
+                en: `<p>Abraham (Ibrahim) was an exceptional prophet, known as the "friend of Allah." From a young age, he reflected on creation and rejected the idolatry of his people. He smashed the idols in the temple, leaving only the largest, to demonstrate the impotence of those statues. For this act, he was thrown into a huge fire, but Allah commanded the fire to be cool and safe, and Abraham came out unharmed. Later, Allah ordered him to sacrifice his son Isma'il (AS), and both submitted with total devotion; when Abraham was about to carry out the order, Allah stopped him and replaced him with a ram, thus establishing the tradition of sacrifice (Eid al-Adha). Abraham and his son Isma'il built the Kaaba in Makkah, raising its foundations and praying to Allah to make this place a sanctuary of peace and guidance for humanity. Abraham's story is a supreme example of faith, complete surrender to God's will, and sacrifice for the truth.</p>`,
+                ar: `<p>إبراهيم (عليه السلام) كان نبياً استثنائياً، عُرف بـ "خليل الله". منذ صغره، تفكر في الخلق ورفض عبادة الأصنام التي كان قومه يعبدونها. حطم الأصنام في المعبد، تاركاً فقط الأكبر منها، ليثبت عجز تلك التماثيل. ولهذا الفعل، أُلقى في نار هائلة، لكن الله أمر النار أن تكون برداً وسلاماً، فخرج إبراهيم سالماً. وفيما بعد، أمره الله أن يذبح ابنه إسماعيل (عليه السلام)، فاستسلما معاً لله، وعندما هم إبراهيم بتنفيذ الأمر، فداه الله بكبش، وأرسى سنة التضحية (عيد الأضحى). بنى إبراهيم وابنه إسماعيل الكعبة في مكة، ورفعا قواعدها، ودعوا الله أن يجعل هذا البيت آمناً وهدى للناس. قصة إبراهيم هي مثال أعلى للإيمان، والتسليم الكامل لإرادة الله، والتضحية من أجل الحق.</p>`
             }
         },
         {
@@ -1543,10 +1578,10 @@
                 ar: 'موسى'
             },
             text: {
-                es: `<p>Musa (AS) fue elegido por Allah para liberar a los hijos de Israel de la opresión del Faraón. Recibió la Torá en el monte Sinaí y realizó milagros como la vara que se convierte en serpiente y la división del mar. Condujo a su pueblo a través del desierto durante cuarenta años, y aunque muchos se rebelaron, su misión de guía y justicia sigue siendo un faro para los creyentes.</p>`,
-                fr: `<p>Musa (AS) fut choisi par Allah pour libérer les enfants d'Israël de l'oppression du Pharaon. Il reçut la Torah sur le mont Sinaï et accomplit des miracles comme le bâton se transformant en serpent et la division de la mer. Il conduisit son peuple à travers le désert pendant quarante ans, et bien que beaucoup se rebellèrent, sa mission de guidance et de justice reste un phare pour les croyants.</p>`,
-                en: `<p>Musa (AS) was chosen by Allah to liberate the Children of Israel from the oppression of Pharaoh. He received the Torah on Mount Sinai and performed miracles such as the staff turning into a serpent and the parting of the sea. He led his people through the desert for forty years, and although many rebelled, his mission of guidance and justice remains a beacon for believers.</p>`,
-                ar: `<p>اختار الله موسى (عليه السلام) لتحرير بني إسرائيل من ظلم فرعون. تلقى التوراة على جبل سيناء وأجرى معجزات مثل العصا تتحول إلى ثعبان وشق البحر. قاد قومه في الصحراء أربعين سنة، ورغم تمرد كثيرين، فإن رسالته في الهداية والعدل تظل منارة للمؤمنين.</p>`
+                es: `<p>Moisés (Musa) fue elegido por Allah para liberar a los hijos de Israel de la opresión del Faraón, quien los esclavizaba y masacraba a sus hijos. Musa nació milagrosamente a salvo, fue criado en el palacio del Faraón, pero luego tuvo que huir a Madián, donde se casó y vivió muchos años. Allah lo llamó desde el valle sagrado de Tuwa, le otorgó la profecía y le dio dos señales: su vara que se convertía en serpiente y su mano que brillaba con luz blanca. Junto con su hermano Harún (Aarón), fue al Faraón para invitarlo a la fe y a liberar a los israelitas. El Faraón se negó y desafió a Musa, quien realizó varias plagas que devastaron Egipto, pero el Faraón no cedió. Finalmente, Allah ordenó a Musa que saliera con su pueblo por la noche; cuando el ejército del Faraón los persiguió, Musa dividió el mar con su vara, creando un camino seco. Los israelitas cruzaron, y cuando el Faraón y sus soldados intentaron seguirlos, el mar se cerró sobre ellos, ahogándolos a todos. Musa condujo a su pueblo durante cuarenta años en el desierto, recibió la Torá en el monte Sinaí, y aunque enfrentó numerosas rebeliones y pruebas, siempre mantuvo su fe y guió a su pueblo hacia la tierra prometida. Su historia es un símbolo de liberación, justicia divina y la importancia de la guía profética.</p>`,
+                fr: `<p>Moïse (Musa) fut choisi par Allah pour libérer les enfants d'Israël de l'oppression du Pharaon, qui les réduisait en esclavage et massacrait leurs fils. Musa naquit miraculeusement en sécurité, fut élevé dans le palais du Pharaon, mais dut ensuite fuir à Madyan, où il se maria et vécut de nombreuses années. Allah l'appela depuis la vallée sacrée de Tuwa, lui accorda la prophétie et lui donna deux signes : son bâton qui se transformait en serpent et sa main qui brillait d'une lumière blanche. Avec son frère Haroun (Aaron), il alla chez le Pharaon pour l'inviter à la foi et à libérer les Israélites. Le Pharaon refusa et défia Musa, qui accomplit plusieurs plaies qui dévastèrent l'Égypte, mais le Pharaon ne céda pas. Finalement, Allah ordonna à Musa de sortir avec son peuple de nuit ; lorsque l'armée du Pharaon les poursuivit, Musa divisa la mer avec son bâton, créant un chemin sec. Les Israélites traversèrent, et lorsque le Pharaon et ses soldats tentèrent de les suivre, la mer se referma sur eux, les noyant tous. Musa conduisit son peuple pendant quarante ans dans le désert, reçut la Torah sur le mont Sinaï, et bien qu'il ait fait face à de nombreuses rébellions et épreuves, il maintint toujours sa foi et guida son peuple vers la terre promise. Son histoire est un symbole de libération, de justice divine et de l'importance de la guidance prophétique.</p>`,
+                en: `<p>Moses (Musa) was chosen by Allah to liberate the Children of Israel from the oppression of Pharaoh, who enslaved them and massacred their sons. Musa was miraculously born safely, raised in Pharaoh's palace, but then had to flee to Madyan, where he married and lived for many years. Allah called him from the sacred valley of Tuwa, granted him prophethood, and gave him two signs: his staff that turned into a serpent and his hand that shone with white light. Together with his brother Harun (Aaron), he went to Pharaoh to invite him to faith and to release the Israelites. Pharaoh refused and challenged Musa, who performed several plagues that devastated Egypt, but Pharaoh did not yield. Finally, Allah ordered Musa to leave with his people at night; when Pharaoh's army pursued them, Musa parted the sea with his staff, creating a dry path. The Israelites crossed, and when Pharaoh and his soldiers tried to follow, the sea closed over them, drowning them all. Musa led his people for forty years in the desert, received the Torah on Mount Sinai, and although he faced numerous rebellions and trials, he always maintained his faith and guided his people towards the promised land. His story is a symbol of liberation, divine justice, and the importance of prophetic guidance.</p>`,
+                ar: `<p>اختار الله موسى (عليه السلام) لتحرير بني إسرائيل من ظلم فرعون، الذي استعبدهم وذبح أبناءهم. ولد موسى بأمان معجزة، وتربى في قصر فرعون، لكنه هرب بعد ذلك إلى مدين، حيث تزوج وعاش سنوات طويلة. ناداه الله من الوادي المقدس طوى، وأعطاه النبوة وآيتين: عصاه تتحول إلى ثعبان، ويده تلمع بنور أبيض. ذهب مع أخيه هارون إلى فرعون لدعوته إلى الإيمان وإطلاق بني إسرائيل. رفض فرعون وتحدى موسى، فأجرى موسى عدة آيات عصفت بمصر، لكن فرعون لم يذعن. أخيراً، أمر الله موسى أن يخرج بقومه ليلاً؛ وعندما لحقهم جيش فرعون، ضرب موسى البحر بعصاه فانفلق، فصار طريقاً يابساً. عبر بنو إسرائيل، وعندما حاول فرعون وجنوده اتباعهم، أغلق البحر عليهم وأغرقهم جميعاً. قاد موسى قومه أربعين سنة في الصحراء، وتلقى التوراة على جبل سيناء، ورغم مواجهته العديد من التمردات والمحن، ظل محافظاً على إيمانه وقاد قومه نحو الأرض الموعودة. قصته رمز للتحرير والعدل الإلهي وأهمية الهداية النبوية.</p>`
             }
         },
         {
@@ -1559,10 +1594,10 @@
                 ar: 'عيسى'
             },
             text: {
-                es: `<p>Isa (AS) nació milagrosamente de la virgen María (Maryam) sin padre. Fue un profeta que realizó milagros con el permiso de Allah: curar a ciegos, resucitar muertos y dar vida a figuras de barro. Fue elevado al cielo, y los musulmanes creen que regresará al final de los tiempos. Su mensaje fue el monoteísmo y la adoración exclusiva a Allah, no la divinidad que algunos le atribuyen.</p>`,
-                fr: `<p>Isa (AS) naquit miraculeusement de la vierge Marie (Maryam) sans père. Il fut un prophète qui accomplit des miracles avec la permission d'Allah : guérir les aveugles, ressusciter les morts et donner vie à des figures d'argile. Il fut élevé au ciel, et les musulmans croient qu'il reviendra à la fin des temps. Son message fut le monothéisme et l'adoration exclusive d'Allah, non la divinité que certains lui attribuent.</p>`,
-                en: `<p>Isa (AS) was miraculously born to the virgin Mary (Maryam) without a father. He was a prophet who performed miracles with Allah's permission: healing the blind, raising the dead, and giving life to clay figures. He was raised to heaven, and Muslims believe he will return at the end of times. His message was monotheism and exclusive worship of Allah, not the divinity some attribute to him.</p>`,
-                ar: `<p>ولد عيسى (عليه السلام) معجزة من مريم العذراء دون أب. كان نبياً أجرى معجزات بإذن الله: إبراء الأكمه والأبرص، وإحياء الموتى، ونفخ الطين فصار طيراً. رفعه الله إليه، ويعتقد المسلمون أنه سيعود في آخر الزمان. كانت رسالته التوحيد وعبادة الله وحده، وليس الألوهية التي ينسبها إليه البعض.</p>`
+                es: `<p>Jesús (Isa) nació milagrosamente de la virgen María (Maryam) sin intervención de un padre, como señal de la omnipotencia de Allah. Desde su cuna, habló para defender a su madre y anunciar su profecía. Allah le concedió el Evangelio (Injil) y numerosos milagros: curó a los ciegos y leprosos, resucitó a los muertos con Su permiso, y dio vida a figuras de barro que se convertían en pájaros. Fue enviado a los hijos de Israel para confirmar la Torá y llamar al monoteísmo puro. Muchos lo siguieron, pero otros lo rechazaron y conspiraron para matarlo. Sin embargo, Allah lo elevó al cielo y no fue crucificado; en su lugar, se hizo aparecer a alguien con su apariencia. Los musulmanes creen que Isa regresará al final de los tiempos para derrotar al anticristo (Dajjal) y establecer la justicia en la tierra. Su vida es un testimonio del poder de Allah, la importancia de la fe y la sumisión a la voluntad divina, y su mensaje sigue siendo un faro de esperanza y rectitud para todos los creyentes.</p>`,
+                fr: `<p>Jésus (Isa) naquit miraculeusement de la vierge Marie (Maryam) sans l'intervention d'un père, comme signe de la toute-puissance d'Allah. Dès son berceau, il parla pour défendre sa mère et annoncer sa prophétie. Allah lui accorda l'Évangile (Injil) et de nombreux miracles : il guérit les aveugles et les lépreux, ressuscita les morts avec Sa permission, et donna vie à des figures d'argile qui devenaient des oiseaux. Il fut envoyé aux enfants d'Israël pour confirmer la Torah et appeler au monothéisme pur. Beaucoup le suivirent, mais d'autres le rejetèrent et conspirèrent pour le tuer. Cependant, Allah l'éleva au ciel et il ne fut pas crucifié ; à sa place, on fit apparaître quelqu'un avec son apparence. Les musulmans croient qu'Isa reviendra à la fin des temps pour vaincre l'Antéchrist (Dajjal) et établir la justice sur terre. Sa vie est un témoignage de la puissance d'Allah, de l'importance de la foi et de la soumission à la volonté divine, et son message reste un phare d'espoir et de droiture pour tous les croyants.</p>`,
+                en: `<p>Jesus (Isa) was miraculously born to the virgin Mary (Maryam) without a father's intervention, as a sign of Allah's omnipotence. From his cradle, he spoke to defend his mother and announce his prophethood. Allah granted him the Gospel (Injil) and numerous miracles: he healed the blind and lepers, raised the dead with His permission, and gave life to clay figures that turned into birds. He was sent to the Children of Israel to confirm the Torah and call to pure monotheism. Many followed him, but others rejected him and conspired to kill him. However, Allah raised him to heaven and he was not crucified; instead, someone was made to appear like him. Muslims believe that Isa will return at the end of times to defeat the Antichrist (Dajjal) and establish justice on earth. His life is a testimony to Allah's power, the importance of faith and submission to divine will, and his message remains a beacon of hope and righteousness for all believers.</p>`,
+                ar: `<p>ولد عيسى (عليه السلام) معجزة من مريم العذراء دون أب، كآية على قدرة الله. تكلم في المهد ليدافع عن أمه ويعلن نبوته. آتاه الله الإنجيل وأيده بمعجزات: إبراء الأكمه والأبرص، وإحياء الموتى بإذنه، ونفخ الطين فصار طيراً. أُرسل إلى بني إسرائيل ليصدق التوراة ويدعو إلى التوحيد الخالص. اتبعه كثيرون، لكن آخرين كفروا به وتآمروا لقتله. لكن الله رفعه إليه، ولم يصلب، بل شُبه له غيره. يعتقد المسلمون أن عيسى سيعود في آخر الزمان ليقتل المسيح الدجال ويقيم العدل في الأرض. حياته شهادة على قدرة الله، وأهمية الإيمان والتسليم لإرادته، ورسالته تظل منارة أمل واستقامة لجميع المؤمنين.</p>`
             }
         },
         {
@@ -1575,10 +1610,10 @@
                 ar: 'محمد صلى الله عليه وسلم'
             },
             text: {
-                es: `<p>Muhammad (SAW) es el último profeta y mensajero de Allah, enviado a toda la humanidad. Recibió la revelación del Corán a través del ángel Gabriel (Yibril). Enseñó el monoteísmo puro, la justicia, la compasión y la hermandad. Estableció la comunidad musulmana en Medina y llevó a cabo la conquista pacífica de Makkah. Su vida y su ejemplo son el modelo perfecto para los creyentes, y su mensaje es la culminación de todos los mensajes anteriores.</p>`,
-                fr: `<p>Muhammad (SAW) est le dernier prophète et messager d'Allah, envoyé à toute l'humanité. Il reçut la révélation du Coran par l'ange Gabriel (Jibril). Il enseigna le monothéisme pur, la justice, la compassion et la fraternité. Il établit la communauté musulmane à Médine et mena la conquête pacifique de La Mecque. Sa vie et son exemple sont le modèle parfait pour les croyants, et son message est l'aboutissement de tous les messages antérieurs.</p>`,
-                en: `<p>Muhammad (SAW) is the last prophet and messenger of Allah, sent to all of humanity. He received the revelation of the Quran through the angel Gabriel (Jibril). He taught pure monotheism, justice, compassion, and brotherhood. He established the Muslim community in Medina and led the peaceful conquest of Makkah. His life and example are the perfect model for believers, and his message is the culmination of all previous messages.</p>`,
-                ar: `<p>محمد (صلى الله عليه وسلم) هو آخر نبي ورسول لله، أرسل إلى البشرية جمعاء. تلقى الوحي القرآن من جبريل. علم التوحيد الخالص، والعدل، والرحمة، والأخوة. أقام المجتمع المسلم في المدينة وقاد فتح مكة سلمياً. حياته وسيرته هما القدوة الكاملة للمؤمنين، ورسالته هي تتويج لكل الرسالات السابقة.</p>`
+                es: `<p>Muhammad (SAW) es el último profeta y mensajero de Allah, enviado a toda la humanidad como misericordia y guía. Nació en Makkah en el año 570 d.C. en la tribu de Quraysh. Fue criado huérfano, conocido por su honestidad y rectitud. A los 40 años, recibió la primera revelación del Corán en la cueva de Hira, a través del ángel Gabriel (Yibril). A partir de entonces, comenzó a llamar al monoteísmo puro, a la justicia social y a la moral elevada, enfrentando una fuerte oposición de los líderes de Quraysh. Sufrió persecuciones, boicots y amenazas, pero permaneció firme. En el año 622, emigró a Medina (la Hégira), donde estableció la primera comunidad musulmana y un estado basado en la justicia y la hermandad. Desde Medina, continuó difundiendo el mensaje del Islam, y tras varios enfrentamientos, conquistó pacíficamente Makkah en el año 630, perdonando a sus antiguos enemigos. Antes de morir en el año 632, realizó la peregrinación de despedida y pronunció un sermón que resumía los principios del Islam: igualdad, justicia, respeto a la vida y la propiedad, y la adoración exclusiva a Allah. Su vida y su ejemplo (la Sunnah) son el modelo perfecto para todos los musulmanes, y su mensaje es la culminación de todos los mensajes anteriores, sellando la profecía y guiando a la humanidad hasta el Día del Juicio.</p>`,
+                fr: `<p>Muhammad (SAW) est le dernier prophète et messager d'Allah, envoyé à toute l'humanité comme miséricorde et guidance. Il naquit à La Mecque en 570 après J.-C. dans la tribu des Quraysh. Orphelin de bonne heure, il fut connu pour son honnêteté et sa droiture. À l'âge de 40 ans, il reçut la première révélation du Coran dans la grotte de Hira, par l'ange Gabriel (Jibril). Dès lors, il commença à appeler au monothéisme pur, à la justice sociale et à la morale élevée, affrontant une forte opposition des dirigeants de Quraysh. Il subit des persécutions, des boycotts et des menaces, mais resta ferme. En 622, il émigra à Médine (l'Hégire), où il établit la première communauté musulmane et un État fondé sur la justice et la fraternité. Depuis Médine, il continua à diffuser le message de l'Islam, et après plusieurs affrontements, il conquit pacifiquement La Mecque en 630, pardonnant à ses anciens ennemis. Avant de mourir en 632, il accomplit le pèlerinage d'adieu et prononça un sermon qui résumait les principes de l'Islam : égalité, justice, respect de la vie et des biens, et adoration exclusive d'Allah. Sa vie et son exemple (la Sounnah) sont le modèle parfait pour tous les musulmans, et son message est le couronnement de tous les messages antérieurs, scellant la prophétie et guidant l'humanité jusqu'au Jour du Jugement.</p>`,
+                en: `<p>Muhammad (SAW) is the last prophet and messenger of Allah, sent to all of humanity as a mercy and guidance. He was born in Makkah in 570 CE in the tribe of Quraysh. Orphaned early, he was known for his honesty and righteousness. At the age of 40, he received the first revelation of the Quran in the cave of Hira, through the angel Gabriel (Jibril). From then on, he began to call for pure monotheism, social justice, and high morals, facing strong opposition from the leaders of Quraysh. He endured persecutions, boycotts, and threats, but remained steadfast. In 622, he emigrated to Medina (the Hijra), where he established the first Muslim community and a state based on justice and brotherhood. From Medina, he continued to spread the message of Islam, and after several confrontations, he peacefully conquered Makkah in 630, forgiving his former enemies. Before his death in 632, he performed the farewell pilgrimage and delivered a sermon that summarized the principles of Islam: equality, justice, respect for life and property, and exclusive worship of Allah. His life and example (the Sunnah) are the perfect model for all Muslims, and his message is the culmination of all previous messages, sealing prophethood and guiding humanity until the Day of Judgment.</p>`,
+                ar: `<p>محمد (صلى الله عليه وسلم) هو آخر نبي ورسول لله، أُرسل إلى البشرية جمعاء رحمة وهدى. ولد في مكة عام 570 ميلادية في قبيلة قريش. نشأ يتيماً، وعُرف بالأمانة والصدق. في سن الأربعين، نزل عليه الوحي في غار حراء عن طريق جبريل. منذ ذلك الحين، بدأ يدعو إلى التوحيد الخالص، والعدالة الاجتماعية، والأخلاق الفاضلة، فواجه معارضة شديدة من زعماء قريش. تعرض للاضطهاد والمقاطعة والتهديد، لكنه صمد. في عام 622، هاجر إلى المدينة (الهجرة)، حيث أسس أول مجتمع مسلم ودولة تقوم على العدل والأخوة. من المدينة، واصل نشر رسالة الإسلام، وبعد عدة مواجهات، فتح مكة صلحاً عام 630، وعفا عن أعدائه السابقين. قبل وفاته عام 632، حج حجة الوداع وألقى خطبة تلخص مبادئ الإسلام: المساواة، والعدل، واحترام الحياة والمال، وعبادة الله وحده. حياته وسنته هي القدوة الكاملة للمسلمين، ورسالته هي خاتمة الرسالات السابقة، مختماً بها النبوة وهادياً البشرية إلى يوم القيامة.</p>`
             }
         }
     ];
@@ -2322,24 +2357,36 @@
     }
 
     // ================================================================
-    // HISTORIAS DEL ISLAM (NUEVO)
+    // HISTORIAS DEL ISLAM (ACORDEÓN)
     // ================================================================
     function loadStories() {
         const container = document.getElementById('storiesList');
         let html = '';
         stories.forEach((story, index) => {
             const title = story.title[currentLang] || story.title['es'];
-            const text = story.text[currentLang] || story.text['es'];
             const arabicName = story.arabicName;
+            const text = story.text[currentLang] || story.text['es'];
             html += `
-                <div class="story-item">
-                    <div class="story-arabic-name">${arabicName}</div>
-                    <div class="story-title">${title}</div>
-                    <div class="story-text">${text}</div>
+                <div class="story-item" data-story="${story.id}">
+                    <div class="story-header">
+                        <span class="story-title">${title}</span>
+                        <span class="story-arabic-name">${arabicName}</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="story-body">
+                        <div class="story-text">${text}</div>
+                    </div>
                 </div>
             `;
         });
         container.innerHTML = html;
+
+        // Agregar evento click a cada historia para toggle
+        document.querySelectorAll('.story-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                this.classList.toggle('open');
+            });
+        });
     }
 
     // ================================================================
@@ -2565,7 +2612,6 @@
         checkCookies();
         loadSurahList();
         updateUILanguage();
-        // Cargar historias por si la pestaña está activa al inicio (no lo está, pero por si acaso)
         loadStories();
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
