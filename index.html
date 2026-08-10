@@ -524,6 +524,85 @@
         .legend-dot.north { background: #ff4d4d; }
         .legend-dot.qibla { background: #d4af37; }
 
+        /* ===== HISTORIAS DEL ISLAM (ACORDEÓN) ===== */
+        .stories-container {
+            background: rgba(20, 40, 20, 0.4);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 24px;
+            margin: 15px 0;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+        .stories-container .stories-title {
+            color: #d4af37;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        .story-item {
+            background: rgba(26, 47, 26, 0.4);
+            backdrop-filter: blur(4px);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border-left: 4px solid #d4af37;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .story-item:hover { border-left-width: 6px; background: rgba(26, 47, 26, 0.6); }
+        .story-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .story-header .story-title {
+            color: #d4af37;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .story-header .story-arabic-name {
+            font-size: 1.4rem;
+            font-family: 'Amiri', 'Times New Roman', serif;
+            color: #b8956a;
+        }
+        .story-header .toggle-icon {
+            color: #b8956a;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-left: auto;
+            padding-left: 10px;
+        }
+        .story-item.open .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .story-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 20px;
+        }
+        .story-item.open .story-body {
+            max-height: 2000px; /* suficientemente grande para cualquier historia */
+            padding: 0 20px 20px 20px;
+        }
+        .story-body .story-text {
+            color: #c5b08a;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-top: 6px;
+        }
+        .story-body .story-text p {
+            margin-bottom: 0.8rem;
+        }
+
         /* ===== REPRODUCTOR FIJO ===== */
         .audio-player-fixed {
             position: fixed;
@@ -696,6 +775,9 @@
             .tab-btn { font-size: 0.75rem; padding: 10px 0; min-width: 50px; }
             .allah-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .allah-item .arabic-name { font-size: 1.3rem; }
+            .story-header { flex-wrap: wrap; }
+            .story-header .story-title { font-size: 1rem; }
+            .story-header .story-arabic-name { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -726,6 +808,7 @@
         <button class="tab-btn" data-tab="tab3" data-i18n="tab_dua">Dua</button>
         <button class="tab-btn" data-tab="tab4" data-i18n="tab_qibla">Qibla</button>
         <button class="tab-btn" data-tab="tab5" data-i18n="tab_allah">Nombres de Allah</button>
+        <button class="tab-btn" data-tab="tab6" data-i18n="tab_stories">Historias</button>
     </div>
 
     <!-- TAB 1: REZOS -->
@@ -813,6 +896,14 @@
         </div>
     </div>
 
+    <!-- TAB 6: HISTORIAS DEL ISLAM (NUEVO CON ACORDEÓN) -->
+    <div id="tab6" class="tab-content">
+        <div class="stories-container">
+            <div class="stories-title" data-i18n="stories_title">Historias del Islam</div>
+            <div id="storiesList"></div>
+        </div>
+    </div>
+
     <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
 </div>
 
@@ -848,6 +939,7 @@
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
             tab_allah: 'Nombres de Allah',
+            tab_stories: 'Historias',
             search_btn: 'Buscar',
             next_prayer: 'Próximo rezo: ',
             prayer_fajr: 'Fajr',
@@ -900,7 +992,8 @@
             allah_subtitle: 'Asma\'ul Husna - Los Nombres Más Bellos',
             cookie_message: '<strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias (idioma, ciudad, ubicación). Tu privacidad es importante.',
             cookie_accept: 'Aceptar',
-            cookie_reject: 'Rechazar'
+            cookie_reject: 'Rechazar',
+            stories_title: 'Historias del Islam'
         },
         fr: {
             tab_prayers: 'Prières',
@@ -908,6 +1001,7 @@
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
             tab_allah: 'Noms d\'Allah',
+            tab_stories: 'Histoires',
             search_btn: 'Chercher',
             next_prayer: 'Prochaine prière: ',
             prayer_fajr: 'Fajr',
@@ -960,7 +1054,8 @@
             allah_subtitle: 'Asma\'ul Husna - Les Plus Beaux Noms',
             cookie_message: '<strong>🍪 Bonjour !</strong> Pour vous offrir les horaires de prière selon votre localisation, nous avons besoin de votre consentement pour utiliser des cookies et mémoriser vos préférences (langue, ville, localisation). Votre vie privée est importante.',
             cookie_accept: 'Accepter',
-            cookie_reject: 'Refuser'
+            cookie_reject: 'Refuser',
+            stories_title: 'Histoires de l\'Islam'
         },
         en: {
             tab_prayers: 'Prayers',
@@ -968,6 +1063,7 @@
             tab_dua: 'Dua',
             tab_qibla: 'Qibla',
             tab_allah: 'Names of Allah',
+            tab_stories: 'Stories',
             search_btn: 'Search',
             next_prayer: 'Next prayer: ',
             prayer_fajr: 'Fajr',
@@ -1020,7 +1116,8 @@
             allah_subtitle: 'Asma\'ul Husna - The Most Beautiful Names',
             cookie_message: '<strong>🍪 Hello!</strong> To provide you with prayer times based on your location, we need your consent to use cookies and remember your preferences (language, city, location). Your privacy is important.',
             cookie_accept: 'Accept',
-            cookie_reject: 'Reject'
+            cookie_reject: 'Reject',
+            stories_title: 'Stories of Islam'
         },
         ar: {
             tab_prayers: 'الصلوات',
@@ -1028,6 +1125,7 @@
             tab_dua: 'الدعاء',
             tab_qibla: 'القبلة',
             tab_allah: 'أسماء الله',
+            tab_stories: 'قصص',
             search_btn: 'بحث',
             next_prayer: 'الصلاة القادمة: ',
             prayer_fajr: 'الفجر',
@@ -1080,7 +1178,8 @@
             allah_subtitle: 'أسماء الله الحسنى - الأسماء الأكثر جمالاً',
             cookie_message: '<strong>🍪 مرحباً!</strong> لتقديم أوقات الصلاة بناءً على موقعك، نحتاج إلى موافقتك لاستخدام ملفات الارتباط وتذكر تفضيلاتك (اللغة، المدينة، الموقع). خصوصيتك مهمة.',
             cookie_accept: 'قبول',
-            cookie_reject: 'رفض'
+            cookie_reject: 'رفض',
+            stories_title: 'قصص الإسلام'
         }
     };
 
@@ -1418,6 +1517,108 @@
     ];
 
     // ================================================================
+    // HISTORIAS DEL ISLAM (con historia de Adán ampliada)
+    // ================================================================
+    const stories = [
+        {
+            id: 'adam',
+            arabicName: 'آدم وحواء',
+            title: {
+                es: 'Adán y Eva (Adam y Hawa)',
+                fr: 'Adam et Ève (Adam et Hawa)',
+                en: 'Adam and Eve (Adam and Hawa)',
+                ar: 'آدم وحواء'
+            },
+            text: {
+                es: `<p>Allah, el Altísimo, creó a Adán (AS) con Sus propias manos de arcilla moldeada y le insufló Su espíritu, otorgándole vida, conocimiento y la capacidad de nombrar todas las cosas. Los ángeles se postraron ante él en señal de respeto, excepto Iblis, quien se enorgulleció y se negó. Adán y su esposa Hawá (Eva) fueron colocados en el Jardín del Edén, donde podían disfrutar de todo excepto de un árbol específico. Vivían en felicidad y comunión con Allah, pero Iblis, lleno de envidia y arrogancia, susurró a sus corazones y los engañó, haciéndoles creer que comer del árbol les otorgaría inmortalidad. Ambos comieron del árbol, y al instante su desnudez se hizo evidente, y sintieron vergüenza. Se arrepintieron profundamente y suplicaron perdón a Allah. Él, en Su infinita misericordia, aceptó su arrepentimiento, pero les dijo que descenderían a la Tierra, donde vivirían, morirían y serían juzgados. En la Tierra, Adán y Hawá poblaron la humanidad y establecieron la primera comunidad de creyentes, enseñando a sus hijos la adoración al Único Dios y la rectitud. Su historia es un recordatorio de que la tentación y el error son parte de la naturaleza humana, pero el arrepentimiento sincero y la misericordia de Allah siempre están abiertos a quienes buscan el perdón.</p>`,
+                fr: `<p>Allah, le Très-Haut, créa Adam (AS) de Ses propres mains à partir d'argile modelée et lui insuffla Son esprit, lui donnant la vie, la connaissance et la capacité de nommer toutes choses. Les anges se prosternèrent devant lui en signe de respect, sauf Iblis, qui s'enorgueillit et refusa. Adam et son épouse Hawâ (Ève) furent placés dans le Jardin d'Éden, où ils pouvaient jouir de tout sauf d'un arbre spécifique. Ils vivaient dans le bonheur et la communion avec Allah, mais Iblis, rempli d'envie et d'arrogance, murmura à leurs cœurs et les trompa, leur faisant croire que manger de l'arbre leur apporterait l'immortalité. Ils mangèrent tous deux de l'arbre, et aussitôt leur nudité devint évidente, et ils ressentirent de la honte. Ils se repentirent profondément et implorèrent le pardon d'Allah. Lui, dans Son infinie miséricorde, accepta leur repentir, mais leur dit qu'ils descendraient sur Terre, où ils vivraient, mourraient et seraient jugés. Sur Terre, Adam et Hawâ peuplèrent l'humanité et fondèrent la première communauté de croyants, enseignant à leurs enfants l'adoration du Dieu Unique et la droiture. Leur histoire est un rappel que la tentation et l'erreur font partie de la nature humaine, mais le repentir sincère et la miséricorde d'Allah sont toujours ouverts à ceux qui cherchent le pardon.</p>`,
+                en: `<p>Allah, the Most High, created Adam (AS) with His own hands from molded clay and breathed His spirit into him, granting him life, knowledge, and the ability to name all things. The angels prostrated before him in respect, except Iblis, who was arrogant and refused. Adam and his wife Hawā (Eve) were placed in the Garden of Eden, where they could enjoy everything except one specific tree. They lived in happiness and communion with Allah, but Iblis, filled with envy and arrogance, whispered to their hearts and deceived them, making them believe that eating from the tree would grant them immortality. They both ate from the tree, and instantly their nakedness became apparent, and they felt shame. They repented deeply and begged Allah for forgiveness. He, in His infinite mercy, accepted their repentance, but told them they would descend to Earth, where they would live, die, and be judged. On Earth, Adam and Hawā populated humanity and established the first community of believers, teaching their children the worship of the One God and righteousness. Their story is a reminder that temptation and error are part of human nature, but sincere repentance and Allah's mercy are always open to those who seek forgiveness.</p>`,
+                ar: `<p>خلق الله العلي آدم (عليه السلام) بيديه من طين ممسوح ونفخ فيه من روحه، ومنحه الحياة والعلم والقدرة على تسمية كل شيء. سجدت الملائكة له إكراماً، إلا إبليس فاستكبر وأبى. وضع آدم وزوجته حواء في جنة عدن، يتمتعان بكل شيء ما عدا شجرة معينة. كانا يعيشان في سعادة وقرب من الله، لكن إبليس، المملوء حسداً وكبراً، وسوس لهما وخدعهما، موهماً إياهما أن أكل الشجرة يمنحهما الخلود. أكلا من الشجرة فبدت لهما سوآتهما وأحسا بالخزي. تابا إلى الله واستغفراه، فتاب الله عليهما، لكنه قال لهما اهبطوا إلى الأرض حيث تعيشون وتموتون وتحاسبون. على الأرض، أنجب آدم وحواء البشرية وأسسا أول جماعة من المؤمنين، يعلمان أبناءهما عبادة الله الواحد والاستقامة. قصتهما تذكير بأن الفتنة والخطأ جزء من الطبيعة البشرية، لكن التوبة الصادقة ورحمة الله مفتوحة دائماً لمن يطلب الغفران.</p>`
+            }
+        },
+        {
+            id: 'nuh',
+            arabicName: 'نوح',
+            title: {
+                es: 'Noé (Nuh)',
+                fr: 'Noé (Nuh)',
+                en: 'Noah (Nuh)',
+                ar: 'نوح'
+            },
+            text: {
+                es: `<p>Nuh (AS) fue un profeta que llamó a su pueblo a adorar a un solo Dios durante 950 años, pero solo unos pocos creyeron. Allah le ordenó construir un arca y salvar a una pareja de cada especie. Su pueblo lo ridiculizó, pero cuando llegó el diluvio, los creyentes y los animales se salvaron en el arca, mientras los incrédulos perecieron. El arca se posó sobre el monte Judi, y la humanidad renació.</p>`,
+                fr: `<p>Nuh (AS) fut un prophète qui appela son peuple à adorer un seul Dieu pendant 950 ans, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche et de sauver un couple de chaque espèce. Son peuple le ridiculisa, mais lorsque le déluge arriva, les croyants et les animaux furent sauvés dans l'arche, tandis que les mécréants périrent. L'arche s'arrêta sur le mont Judi, et l'humanité renaquit.</p>`,
+                en: `<p>Nuh (AS) was a prophet who called his people to worship one God for 950 years, but only a few believed. Allah ordered him to build an ark and save a pair of every species. His people mocked him, but when the flood came, the believers and animals were saved in the ark, while the disbelievers perished. The ark settled on Mount Judi, and humanity was reborn.</p>`,
+                ar: `<p>دعا نوح (عليه السلام) قومه إلى عبادة الله وحده لمدة 950 عامًا، لكن آمن معه قليلون. أمره الله ببناء سفينة وإنقاذ زوجين من كل نوع. سخر منه قومه، ولكن لما جاء الطوفان نجا المؤمنون والحيوانات في السفينة، بينما هلك الكافرون. استقرت السفينة على جبل الجودي، وولدت البشرية من جديد.</p>`
+            }
+        },
+        {
+            id: 'ibrahim',
+            arabicName: 'إبراهيم',
+            title: {
+                es: 'Abraham (Ibrahim)',
+                fr: 'Abraham (Ibrahim)',
+                en: 'Abraham (Ibrahim)',
+                ar: 'إبراهيم'
+            },
+            text: {
+                es: `<p>Ibrahim (AS) fue un profeta que rompió los ídolos de su pueblo y los llamó al monoteísmo. Fue arrojado al fuego, pero Allah lo hizo fresco y seguro. Se le ordenó sacrificar a su hijo Ismail (AS), pero Allah lo reemplazó con un cordero, estableciendo la tradición del sacrificio. Construyó la Kaaba en Makkah con su hijo, y su legado de fe y entrega a la voluntad de Allah perdura hasta hoy.</p>`,
+                fr: `<p>Ibrahim (AS) fut un prophète qui brisa les idoles de son peuple et les appela au monothéisme. Il fut jeté au feu, mais Allah le rendit frais et sûr. Il lui fut ordonné de sacrifier son fils Ismaël (AS), mais Allah le remplaça par un bélier, établissant la tradition du sacrifice. Il construisit la Kaaba à La Mecque avec son fils, et son héritage de foi et de soumission à la volonté d'Allah perdure encore aujourd'hui.</p>`,
+                en: `<p>Ibrahim (AS) was a prophet who broke his people's idols and called them to monotheism. He was thrown into the fire, but Allah made it cool and safe. He was commanded to sacrifice his son Isma'il (AS), but Allah replaced him with a ram, establishing the tradition of sacrifice. He built the Kaaba in Makkah with his son, and his legacy of faith and submission to Allah's will endures to this day.</p>`,
+                ar: `<p>إبراهيم (عليه السلام) نبي كسر أصنام قومه ودعاهم إلى التوحيد. أُلقي في النار فجعلها الله برداً وسلاماً. أُمر بذبح ابنه إسماعيل (عليه السلام) ففداه الله بكبش، وأرسى سنة التضحية. بنى الكعبة في مكة مع ابنه، وما زال إرثه من الإيمان والتسليم لإرادة الله قائماً حتى اليوم.</p>`
+            }
+        },
+        {
+            id: 'musa',
+            arabicName: 'موسى',
+            title: {
+                es: 'Moisés (Musa)',
+                fr: 'Moïse (Musa)',
+                en: 'Moses (Musa)',
+                ar: 'موسى'
+            },
+            text: {
+                es: `<p>Musa (AS) fue elegido por Allah para liberar a los hijos de Israel de la opresión del Faraón. Recibió la Torá en el monte Sinaí y realizó milagros como la vara que se convierte en serpiente y la división del mar. Condujo a su pueblo a través del desierto durante cuarenta años, y aunque muchos se rebelaron, su misión de guía y justicia sigue siendo un faro para los creyentes.</p>`,
+                fr: `<p>Musa (AS) fut choisi par Allah pour libérer les enfants d'Israël de l'oppression du Pharaon. Il reçut la Torah sur le mont Sinaï et accomplit des miracles comme le bâton se transformant en serpent et la division de la mer. Il conduisit son peuple à travers le désert pendant quarante ans, et bien que beaucoup se rebellèrent, sa mission de guidance et de justice reste un phare pour les croyants.</p>`,
+                en: `<p>Musa (AS) was chosen by Allah to liberate the Children of Israel from the oppression of Pharaoh. He received the Torah on Mount Sinai and performed miracles such as the staff turning into a serpent and the parting of the sea. He led his people through the desert for forty years, and although many rebelled, his mission of guidance and justice remains a beacon for believers.</p>`,
+                ar: `<p>اختار الله موسى (عليه السلام) لتحرير بني إسرائيل من ظلم فرعون. تلقى التوراة على جبل سيناء وأجرى معجزات مثل العصا تتحول إلى ثعبان وشق البحر. قاد قومه في الصحراء أربعين سنة، ورغم تمرد كثيرين، فإن رسالته في الهداية والعدل تظل منارة للمؤمنين.</p>`
+            }
+        },
+        {
+            id: 'isa',
+            arabicName: 'عيسى',
+            title: {
+                es: 'Jesús (Isa)',
+                fr: 'Jésus (Isa)',
+                en: 'Jesus (Isa)',
+                ar: 'عيسى'
+            },
+            text: {
+                es: `<p>Isa (AS) nació milagrosamente de la virgen María (Maryam) sin padre. Fue un profeta que realizó milagros con el permiso de Allah: curar a ciegos, resucitar muertos y dar vida a figuras de barro. Fue elevado al cielo, y los musulmanes creen que regresará al final de los tiempos. Su mensaje fue el monoteísmo y la adoración exclusiva a Allah, no la divinidad que algunos le atribuyen.</p>`,
+                fr: `<p>Isa (AS) naquit miraculeusement de la vierge Marie (Maryam) sans père. Il fut un prophète qui accomplit des miracles avec la permission d'Allah : guérir les aveugles, ressusciter les morts et donner vie à des figures d'argile. Il fut élevé au ciel, et les musulmans croient qu'il reviendra à la fin des temps. Son message fut le monothéisme et l'adoration exclusive d'Allah, non la divinité que certains lui attribuent.</p>`,
+                en: `<p>Isa (AS) was miraculously born to the virgin Mary (Maryam) without a father. He was a prophet who performed miracles with Allah's permission: healing the blind, raising the dead, and giving life to clay figures. He was raised to heaven, and Muslims believe he will return at the end of times. His message was monotheism and exclusive worship of Allah, not the divinity some attribute to him.</p>`,
+                ar: `<p>ولد عيسى (عليه السلام) معجزة من مريم العذراء دون أب. كان نبياً أجرى معجزات بإذن الله: إبراء الأكمه والأبرص، وإحياء الموتى، ونفخ الطين فصار طيراً. رفعه الله إليه، ويعتقد المسلمون أنه سيعود في آخر الزمان. كانت رسالته التوحيد وعبادة الله وحده، وليس الألوهية التي ينسبها إليه البعض.</p>`
+            }
+        },
+        {
+            id: 'muhammad',
+            arabicName: 'محمد',
+            title: {
+                es: 'Muhammad (la paz sea con él)',
+                fr: 'Muhammad (paix sur lui)',
+                en: 'Muhammad (peace be upon him)',
+                ar: 'محمد صلى الله عليه وسلم'
+            },
+            text: {
+                es: `<p>Muhammad (SAW) es el último profeta y mensajero de Allah, enviado a toda la humanidad. Recibió la revelación del Corán a través del ángel Gabriel (Yibril). Enseñó el monoteísmo puro, la justicia, la compasión y la hermandad. Estableció la comunidad musulmana en Medina y llevó a cabo la conquista pacífica de Makkah. Su vida y su ejemplo son el modelo perfecto para los creyentes, y su mensaje es la culminación de todos los mensajes anteriores.</p>`,
+                fr: `<p>Muhammad (SAW) est le dernier prophète et messager d'Allah, envoyé à toute l'humanité. Il reçut la révélation du Coran par l'ange Gabriel (Jibril). Il enseigna le monothéisme pur, la justice, la compassion et la fraternité. Il établit la communauté musulmane à Médine et mena la conquête pacifique de La Mecque. Sa vie et son exemple sont le modèle parfait pour les croyants, et son message est l'aboutissement de tous les messages antérieurs.</p>`,
+                en: `<p>Muhammad (SAW) is the last prophet and messenger of Allah, sent to all of humanity. He received the revelation of the Quran through the angel Gabriel (Jibril). He taught pure monotheism, justice, compassion, and brotherhood. He established the Muslim community in Medina and led the peaceful conquest of Makkah. His life and example are the perfect model for believers, and his message is the culmination of all previous messages.</p>`,
+                ar: `<p>محمد (صلى الله عليه وسلم) هو آخر نبي ورسول لله، أرسل إلى البشرية جمعاء. تلقى الوحي القرآن من جبريل. علم التوحيد الخالص، والعدل، والرحمة، والأخوة. أقام المجتمع المسلم في المدينة وقاد فتح مكة سلمياً. حياته وسيرته هما القدوة الكاملة للمؤمنين، ورسالته هي تتويج لكل الرسالات السابقة.</p>`
+            }
+        }
+    ];
+
+    // ================================================================
     // VARIABLES GLOBALES
     // ================================================================
     const prayerIds = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -1467,57 +1668,43 @@
 
         const tabId = activeTab.id;
         if (tabId === 'tab2') {
-            // Corán
             if (currentSurah) {
                 loadQuran(currentSurah);
             } else {
-                // Solo actualizar placeholder (ya se hace en updateUILanguage)
                 const display = document.getElementById('quranDisplay');
                 display.innerHTML = `<p style="text-align:center;color:#b8956a;">${getTranslation('quran_placeholder')}</p>`;
                 document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
                 document.getElementById('audioStatus').textContent = '';
             }
         } else if (tabId === 'tab3') {
-            // Duas
             const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
             loadDuasByCategory(activeCat);
         } else if (tabId === 'tab5') {
-            // Nombres de Allah
             loadAllahNames();
         } else if (tabId === 'tab4') {
-            // Qibla
             actualizarInfoQibla();
             dibujarBrújula();
+        } else if (tabId === 'tab6') {
+            loadStories();
         }
-        // Para tab1 (rezos) solo se actualizan los textos estáticos en updateUILanguage
     }
 
     // ================================================================
     // ACTUALIZAR IDIOMA DE LA INTERFAZ
     // ================================================================
     function updateUILanguage() {
-        // Actualizar todos los elementos con data-i18n
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
             let text = getTranslation(key);
-            // Caso especial para el countdown-box que tiene un span dentro
             if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
                 const span = el.querySelector('span');
                 if (span) {
-                    // Reemplazar solo el texto antes del span
                     const parts = el.childNodes;
-                    let foundSpan = false;
                     parts.forEach(node => {
                         if (node.nodeType === 3) {
                             node.textContent = text;
-                        } else if (node === span) {
-                            foundSpan = true;
                         }
                     });
-                    if (!foundSpan) {
-                        // Si no hay span, poner todo el texto
-                        el.textContent = text;
-                    }
                 } else {
                     el.textContent = text;
                 }
@@ -1526,35 +1713,28 @@
             }
         });
 
-        // Actualizar placeholder del input de ciudad
         document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
 
-        // Actualizar opción por defecto del select de suras
         const surahSelect = document.getElementById('surahSelect');
         const defaultOption = surahSelect.querySelector('option[value=""]');
         if (defaultOption) {
             defaultOption.textContent = getTranslation('select_surah');
         }
 
-        // Actualizar categorías de duas
         document.querySelectorAll('#duaCategorySelector button').forEach(btn => {
             const cat = btn.dataset.cat;
             btn.textContent = getCategoryTitle(cat);
         });
 
-        // Actualizar fecha y ubicación
         updateLocationDisplay();
 
-        // Forzar recarga de la pestaña activa
         refreshCurrentTab();
 
-        // Si está visible la brújula, actualizar también las direcciones
         if (document.getElementById('tab4').classList.contains('active')) {
             actualizarInfoQibla();
             dibujarBrújula();
         }
 
-        // Actualizar mensaje de cookies si está deshabilitado
         if (!locationEnabled) {
             document.getElementById('cookieWarning').style.display = 'block';
             document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
@@ -1711,7 +1891,6 @@
 
             if (tabId === 'tab2') {
                 player.classList.add('visible');
-                // Si hay sura, recargar por si acaso
                 if (currentSurah) loadQuran(currentSurah);
             } else {
                 player.classList.remove('visible');
@@ -1727,6 +1906,9 @@
             if (tabId === 'tab3') {
                 const activeCat = document.querySelector('#duaCategorySelector button.active')?.dataset.cat || 'rizq';
                 loadDuasByCategory(activeCat);
+            }
+            if (tabId === 'tab6') {
+                loadStories();
             }
         });
     });
@@ -2175,6 +2357,41 @@
     }
 
     // ================================================================
+    // HISTORIAS DEL ISLAM (ACORDEÓN)
+    // ================================================================
+    function loadStories() {
+        const container = document.getElementById('storiesList');
+        let html = '';
+        stories.forEach((story, index) => {
+            const title = story.title[currentLang] || story.title['es'];
+            const arabicName = story.arabicName;
+            // El texto se mostrará dentro del body, que se oculta/expande con CSS
+            const text = story.text[currentLang] || story.text['es'];
+            html += `
+                <div class="story-item" data-story="${story.id}">
+                    <div class="story-header">
+                        <span class="story-title">${title}</span>
+                        <span class="story-arabic-name">${arabicName}</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="story-body">
+                        <div class="story-text">${text}</div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+
+        // Agregar evento click a cada historia para toggle
+        document.querySelectorAll('.story-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Si el click fue en el header o en cualquier parte del item, toggle
+                this.classList.toggle('open');
+            });
+        });
+    }
+
+    // ================================================================
     // QIBLA - BRÚJULA MEJORADA
     // ================================================================
     function calcularQibla(lat, lng) {
@@ -2397,6 +2614,8 @@
         checkCookies();
         loadSurahList();
         updateUILanguage();
+        // Cargar historias por si la pestaña está activa al inicio (no lo está, pero por si acaso)
+        loadStories();
         setTimeout(() => {
             if (qiblaAngle !== 0) dibujarBrújula();
         }, 500);
