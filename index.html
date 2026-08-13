@@ -263,6 +263,11 @@
             font-size: 0.95rem;
             color: #a68b6a;
             letter-spacing: 0.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .countdown-box span {
@@ -404,7 +409,6 @@
             box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
         }
 
-        /* ===== DUA ACORDEÓN ===== */
         .dua-accordion {
             margin-top: 4px;
         }
@@ -504,7 +508,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.04);
         }
 
-        /* ===== HISTORIAS ACORDEÓN ===== */
         .stories-accordion {
             margin-top: 4px;
         }
@@ -1069,7 +1072,10 @@
                 <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" />
                 <button id="searchBtn" data-i18n="search_btn">Buscar</button>
             </div>
-            <div class="countdown-box" data-i18n="next_prayer">Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
+            <div class="countdown-box" id="countdownBox">
+                <span data-i18n="next_prayer">Próximo rezo: </span>
+                <span id="countdownTimer">--:--:--</span>
+            </div>
             <div id="prayerTimesContainer">
                 <div class="prayer-grid" id="prayerGrid">
                     <div class="prayer-card"><div class="name" data-i18n="prayer_fajr">Fajr</div><div class="time" id="Fajr">--:--</div></div>
@@ -1804,12 +1810,13 @@
         let userLat = 40.4165,
             userLng = -3.7026;
         let currentCity = 'Madrid';
-        let adhanAudio = new Audio('https://www.islamcan.com/audio/adhan/azan-makkah.mp3');
-        adhanAudio.preload = 'auto';
+        let adhanAudio = new Audio();
+        let adhanLoaded = false;
         let currentSurah = '';
         let currentLang = 'es';
         let cookiesAccepted = false;
         let locationEnabled = false;
+        let userInteracted = false;
 
         let audio = new Audio();
         let isPlaying = false;
@@ -1835,6 +1842,99 @@
 
         function getCategoryTitle(catKey) {
             return getTranslation('cat_' + catKey);
+        }
+
+        // ================================================================
+        // FUNCIÓN PARA CARGAR EL ADHAN
+        // ================================================================
+        function loadAdhan() {
+            const adhanUrls = [
+                'https://www.islamcan.com/audio/adhan/azan-makkah.mp3',
+                'https://server8.mp3quran.net/afs/001.mp3' // fallback
+            ];
+
+            let attempt = 0;
+
+            function tryLoad() {
+                if (attempt >= adhanUrls.length) {
+                    console.warn('No se pudo cargar el Adhan.');
+                    return;
+                }
+                const url = adhanUrls[attempt];
+                console.log('Cargando Adhan desde:', url);
+                adhanAudio = new Audio(url);
+                adhanAudio.preload = 'auto';
+                adhanAudio.crossOrigin = 'anonymous';
+
+                adhanAudio.addEventListener('canplaythrough', function() {
+                    console.log('Adhan cargado correctamente.');
+                    adhanLoaded = true;
+                }, { once: true });
+
+                adhanAudio.addEventListener('error', function(e) {
+                    console.warn('Error cargando Adhan desde:', url, e);
+                    attempt++;
+                    tryLoad();
+                }, { once: true });
+
+                // Iniciar carga
+                adhanAudio.load();
+            }
+
+            tryLoad();
+        }
+
+        // ================================================================
+        // FUNCIÓN PARA REPRODUCIR ADHAN
+        // ================================================================
+        function playAdhan() {
+            if (!locationEnabled) return;
+
+            // Si el usuario no ha interactuado, no se reproduce (política de autoplay)
+            if (!userInteracted) {
+                console.log('Adhan bloqueado: esperando interacción del usuario.');
+                return;
+            }
+
+            if (!adhanLoaded) {
+                console.log('Adhan no cargado, intentando cargar...');
+                loadAdhan();
+                // Esperar un poco y reintentar
+                setTimeout(() => {
+                    if (adhanLoaded) {
+                        tryPlayAdhan();
+                    }
+                }, 2000);
+                return;
+            }
+
+            tryPlayAdhan();
+        }
+
+        function tryPlayAdhan() {
+            try {
+                adhanAudio.currentTime = 0;
+                const playPromise = adhanAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(err => {
+                        console.warn('Error reproduciendo Adhan:', err);
+                        // Reintentar con una copia nueva si falla
+                        if (err.name === 'NotAllowedError') {
+                            console.log('Autoplay bloqueado, esperando interacción.');
+                            return;
+                        }
+                        // Fallback: recargar y reintentar
+                        loadAdhan();
+                        setTimeout(() => {
+                            if (adhanLoaded) {
+                                adhanAudio.play().catch(e => console.warn('Fallback falló:', e));
+                            }
+                        }, 1500);
+                    });
+                }
+            } catch (e) {
+                console.warn('Error al reproducir Adhan:', e);
+            }
         }
 
         // ================================================================
@@ -1868,24 +1968,34 @@
         // ACTUALIZAR IDIOMA DE LA INTERFAZ
         // ================================================================
         function updateUILanguage() {
+            // Actualizar todos los elementos con data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 let text = getTranslation(key);
+                // Caso especial para el countdown-box que tiene estructura interna
                 if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
-                    const span = el.querySelector('span');
-                    if (span) {
-                        const parts = el.childNodes;
-                        parts.forEach(node => {
-                            if (node.nodeType === 3) node.textContent = text;
-                        });
+                    // Buscar el span con data-i18n dentro del countdown-box
+                    const labelSpan = el.querySelector('span[data-i18n="next_prayer"]');
+                    if (labelSpan) {
+                        labelSpan.textContent = text;
                     } else {
-                        el.textContent = text;
+                        // Si no existe, crearlo
+                        const existingText = el.childNodes[0];
+                        if (existingText && existingText.nodeType === 3) {
+                            // Si hay un texto plano, reemplazarlo con un span
+                            const newSpan = document.createElement('span');
+                            newSpan.setAttribute('data-i18n', 'next_prayer');
+                            newSpan.textContent = text;
+                            el.insertBefore(newSpan, el.querySelector('#countdownTimer'));
+                            el.removeChild(existingText);
+                        }
                     }
                 } else {
                     el.textContent = text;
                 }
             });
 
+            // Asegurar que el placeholder del input se actualice
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
 
             const surahSelect = document.getElementById('surahSelect');
@@ -2141,9 +2251,17 @@
                 .catch(err => console.error('Error horarios:', err));
         }
 
+        // ================================================================
+        // FUNCIÓN PRINCIPAL DEL CRONÓMETRO - CORREGIDA
+        // ================================================================
         function startCountdownAndAdhan() {
             if (!locationEnabled) return;
-            setInterval(() => {
+
+            // Precargar Adhan
+            loadAdhan();
+
+            // Función para actualizar el cronómetro
+            function updateTimer() {
                 const now = new Date();
                 const todayStr = now.toISOString().split('T')[0];
 
@@ -2190,7 +2308,11 @@
                 });
 
                 highlightCurrentPrayer();
-            }, 1000);
+            }
+
+            // Ejecutar inmediatamente y luego cada segundo
+            updateTimer();
+            setInterval(updateTimer, 1000);
         }
 
         function highlightCurrentPrayer() {
@@ -2207,12 +2329,6 @@
                 document.getElementById(id).parentElement.classList.remove('active');
             });
             if (activeId) document.getElementById(activeId).parentElement.classList.add('active');
-        }
-
-        function playAdhan() {
-            if (!locationEnabled) return;
-            try { adhanAudio.currentTime = 0;
-                adhanAudio.play().catch(e => {}); } catch (e) {}
         }
 
         // ================================================================
@@ -2239,6 +2355,31 @@
                 })
                 .catch(() => alert(getTranslation('search_error')));
         });
+
+        // ================================================================
+        // CAPTURAR INTERACCIÓN DEL USUARIO PARA PERMITIR AUTOPLAY
+        // ================================================================
+        document.addEventListener('click', function() {
+            if (!userInteracted) {
+                userInteracted = true;
+                console.log('Usuario interactuó - Adhan habilitado');
+                if (window._pendingAdhan) {
+                    playAdhan();
+                    window._pendingAdhan = false;
+                }
+            }
+        }, { once: false });
+
+        document.addEventListener('touchstart', function() {
+            if (!userInteracted) {
+                userInteracted = true;
+                console.log('Usuario interactuó (touch) - Adhan habilitado');
+                if (window._pendingAdhan) {
+                    playAdhan();
+                    window._pendingAdhan = false;
+                }
+            }
+        }, { once: false });
 
         // ================================================================
         // CORÁN
@@ -2456,16 +2597,13 @@
 
             container.innerHTML = html;
 
-            // Comportamiento de acordeón: solo uno abierto a la vez
             document.querySelectorAll('.dua-category-item').forEach(item => {
                 const header = item.querySelector('.dua-category-header');
                 header.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    // Cerrar todos los demás
                     document.querySelectorAll('.dua-category-item').forEach(other => {
                         if (other !== item) other.classList.remove('active');
                     });
-                    // Toggle el actual
                     item.classList.toggle('active');
                 });
             });
@@ -2498,16 +2636,13 @@
 
             container.innerHTML = html;
 
-            // Comportamiento de acordeón: solo uno abierto a la vez
             document.querySelectorAll('.story-item').forEach(item => {
                 const header = item.querySelector('.story-header');
                 header.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    // Cerrar todos los demás
                     document.querySelectorAll('.story-item').forEach(other => {
                         if (other !== item) other.classList.remove('active');
                     });
-                    // Toggle el actual
                     item.classList.toggle('active');
                 });
             });
@@ -2743,6 +2878,8 @@
             updateUILanguage();
             loadDuaAccordion();
             loadStoriesAccordion();
+            // Cargar Adhan en segundo plano
+            loadAdhan();
             setTimeout(() => { if (qiblaAngle !== 0) dibujarBrújula(); }, 500);
         };
 
