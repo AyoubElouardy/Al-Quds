@@ -263,11 +263,6 @@
             font-size: 0.95rem;
             color: #a68b6a;
             letter-spacing: 0.5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
         }
 
         .countdown-box span {
@@ -1072,10 +1067,7 @@
                 <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" />
                 <button id="searchBtn" data-i18n="search_btn">Buscar</button>
             </div>
-            <div class="countdown-box" id="countdownBox">
-                <span data-i18n="next_prayer">Próximo rezo: </span>
-                <span id="countdownTimer">--:--:--</span>
-            </div>
+            <div class="countdown-box" data-i18n="next_prayer">Próximo rezo: <span id="countdownTimer">--:--:--</span></div>
             <div id="prayerTimesContainer">
                 <div class="prayer-grid" id="prayerGrid">
                     <div class="prayer-card"><div class="name" data-i18n="prayer_fajr">Fajr</div><div class="time" id="Fajr">--:--</div></div>
@@ -1850,7 +1842,7 @@
         function loadAdhan() {
             const adhanUrls = [
                 'https://www.islamcan.com/audio/adhan/azan-makkah.mp3',
-                'https://server8.mp3quran.net/afs/001.mp3' // fallback
+                'https://server8.mp3quran.net/afs/001.mp3'
             ];
 
             let attempt = 0;
@@ -1877,7 +1869,6 @@
                     tryLoad();
                 }, { once: true });
 
-                // Iniciar carga
                 adhanAudio.load();
             }
 
@@ -1889,17 +1880,15 @@
         // ================================================================
         function playAdhan() {
             if (!locationEnabled) return;
-
-            // Si el usuario no ha interactuado, no se reproduce (política de autoplay)
             if (!userInteracted) {
                 console.log('Adhan bloqueado: esperando interacción del usuario.');
+                window._pendingAdhan = true;
                 return;
             }
 
             if (!adhanLoaded) {
                 console.log('Adhan no cargado, intentando cargar...');
                 loadAdhan();
-                // Esperar un poco y reintentar
                 setTimeout(() => {
                     if (adhanLoaded) {
                         tryPlayAdhan();
@@ -1918,12 +1907,10 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(err => {
                         console.warn('Error reproduciendo Adhan:', err);
-                        // Reintentar con una copia nueva si falla
                         if (err.name === 'NotAllowedError') {
                             console.log('Autoplay bloqueado, esperando interacción.');
                             return;
                         }
-                        // Fallback: recargar y reintentar
                         loadAdhan();
                         setTimeout(() => {
                             if (adhanLoaded) {
@@ -1968,34 +1955,24 @@
         // ACTUALIZAR IDIOMA DE LA INTERFAZ
         // ================================================================
         function updateUILanguage() {
-            // Actualizar todos los elementos con data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 let text = getTranslation(key);
-                // Caso especial para el countdown-box que tiene estructura interna
                 if (el.id === 'countdownBox' || el.classList.contains('countdown-box')) {
-                    // Buscar el span con data-i18n dentro del countdown-box
-                    const labelSpan = el.querySelector('span[data-i18n="next_prayer"]');
-                    if (labelSpan) {
-                        labelSpan.textContent = text;
+                    const span = el.querySelector('span');
+                    if (span) {
+                        const parts = el.childNodes;
+                        parts.forEach(node => {
+                            if (node.nodeType === 3) node.textContent = text;
+                        });
                     } else {
-                        // Si no existe, crearlo
-                        const existingText = el.childNodes[0];
-                        if (existingText && existingText.nodeType === 3) {
-                            // Si hay un texto plano, reemplazarlo con un span
-                            const newSpan = document.createElement('span');
-                            newSpan.setAttribute('data-i18n', 'next_prayer');
-                            newSpan.textContent = text;
-                            el.insertBefore(newSpan, el.querySelector('#countdownTimer'));
-                            el.removeChild(existingText);
-                        }
+                        el.textContent = text;
                     }
                 } else {
                     el.textContent = text;
                 }
             });
 
-            // Asegurar que el placeholder del input se actualice
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
 
             const surahSelect = document.getElementById('surahSelect');
@@ -2252,29 +2229,38 @@
         }
 
         // ================================================================
-        // FUNCIÓN PRINCIPAL DEL CRONÓMETRO - CORREGIDA
+        // CRONÓMETRO Y ADHAN (CORREGIDO - SOLUCIONA EL PROBLEMA DE LAS 24 HORAS)
         // ================================================================
         function startCountdownAndAdhan() {
             if (!locationEnabled) return;
 
-            // Precargar Adhan
             loadAdhan();
 
-            // Función para actualizar el cronómetro
             function updateTimer() {
                 const now = new Date();
+
+                // Obtener la fecha de hoy en formato YYYY-MM-DD
                 const todayStr = now.toISOString().split('T')[0];
 
+                // Crear objetos Date para cada oración de hoy
                 let prayerDates = prayerIds.map(id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
                     return { id, time: new Date(`${todayStr}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`) };
                 });
+
+                // Ordenar por hora
                 prayerDates.sort((a, b) => a.time - b.time);
 
+                // Buscar la próxima oración (la primera que sea > ahora)
                 let next = null;
                 for (let p of prayerDates) {
-                    if (p.time > now) { next = p; break; }
+                    if (p.time > now) {
+                        next = p;
+                        break;
+                    }
                 }
+
+                // Si no hay ninguna oración hoy (todas ya pasaron), la próxima es la primera de mañana
                 if (!next && prayerDates.length > 0) {
                     const first = prayerDates[0];
                     const tomorrow = new Date(now);
@@ -2286,22 +2272,32 @@
 
                 if (next) {
                     let diff = (next.time - now) / 1000;
+                    // Asegurar que diff nunca sea negativo o exceda 24 horas
                     if (diff < 0) diff = 0;
+                    // Si diff es mayor a 24 horas, limitarlo (esto evita el "24:00:00" y el bloqueo)
                     if (diff > 86400) diff = 86400;
                     const hrs = Math.floor(diff / 3600);
                     const mins = Math.floor((diff % 3600) / 60);
                     const secs = Math.floor(diff % 60);
                     document.getElementById('countdownTimer').innerText =
                         `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                } else {
+                    // Fallback: si por alguna razón no hay next, mostrar 00:00:00
+                    document.getElementById('countdownTimer').innerText = '00:00:00';
                 }
 
+                // Verificar si estamos en el minuto exacto de alguna oración
                 const currentMin = now.getHours() * 60 + now.getMinutes();
                 prayerIds.forEach(id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
                     const prayerMin = h * 60 + m;
+                    // Detectar si la oración está en el minuto actual (margen de 1 minuto)
                     if (Math.abs(currentMin - prayerMin) <= 1) {
-                        if (!window._lastAdhan || window._lastAdhan !== id) {
-                            window._lastAdhan = id;
+                        // Usar un flag para evitar múltiples reproducciones de la misma oración
+                        const todayDate = now.toISOString().split('T')[0];
+                        const flagKey = `${todayDate}_${id}`;
+                        if (window._lastAdhan !== flagKey) {
+                            window._lastAdhan = flagKey;
                             playAdhan();
                         }
                     }
@@ -2312,23 +2308,40 @@
 
             // Ejecutar inmediatamente y luego cada segundo
             updateTimer();
-            setInterval(updateTimer, 1000);
+            // Limpiar intervalos anteriores si existen
+            if (window._timerInterval) {
+                clearInterval(window._timerInterval);
+            }
+            window._timerInterval = setInterval(updateTimer, 1000);
         }
 
         function highlightCurrentPrayer() {
-            if (!locationEnabled) return;
+            if (!locationEnabled || Object.keys(prayerTimes).length === 0) return;
             const now = new Date();
             const currentMin = now.getHours() * 60 + now.getMinutes();
-            let activeId = null,
-                minDiff = Infinity;
+            let activeId = null;
+            let minDiff = Infinity;
+
             prayerIds.forEach(id => {
                 const [h, m] = prayerTimes[id].split(':').map(Number);
                 const diff = currentMin - (h * 60 + m);
-                if (diff >= 0 && diff < minDiff) { minDiff = diff;
-                    activeId = id; }
+                // Buscar la última oración que ya pasó (la más reciente)
+                if (diff >= 0 && diff < minDiff) {
+                    minDiff = diff;
+                    activeId = id;
+                }
                 document.getElementById(id).parentElement.classList.remove('active');
             });
-            if (activeId) document.getElementById(activeId).parentElement.classList.add('active');
+
+            // Si no hay ninguna oración pasada (antes de Fajr), marcar Isha como activa (la última del día anterior)
+            if (!activeId) {
+                activeId = 'Isha';
+            }
+
+            if (activeId) {
+                const el = document.getElementById(activeId);
+                if (el) el.parentElement.classList.add('active');
+            }
         }
 
         // ================================================================
@@ -2878,7 +2891,6 @@
             updateUILanguage();
             loadDuaAccordion();
             loadStoriesAccordion();
-            // Cargar Adhan en segundo plano
             loadAdhan();
             setTimeout(() => { if (qiblaAngle !== 0) dibujarBrújula(); }, 500);
         };
