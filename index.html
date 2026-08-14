@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Amiri&display=swap" rel="stylesheet" />
     <style>
         /* ================================================================
-           RESET Y BASE - TEMA OSCURO FIJO
+           RESET Y BASE - FONDO VERDE OSCURO
            ================================================================ */
         * {
             margin: 0;
@@ -18,15 +18,15 @@
         }
 
         :root {
-            --bg-primary: #0a120a;
-            --bg-secondary: #0f1f0f;
+            --bg-primary: #0a1a0a;
+            --bg-secondary: #0f2a0f;
             --bg-card: rgba(255, 255, 255, 0.03);
             --gold: #d4af37;
             --gold-dim: rgba(212, 175, 55, 0.15);
             --gold-glow: rgba(212, 175, 55, 0.25);
             --text-primary: #e8dcc8;
             --text-secondary: #a68b6a;
-            --text-dim: #4a6a4a;
+            --text-dim: #3a6a3a;
             --border-gold: rgba(212, 175, 55, 0.12);
             --shadow-gold: 0 0 30px rgba(212, 175, 55, 0.05);
             --radius: 20px;
@@ -237,7 +237,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 18, 10, 0.92);
+            background: rgba(10, 26, 10, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-gold);
@@ -812,7 +812,7 @@
             width: 260px;
             height: 260px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #162616, #0a120a);
+            background: radial-gradient(circle at 30% 30%, #162616, #0a1a0a);
             box-shadow: 0 0 60px rgba(212, 175, 55, 0.06), inset 0 0 80px rgba(0, 0, 0, 0.5);
             border: 2px solid var(--gold);
             display: block;
@@ -993,7 +993,7 @@
             bottom: 68px;
             left: 0;
             right: 0;
-            background: rgba(10, 18, 10, 0.95);
+            background: rgba(10, 26, 10, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-gold);
@@ -1113,7 +1113,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 18, 10, 0.97);
+            background: rgba(10, 26, 10, 0.97);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 2px solid var(--gold);
@@ -2391,7 +2391,7 @@
         ];
 
         // ================================================================
-        // HISTORIAS - CON LA NUEVA HISTORIA DE ADÁN Y EVA
+        // HISTORIAS - CON NUEVA HISTORIA DE ADÁN Y EVA + NUEVA HISTORIA DE NOÉ
         // ================================================================
         const stories = [{
             id: 'adam',
@@ -2834,21 +2834,585 @@
         <p>القصة التي بدأت مع آدم تستمر مع كل من نسله. وكل إنسان، مثل آدم، يجد نفسه أمام خيار: اتباع وساوس إبليس، أو اتباع هدى الله.</p>
         <p>تلك هي رحلة أبناء آدم. وتستمر تلك الرحلة حتى يوم القيامة.</p>`
             }
-        },
-        // ================================================================
-        // OTRAS HISTORIAS (Noé, Abraham, Moisés, Jesús, Muhammad)
-        // ================================================================
-        {
+        }, {
             id: 'nuh',
             arabicName: 'نوح',
-            title: { es: 'Noé', fr: 'Noé', en: 'Noah', ar: 'نوح' },
+            title: { es: 'Nuh (Noé)', fr: 'Nuh (Noé)', en: 'Nuh (Noah)', ar: 'نوح' },
             text: {
-                es: '<p>Nuh fue enviado a su pueblo que adoraba ídolos. Durante 950 años los llamó al monoteísmo, pero solo unos pocos creyeron. Allah le ordenó construir un arca para salvar a los creyentes y a una pareja de cada especie. El diluvio cubrió la tierra y los incrédulos perecieron. El arca se posó en el monte Judi, y la humanidad renació.</p>',
-                fr: '<p>Nuh fut envoyé à son peuple qui adorait des idoles. Pendant 950 ans, il les appela au monothéisme, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche pour sauver les croyants et un couple de chaque espèce. Le déluge couvrit la terre et les mécréants périrent. L\'arche se posa sur le mont Judi, et l\'humanité renaquit.</p>',
-                en: '<p>Nuh was sent to his people who worshipped idols. For 950 years he called them to monotheism, but only a few believed. Allah ordered him to build an ark to save the believers and a pair of every species. The flood covered the earth and the disbelievers perished. The ark settled on Mount Judi, and humanity was reborn.</p>',
-                ar: '<p>أرسل نوح إلى قومه الذين يعبدون الأصنام. دعاهم إلى التوحيد 950 عاماً، لكن آمن معه قليلون. أمره الله ببناء سفينة لإنقاذ المؤمنين وزوجين من كل نوع. غمر الطوفان الأرض وهلك الكافرون. استقرت السفينة على جبل الجودي، وولدت البشرية من جديد.</p>'
+                es: `<p><strong>Un mundo que había olvidado a Allah</strong></p>
+        <p>Después de Adán, la humanidad fue creciendo y extendiéndose por la Tierra.</p>
+        <p>Pasaron generaciones.</p>
+        <p>Los hijos de Adán formaron familias, comunidades y pueblos. Con el paso del tiempo, muchas personas comenzaron a alejarse de la enseñanza que habían recibido de sus antepasados.</p>
+        <p>Al principio, el alejamiento fue pequeño. Después, poco a poco, comenzaron a aparecer nuevas costumbres.</p>
+        <p>Los seres humanos empezaron a venerar a personas que habían sido consideradas importantes. Algunos hombres virtuosos habían vivido entre generaciones anteriores. Cuando murieron, sus familiares los recordaron con cariño. Con el paso del tiempo, sus descendientes comenzaron a hacer imágenes y representaciones de ellos.</p>
+        <p>Al principio no pretendían adorarlas. Simplemente querían recordarlos. Pero las generaciones pasaron. Los que habían conocido el verdadero propósito de aquellas imágenes murieron. Y las generaciones posteriores olvidaron por qué habían sido creadas.</p>
+        <p>Entonces las imágenes comenzaron a recibir veneración. Después llegaron las súplicas. Y finalmente, algunos comenzaron a dirigir actos de adoración hacia ellas.</p>
+        <p>Así apareció una de las mayores desviaciones de la humanidad: el shirk, asociar a otros con Allah en la adoración.</p>
+        <p>El Corán menciona algunos de los nombres de aquellas figuras:</p>
+        <p>«Y dijeron: No abandonéis a vuestros dioses; no abandonéis ni a Wadd, ni a Suwāʿ, ni a Yaghūth, ni a Yaʿūq, ni a Nasr.»<br><em>— Corán 71:23</em></p>
+        <p>El pueblo se había alejado del tawḥīd, la creencia de que solamente Allah merece ser adorado. Y entonces Allah envió a uno de los grandes profetas de la historia. Su nombre era Nuh.</p>
+
+        <p><strong>Nuh, el mensajero</strong></p>
+        <p>Nuh fue enviado a su pueblo para llamarlos de vuelta a Allah. No llegó buscando riquezas. No buscaba poder. No quería convertirse en rey. Su misión era sencilla, pero extraordinariamente difícil: adorar solamente a Allah y abandonar los falsos dioses.</p>
+        <p>Nuh les dijo:</p>
+        <p>«¡Oh, pueblo mío! Adorad a Allah. No tenéis otro dios aparte de Él.»<br><em>— Corán 7:59</em></p>
+        <p>Aquello era el mismo mensaje fundamental que habían transmitido los profetas anteriores y que transmitirían los profetas posteriores. Un solo Dios. Una sola adoración. Una vida guiada por Allah.</p>
+        <p>Nuh sabía que su pueblo se había desviado, pero no dejó de llamarlos. Les habló. Les explicó. Les advirtió. Les recordó. Y esperó.</p>
+
+        <p><strong>Una llamada que duró generaciones</strong></p>
+        <p>Nuh no predicó durante unos pocos días. El Corán dice que permaneció entre su pueblo:</p>
+        <p>«Mil años menos cincuenta.»<br><em>— Corán 29:14</em></p>
+        <p>Es decir, 950 años. Durante casi un milenio, Nuh llamó a su pueblo hacia Allah.</p>
+        <p>Imaginemos lo que significa eso. Una persona nace. Crece. Envejece. Muere. Después nace otra generación. Y Nuh continúa llamándolos. Los niños de una generación se convierten en los adultos de la siguiente. Los ancianos mueren. Las casas cambian. Las familias crecen. Pero Nuh permanece con su misión. Durante siglos. Y, sin embargo, su pueblo continuaba rechazándolo.</p>
+
+        <p><strong>Nuh utilizó todos los caminos</strong></p>
+        <p>Nuh no habló con su pueblo de una sola manera. Intentó diferentes métodos. El Corán nos cuenta que dijo:</p>
+        <p>«Señor mío, he llamado a mi pueblo noche y día.»<br><em>— Corán 71:5</em></p>
+        <p>Les habló públicamente. Les habló en privado. Les habló durante el día. Les habló durante la noche. Les explicó las consecuencias de rechazar a Allah. Y también les habló de la misericordia divina.</p>
+        <p>Les dijo que pidieran perdón a Allah. Y les recordó que Allah podía concederles abundancia y bendiciones.</p>
+        <p>«Pedid perdón a vuestro Señor; ciertamente, Él es muy Perdonador. Él enviará sobre vosotros el cielo con abundante lluvia, os dará riquezas e hijos y os concederá jardines y ríos.»<br><em>— Corán 71:10-12</em></p>
+        <p>Nuh no quería destruir a su pueblo. Quería salvarlo. Cada advertencia era una oportunidad. Cada llamada era una oportunidad para arrepentirse. Cada día que pasaba era otra oportunidad para volver a Allah.</p>
+
+        <p><strong>El pueblo se hizo más arrogante</strong></p>
+        <p>En lugar de escuchar, muchos comenzaron a burlarse de Nuh. Los líderes del pueblo despreciaban a quienes seguían al profeta. Veían que entre sus seguidores había personas humildes y pobres. Y utilizaban eso como una razón para rechazar el mensaje.</p>
+        <p>Decían, en esencia: "¿Cómo podemos seguirte cuando quienes están contigo son personas de poca importancia?" Para ellos, la verdad dependía de la riqueza, la posición social y el poder.</p>
+        <p>Pero Nuh no aceptó esa forma de pensar. La verdad no depende de quién la sigue. Si una persona rica cree en Allah, eso no hace que el mensaje sea verdadero. Si una persona pobre cree en Allah, tampoco lo hace falso. La verdad pertenece a Allah.</p>
+
+        <p><strong>El rechazo</strong></p>
+        <p>Cuanto más insistía Nuh, más fuerte era la oposición. Algunos se tapaban los oídos para no escucharlo. El Corán describe la actitud de su pueblo:</p>
+        <p>«Se pusieron los dedos en los oídos, se cubrieron con sus ropas, persistieron y se llenaron de arrogancia.»<br><em>— Corán 71:7</em></p>
+        <p>Era una imagen de enorme rechazo. Nuh hablaba. Ellos se alejaban. Nuh advertía. Ellos se burlaban. Nuh invitaba al arrepentimiento. Ellos respondían con arrogancia. Y, aun así, Nuh continuaba.</p>
+
+        <p><strong>La paciencia de un profeta</strong></p>
+        <p>La historia de Nuh es también una historia de paciencia. Cualquier persona podría haber abandonado una misión después de unos años. Pero Nuh continuó durante siglos. Su perseverancia muestra la enorme responsabilidad que tenían los profetas.</p>
+        <p>Ellos no controlaban quién aceptaba la verdad. Su responsabilidad era transmitir el mensaje. La guía pertenece a Allah. Nuh podía hablar. Podía enseñar. Podía advertir. Pero no podía obligar a nadie a creer.</p>
+        <p>Incluso dentro de su propia familia habría personas que rechazarían su mensaje.</p>
+
+        <p><strong>La decisión de Allah</strong></p>
+        <p>Finalmente llegó un momento en el que Allah informó a Nuh de que muy pocos de su pueblo creerían después de aquello. El Corán relata:</p>
+        <p>«Y le fue revelado a Nuh: No creerán de tu pueblo sino aquellos que ya han creído.»<br><em>— Corán 11:36</em></p>
+        <p>Nuh había hecho todo lo que estaba en sus manos. Había llamado a su pueblo durante generaciones. Había utilizado diferentes métodos. Había sido paciente. Había advertido. Pero el rechazo había llegado a tal extremo que la decisión de Allah estaba determinada.</p>
+        <p>Entonces comenzó una de las escenas más conocidas de la historia de Nuh. Allah le ordenó construir un barco.</p>
+
+        <p><strong>Construir un barco lejos del mar</strong></p>
+        <p>Nuh comenzó a construir el arca. Pero su pueblo no entendía qué estaba haciendo. Según el relato coránico, mientras construía el barco, los líderes de su pueblo pasaban junto a él y se burlaban.</p>
+        <p>Podemos imaginar la escena. Un hombre anciano construyendo una enorme embarcación. Lejos de un lugar donde pudiera parecer necesaria. Los demás observándolo. Riéndose. Preguntándose qué estaba haciendo.</p>
+        <p>Nuh no se dejó intimidar. Continuó construyendo. Cada pieza de madera era parte de una orden de Allah. Cada esfuerzo era una muestra de obediencia. Cada burla era una prueba de paciencia. Y Nuh sabía que la promesa de Allah era verdadera.</p>
+
+        <p><strong>La llegada de la orden</strong></p>
+        <p>Finalmente llegó el momento. Allah le indicó a Nuh que, cuando llegara la orden, llevara al arca a los creyentes y a parejas de los animales. El Corán describe una señal importante:</p>
+        <p>«Hasta que llegó Nuestra orden y el horno rebosó...»<br><em>— Corán 11:40</em></p>
+        <p>Entonces Nuh recibió instrucciones. Los creyentes debían entrar. Los animales que Allah había ordenado llevar debían entrar. Y Nuh debía dejar atrás a quienes habían rechazado persistentemente la verdad. La tormenta estaba a punto de comenzar.</p>
+
+        <p><strong>El arca</strong></p>
+        <p>Nuh entró en el arca. Los creyentes entraron con él. Y comenzaron las lluvias. No era una lluvia normal. El agua comenzó a caer con una fuerza extraordinaria. El Corán describe que las puertas del cielo fueron abiertas con agua abundante y que la Tierra hizo brotar sus aguas.</p>
+        <p>El agua comenzó a elevarse. El pueblo que se había burlado de Nuh se encontró ante una situación que ya no podía ignorar. La realidad que habían rechazado durante siglos estaba delante de ellos.</p>
+
+        <p><strong>Las olas como montañas</strong></p>
+        <p>El agua continuó subiendo. El Corán describe:</p>
+        <p>«Y ella navegaba con ellos entre olas como montañas.»<br><em>— Corán 11:42</em></p>
+        <p>El arca se movía sobre un océano de agua. Las olas eran enormes. La tierra había quedado cubierta por las aguas de aquella inundación. Dentro del arca estaban Nuh y quienes habían creído. Fuera estaban aquellos que habían rechazado la advertencia.</p>
+        <p>Pero Nuh todavía tenía una última preocupación. Su familia.</p>
+
+        <p><strong>El hijo de Nuh</strong></p>
+        <p>Nuh vio a uno de sus hijos separado de los demás. Y lo llamó. El Corán relata sus palabras:</p>
+        <p>«¡Oh, hijo mío! Sube con nosotros y no estés con los incrédulos.»<br><em>— Corán 11:42</em></p>
+        <p>Nuh no quería perder a su hijo. Era su padre. Era natural que quisiera salvarlo. Pero su hijo respondió que se refugiaría en una montaña. Pensaba que la montaña podría protegerlo del agua.</p>
+        <p>Nuh le explicó:</p>
+        <p>«Hoy no hay protección frente al decreto de Allah, excepto para aquel de quien Él tenga misericordia.»<br><em>— Corán 11:43</em></p>
+        <p>Entonces una ola los separó. Y el hijo de Nuh murió ahogado.</p>
+
+        <p><strong>El dolor de un padre</strong></p>
+        <p>Nuh había visto morir a su propio hijo. Por eso preguntó a Allah acerca de él. Nuh dijo:</p>
+        <p>«Señor mío, mi hijo es de mi familia y Tu promesa es verdadera.»<br><em>— Corán 11:45</em></p>
+        <p>Pero Allah le enseñó una lección fundamental. El vínculo de sangre no sustituye a la fe. Allah respondió:</p>
+        <p>«¡Oh, Nuh! Él no es de tu familia; su conducta no es recta.»<br><em>— Corán 11:46</em></p>
+        <p>Esto no significa que Nuh no fuera su padre biológico. Significa que, en el sentido espiritual de la promesa, aquel hijo había dejado de pertenecer a los que estaban en el camino de la salvación.</p>
+        <p>La enseñanza era profunda. Un profeta no puede salvar a alguien simplemente porque sea su hijo. Un padre no puede creer en lugar de su hijo. Un hijo no puede creer en lugar de su padre. Cada persona responde ante Allah por su propia fe y sus propias acciones.</p>
+
+        <p><strong>La esposa de Nuh</strong></p>
+        <p>El Corán también menciona a la esposa de Nuh como un ejemplo de una persona que estaba relacionada con un profeta pero rechazó la fe. Allah dice:</p>
+        <p>«Allah pone como ejemplo para quienes no creen a la mujer de Nuh y a la mujer de Lut.»<br><em>— Corán 66:10</em></p>
+        <p>Esto demuestra otra vez que la cercanía familiar con una persona justa no garantiza la salvación. Nuh era profeta. Pero su esposa no creyó. Su hijo tampoco creyó. La fe no se hereda automáticamente.</p>
+
+        <p><strong>La misericordia hacia los creyentes</strong></p>
+        <p>Dentro del arca, Nuh y los creyentes esperaban. La inundación continuó hasta que Allah decretó que terminara. Entonces llegó la orden divina.</p>
+        <p>«¡Oh, tierra, traga tu agua! ¡Oh, cielo, detente!»<br><em>— Corán 11:44</em></p>
+        <p>El agua comenzó a desaparecer. Las aguas descendieron. Y el arca finalmente se posó sobre el monte Al-Jūdī. La tormenta había terminado. Los creyentes habían sido salvados. Nuh había cumplido su misión.</p>
+
+        <p><strong>Un nuevo comienzo</strong></p>
+        <p>El mundo que conocían había cambiado. Nuh y los creyentes salieron del arca. La humanidad continuaría a través de aquellos que Allah había salvado.</p>
+        <p>La historia de Nuh no era simplemente la historia de una inundación. Era la historia de una advertencia. Era la historia de siglos de paciencia. Era la historia de un pueblo que recibió oportunidades una y otra vez. Y era la historia de una verdad que no cambia porque la mayoría la rechace.</p>
+
+        <p><strong>Nuh pide perdón</strong></p>
+        <p>Incluso después de todo aquello, Nuh mantuvo su humildad ante Allah. El Corán nos muestra una de sus súplicas:</p>
+        <p>«Señor mío, perdóname, a mis padres, a quien entre en mi casa siendo creyente y a todos los creyentes y creyentes.»<br><em>— Corán 71:28</em></p>
+        <p>Nuh no terminó su historia lleno de orgullo diciendo: "Yo tenía razón y todos los demás estaban equivocados." Terminó volviéndose hacia Allah. Eso es característico de los profetas. La obediencia no los hacía arrogantes. Los hacía más humildes.</p>
+
+        <p><strong>Lo que Nuh enseñó a la humanidad</strong></p>
+        <p>La historia de Nuh contiene muchas enseñanzas. La primera es el tawḥīd. Solamente Allah merece ser adorado. No importa cuánto tiempo haya pasado desde Adán. No importa cuántas generaciones hayan aparecido. El mensaje fundamental permanece.</p>
+        <p>La segunda enseñanza es la paciencia. Nuh llamó a su pueblo durante 950 años. Su perseverancia es uno de los mayores ejemplos de paciencia en la historia de los profetas.</p>
+        <p>La tercera enseñanza es que la mayoría no determina la verdad. Nuh tenía pocos seguidores. Su pueblo era mucho más numeroso. Pero el número de personas que rechazan una verdad no convierte esa verdad en falsa.</p>
+        <p>La cuarta enseñanza es que la familia no sustituye a la fe. Nuh era profeta, pero no pudo salvar a su hijo simplemente por ser su padre.</p>
+        <p>La quinta enseñanza es la importancia del arrepentimiento antes de que sea demasiado tarde. Durante generaciones, el pueblo de Nuh tuvo oportunidades. Pero cuando llegó el decreto de Allah, ya no podían retrasarlo.</p>
+
+        <p><strong>Nuh y el carácter del verdadero creyente</strong></p>
+        <p>Nuh podría haber respondido al rechazo con desesperación. Podría haber abandonado a su pueblo. Podría haber buscado venganza. Pero siguió cumpliendo su misión. Y cuando finalmente llegó la salvación, siguió siendo humilde.</p>
+        <p>Esto muestra una característica esencial del creyente: hacer lo correcto incluso cuando el resultado no aparece inmediatamente. Nuh no sabía cuándo aceptaría su pueblo. No sabía cuánto tiempo tendría que esperar. Pero sabía quién le había ordenado transmitir el mensaje. Eso era suficiente.</p>
+
+        <p><strong>El enemigo de la humanidad</strong></p>
+        <p>La historia de Nuh también muestra cómo comienza el shirk. Las personas no necesariamente abandonan el tawḥīd de un día para otro. A veces la desviación empieza con algo aparentemente pequeño. Una persona justa es recordada. Se crea una imagen. Después se exagera su importancia. Después se busca su intercesión. Después se le dirigen actos que solamente corresponden a Allah. Y generaciones después, la gente puede terminar adorando aquello que originalmente había sido solamente un recuerdo.</p>
+        <p>Por eso Nuh llamó a su pueblo a regresar al mensaje original. No adoréis a los seres humanos. No adoréis imágenes. No adoréis fuerzas de la naturaleza. No adoréis aquello que vosotros mismos habéis creado. Adorad a Allah.</p>
+
+        <p><strong>El legado de Nuh</strong></p>
+        <p>Nuh ocupa una posición extraordinaria en el Islam. Es uno de los grandes profetas. El Corán incluso contiene una sura completa con su nombre: Sūrat Nūḥ, la sura 71. En ella, Allah nos permite conocer parte de la llamada de Nuh a su pueblo.</p>
+        <p>Nuh no fue solamente un hombre que construyó un barco. Fue un mensajero que dedicó siglos de su vida a llamar a la humanidad hacia su Creador. Su historia representa la lucha entre la verdad y la arrogancia. Entre la obediencia y la rebeldía. Entre la paciencia y la desesperación. Entre el tawḥīd y el shirk.</p>
+
+        <p><strong>La gran lección</strong></p>
+        <p>Quizá la enseñanza más profunda de Nuh sea que una persona no debe medir su éxito únicamente por la cantidad de personas que la siguen. Nuh predicó durante 950 años. Y, aun así, fueron pocos quienes creyeron. Pero Nuh no fracasó.</p>
+        <p>Porque su misión no consistía en controlar los corazones de las personas. Su misión era transmitir el mensaje de Allah. El éxito de un profeta no se mide por cuántas personas lo siguen. Se mide por su fidelidad a Allah.</p>
+        <p>Nuh fue fiel. Cuando fue rechazado, continuó. Cuando fue ridiculizado, continuó. Cuando su propio hijo rechazó la fe, continuó confiando en Allah. Cuando llegó la inundación, obedeció. Y cuando todo terminó, volvió a Allah con humildad.</p>
+
+        <p><strong>El recuerdo de Nuh</strong></p>
+        <p>Miles de años después, los musulmanes siguen mencionando su nombre. Cuando un musulmán lee la historia de Nuh, recuerda que la verdad puede ser rechazada durante mucho tiempo sin dejar de ser verdad. Recuerda que la paciencia puede durar años. Incluso décadas. Incluso toda una vida. Recuerda que la arrogancia puede destruir a una persona. Y recuerda que Allah puede abrir una puerta de salvación cuando todo parece perdido.</p>
+        <p>Nuh enseñó a su pueblo durante siglos. Pero también dejó un mensaje para todos los seres humanos que vendrían después de él:</p>
+        <p>No adoréis a nadie excepto a Allah. No permitáis que la tradición sustituya a la verdad. No confundáis la mayoría con la guía. No os dejéis engañar por el orgullo. Y cuando la verdad os sea mostrada, no esperéis hasta que sea demasiado tarde para aceptarla.</p>
+        <p>La historia de Nuh comenzó con un pueblo que había olvidado a Allah. Terminó con un pequeño grupo de creyentes salvados de una enorme inundación. Pero entre ambos momentos hubo 950 años de paciencia. 950 años de llamadas. 950 años de advertencias. 950 años en los que Nuh siguió diciendo, de diferentes maneras, el mismo mensaje: Adorad a Allah.</p>
+        <p>Y ese mensaje, según el Islam, no terminó con Nuh. Continuó con Hud. Con Salih. Con Ibrahim. Con Lut. Con Ismail. Con Ishaq. Con Yaqub. Con Yusuf. Con Musa. Con Dawud. Con Sulayman. Con Isa. Y finalmente con Muhammad ﷺ.</p>
+        <p>Todos ellos llamaron a la humanidad hacia el mismo fundamento: Allah es Uno. Él es el Creador. Solo Él merece ser adorado. Y los hijos de Adán, generación tras generación, siguen teniendo la misma elección que tuvieron los pueblos anteriores: seguir la guía de Allah, o apartarse de ella.</p>
+        <p>La historia de Nuh permanece como una advertencia para quienes rechazan la verdad y, al mismo tiempo, como una esperanza para quienes permanecen firmes. Porque la tormenta puede ser enorme. Las olas pueden parecer montañas. El mundo entero puede parecer estar en contra de ti. Pero para quien confía en Allah y sigue Su guía, incluso un pequeño barco puede convertirse en el lugar de la salvación.</p>`,
+
+                fr: `<p><strong>Un monde qui avait oublié Allah</strong></p>
+        <p>Après Adam, l'humanité grandit et se répandit sur la Terre.</p>
+        <p>Des générations passèrent.</p>
+        <p>Les fils d'Adam formèrent des familles, des communautés et des peuples. Avec le temps, beaucoup de personnes commencèrent à s'éloigner de l'enseignement qu'elles avaient reçu de leurs ancêtres.</p>
+        <p>Au début, l'éloignement fut petit. Puis, peu à peu, de nouvelles coutumes commencèrent à apparaître.</p>
+        <p>Les êtres humains commencèrent à vénérer des personnes qui avaient été considérées comme importantes. Des hommes vertueux avaient vécu parmi les générations précédentes. Quand ils moururent, leurs proches les rappelèrent avec affection. Avec le temps, leurs descendants commencèrent à faire des images et des représentations d'eux.</p>
+        <p>Au début, ils ne prétendaient pas les adorer. Ils voulaient simplement se souvenir d'eux. Mais les générations passèrent. Ceux qui avaient connu le véritable but de ces images moururent. Et les générations postérieures oublièrent pourquoi elles avaient été créées.</p>
+        <p>Alors les images commencèrent à recevoir de la vénération. Puis vinrent les supplications. Et finalement, certains commencèrent à diriger des actes d'adoration vers elles.</p>
+        <p>Ainsi apparut l'une des plus grandes déviations de l'humanité : le shirk, associer d'autres à Allah dans l'adoration.</p>
+        <p>Le Coran mentionne quelques-uns des noms de ces figures :</p>
+        <p>« Et ils dirent : N'abandonnez pas vos divinités ; n'abandonnez ni Wadd, ni Suwāʿ, ni Yaghūth, ni Yaʿūq, ni Nasr. »<br><em>— Coran 71:23</em></p>
+        <p>Le peuple s'était éloigné du tawḥīd, la croyance que seul Allah mérite d'être adoré. Et alors Allah envoya l'un des grands prophètes de l'histoire. Son nom était Nuh.</p>
+
+        <p><strong>Nuh, le messager</strong></p>
+        <p>Nuh fut envoyé à son peuple pour les rappeler à Allah. Il ne vint pas chercher des richesses. Il ne cherchait pas le pouvoir. Il ne voulait pas devenir roi. Sa mission était simple, mais extraordinairement difficile : adorer uniquement Allah et abandonner les faux dieux.</p>
+        <p>Nuh leur dit :</p>
+        <p>« Ô mon peuple ! Adorez Allah. Vous n'avez d'autre divinité que Lui. »<br><em>— Coran 7:59</em></p>
+        <p>C'était le même message fondamental qu'avaient transmis les prophètes précédents et que transmettraient les prophètes suivants. Un seul Dieu. Une seule adoration. Une vie guidée par Allah.</p>
+        <p>Nuh savait que son peuple s'était égaré, mais il ne cessa de les appeler. Il leur parla. Il leur expliqua. Il les avertit. Il leur rappela. Et il attendit.</p>
+
+        <p><strong>Un appel qui dura des générations</strong></p>
+        <p>Nuh ne prêcha pas pendant quelques jours. Le Coran dit qu'il resta parmi son peuple :</p>
+        <p>« Mille ans moins cinquante. »<br><em>— Coran 29:14</em></p>
+        <p>C'est-à-dire 950 ans. Pendant près d'un millénaire, Nuh appela son peuple vers Allah.</p>
+        <p>Imaginons ce que cela signifie. Une personne naît. Grandit. Vieillit. Meurt. Puis naît une autre génération. Et Nuh continue de les appeler. Les enfants d'une génération deviennent les adultes de la suivante. Les vieillards meurent. Les maisons changent. Les familles grandissent. Mais Nuh reste avec sa mission. Pendant des siècles. Et pourtant, son peuple continuait de le rejeter.</p>
+
+        <p><strong>Nuh utilisa tous les chemins</strong></p>
+        <p>Nuh ne parla pas à son peuple d'une seule manière. Il essaya différentes méthodes. Le Coran nous raconte qu'il dit :</p>
+        <p>« Seigneur, j'ai appelé mon peuple nuit et jour. »<br><em>— Coran 71:5</em></p>
+        <p>Il leur parla en public. Il leur parla en privé. Il leur parla pendant le jour. Il leur parla pendant la nuit. Il leur expliqua les conséquences de rejeter Allah. Et il leur parla aussi de la miséricorde divine.</p>
+        <p>Il leur dit de demander pardon à Allah. Et il leur rappela qu'Allah pouvait leur accorder l'abondance et les bénédictions.</p>
+        <p>« Implorez le pardon de votre Seigneur ; car Il est grand Pardonneur. Il enverra sur vous du ciel des pluies abondantes, vous accordera des richesses et des enfants, et vous donnera des jardins et des rivières. »<br><em>— Coran 71:10-12</em></p>
+        <p>Nuh ne voulait pas détruire son peuple. Il voulait le sauver. Chaque avertissement était une opportunité. Chaque appel était une opportunité de se repentir. Chaque jour qui passait était une autre opportunité de revenir à Allah.</p>
+
+        <p><strong>Le peuple devint plus arrogant</strong></p>
+        <p>Au lieu d'écouter, beaucoup commencèrent à se moquer de Nuh. Les chefs du peuple méprisaient ceux qui suivaient le prophète. Ils voyaient que parmi ses disciples il y avait des personnes humbles et pauvres. Et ils utilisaient cela comme une raison pour rejeter le message.</p>
+        <p>Ils disaient, en substance : "Comment pourrions-nous te suivre quand ceux qui sont avec toi sont des gens sans importance ?" Pour eux, la vérité dépendait de la richesse, de la position sociale et du pouvoir.</p>
+        <p>Mais Nuh n'accepta pas cette façon de penser. La vérité ne dépend pas de qui la suit. Si une personne riche croit en Allah, cela ne rend pas le message vrai. Si une personne pauvre croit en Allah, cela ne le rend pas faux non plus. La vérité appartient à Allah.</p>
+
+        <p><strong>Le rejet</strong></p>
+        <p>Plus Nuh insistait, plus l'opposition était forte. Certains se bouchaient les oreilles pour ne pas l'entendre. Le Coran décrit l'attitude de son peuple :</p>
+        <p>« Ils mirent leurs doigts dans leurs oreilles, se couvrirent de leurs vêtements, persistèrent et se montrèrent plein d'orgueil. »<br><em>— Coran 71:7</em></p>
+        <p>C'était une image d'énorme rejet. Nuh parlait. Ils s'éloignaient. Nuh avertissait. Ils se moquaient. Nuh invitait au repentir. Ils répondaient avec arrogance. Et pourtant, Nuh continuait.</p>
+
+        <p><strong>La patience d'un prophète</strong></p>
+        <p>L'histoire de Nuh est aussi une histoire de patience. N'importe qui aurait pu abandonner une mission après quelques années. Mais Nuh continua pendant des siècles. Sa persévérance montre l'énorme responsabilité qu'avaient les prophètes.</p>
+        <p>Ils ne contrôlaient pas qui acceptait la vérité. Leur responsabilité était de transmettre le message. La guidance appartient à Allah. Nuh pouvait parler. Il pouvait enseigner. Il pouvait avertir. Mais il ne pouvait forcer personne à croire.</p>
+        <p>Même au sein de sa propre famille, il y aurait des personnes qui rejetteraient son message.</p>
+
+        <p><strong>La décision d'Allah</strong></p>
+        <p>Finalement, un moment vint où Allah informa Nuh que très peu de gens de son peuple croiraient après cela. Le Coran rapporte :</p>
+        <p>« Et il fut révélé à Nuh : Ne croiront de ton peuple que ceux qui ont déjà cru. »<br><em>— Coran 11:36</em></p>
+        <p>Nuh avait fait tout ce qui était en son pouvoir. Il avait appelé son peuple pendant des générations. Il avait utilisé différentes méthodes. Il avait été patient. Il avait averti. Mais le rejet avait atteint un tel point que la décision d'Allah était déterminée.</p>
+        <p>Alors commença l'une des scènes les plus célèbres de l'histoire de Nuh. Allah lui ordonna de construire un bateau.</p>
+
+        <p><strong>Construire un bateau loin de la mer</strong></p>
+        <p>Nuh commença à construire l'arche. Mais son peuple ne comprenait pas ce qu'il faisait. Selon le récit coranique, pendant qu'il construisait le bateau, les chefs de son peuple passaient près de lui et se moquaient.</p>
+        <p>Nous pouvons imaginer la scène. Un vieil homme construisant une énorme embarcation. Loin d'un endroit où elle pourrait sembler nécessaire. Les autres l'observant. Riant. Se demandant ce qu'il faisait.</p>
+        <p>Nuh ne se laissa pas intimider. Il continua de construire. Chaque pièce de bois faisait partie d'un ordre d'Allah. Chaque effort était une marque d'obéissance. Chaque moquerie était une épreuve de patience. Et Nuh savait que la promesse d'Allah était vraie.</p>
+
+        <p><strong>L'arrivée de l'ordre</strong></p>
+        <p>Finalement, le moment arriva. Allah indiqua à Nuh que, lorsque l'ordre viendrait, il devait amener dans l'arche les croyants et des couples d'animaux. Le Coran décrit un signe important :</p>
+        <p>« Jusqu'à ce que Notre ordre vînt et que le four se mit à bouillonner... »<br><em>— Coran 11:40</em></p>
+        <p>Alors Nuh reçut des instructions. Les croyants devaient entrer. Les animaux qu'Allah avait ordonné d'amener devaient entrer. Et Nuh devait laisser derrière lui ceux qui avaient constamment rejeté la vérité. La tempête était sur le point de commencer.</p>
+
+        <p><strong>L'arche</strong></p>
+        <p>Nuh entra dans l'arche. Les croyants entrèrent avec lui. Et les pluies commencèrent. Ce n'était pas une pluie ordinaire. L'eau commença à tomber avec une force extraordinaire. Le Coran décrit que les portes du ciel furent ouvertes avec une eau abondante et que la Terre fit jaillir ses eaux.</p>
+        <p>L'eau commença à monter. Le peuple qui s'était moqué de Nuh se retrouva face à une situation qu'il ne pouvait plus ignorer. La réalité qu'ils avaient rejetée pendant des siècles était devant eux.</p>
+
+        <p><strong>Les vagues comme des montagnes</strong></p>
+        <p>L'eau continua de monter. Le Coran décrit :</p>
+        <p>« Et elle vogua avec eux au milieu des vagues comme des montagnes. »<br><em>— Coran 11:42</em></p>
+        <p>L'arche se déplaçait sur un océan d'eau. Les vagues étaient énormes. La terre avait été recouverte par les eaux de ce déluge. À l'intérieur de l'arche se trouvaient Nuh et ceux qui avaient cru. À l'extérieur se trouvaient ceux qui avaient rejeté l'avertissement.</p>
+        <p>Mais Nuh avait encore une dernière préoccupation. Sa famille.</p>
+
+        <p><strong>Le fils de Nuh</strong></p>
+        <p>Nuh vit l'un de ses fils séparé des autres. Et il l'appela. Le Coran rapporte ses paroles :</p>
+        <p>« Ô mon fils ! Monte avec nous et ne sois pas avec les mécréants. »<br><em>— Coran 11:42</em></p>
+        <p>Nuh ne voulait pas perdre son fils. Il était son père. Il était naturel qu'il veuille le sauver. Mais son fils répondit qu'il se réfugierait sur une montagne. Il pensait que la montagne pourrait le protéger de l'eau.</p>
+        <p>Nuh lui expliqua :</p>
+        <p>« Aujourd'hui, il n'y a pas de protection contre le décret d'Allah, excepté pour celui dont Il a pitié. »<br><em>— Coran 11:43</em></p>
+        <p>Alors une vague les sépara. Et le fils de Nuh se noya.</p>
+
+        <p><strong>La douleur d'un père</strong></p>
+        <p>Nuh avait vu mourir son propre fils. C'est pourquoi il interrogea Allah à son sujet. Nuh dit :</p>
+        <p>« Seigneur, mon fils est de ma famille et Ta promesse est vraie. »<br><em>— Coran 11:45</em></p>
+        <p>Mais Allah lui enseigna une leçon fondamentale. Le lien du sang ne remplace pas la foi. Allah répondit :</p>
+        <p>« Ô Nuh ! Il n'est pas de ta famille ; sa conduite n'est pas droite. »<br><em>— Coran 11:46</em></p>
+        <p>Cela ne signifie pas que Nuh n'était pas son père biologique. Cela signifie que, dans le sens spirituel de la promesse, ce fils avait cessé d'appartenir à ceux qui étaient sur le chemin du salut.</p>
+        <p>L'enseignement était profond. Un prophète ne peut pas sauver quelqu'un simplement parce qu'il est son fils. Un père ne peut pas croire à la place de son fils. Un fils ne peut pas croire à la place de son père. Chaque personne répond devant Allah pour sa propre foi et ses propres actions.</p>
+
+        <p><strong>La femme de Nuh</strong></p>
+        <p>Le Coran mentionne également la femme de Nuh comme un exemple d'une personne qui était liée à un prophète mais qui a rejeté la foi. Allah dit :</p>
+        <p>« Allah donne en exemple pour ceux qui ne croient pas la femme de Nuh et la femme de Lut. »<br><em>— Coran 66:10</em></p>
+        <p>Cela montre encore une fois que la proximité familiale avec une personne juste ne garantit pas le salut. Nuh était prophète. Mais sa femme n'a pas cru. Son fils non plus n'a pas cru. La foi ne s'hérite pas automatiquement.</p>
+
+        <p><strong>La miséricorde envers les croyants</strong></p>
+        <p>À l'intérieur de l'arche, Nuh et les croyants attendaient. Le déluge continua jusqu'à ce qu'Allah décrète qu'il devait cesser. Alors vint l'ordre divin.</p>
+        <p>« Ô terre, engloutis ton eau ! Ô ciel, arrête-toi ! »<br><em>— Coran 11:44</em></p>
+        <p>L'eau commença à disparaître. Les eaux descendirent. Et l'arche s'arrêta finalement sur le mont Al-Jūdī. La tempête était terminée. Les croyants avaient été sauvés. Nuh avait accompli sa mission.</p>
+
+        <p><strong>Un nouveau commencement</strong></p>
+        <p>Le monde qu'ils connaissaient avait changé. Nuh et les croyants sortirent de l'arche. L'humanité continuerait à travers ceux qu'Allah avait sauvés.</p>
+        <p>L'histoire de Nuh n'était pas simplement l'histoire d'une inondation. C'était l'histoire d'un avertissement. C'était l'histoire de siècles de patience. C'était l'histoire d'un peuple qui reçut des opportunités encore et encore. Et c'était l'histoire d'une vérité qui ne change pas parce que la majorité la rejette.</p>
+
+        <p><strong>Nuh demande pardon</strong></p>
+        <p>Même après tout cela, Nuh garda son humilité devant Allah. Le Coran nous montre l'une de ses supplications :</p>
+        <p>« Seigneur, pardonne-moi, à mes parents, à celui qui entre dans ma maison en étant croyant, et à tous les croyants et croyantes. »<br><em>— Coran 71:28</em></p>
+        <p>Nuh ne termina pas son histoire rempli d'orgueil en disant : "J'avais raison et tous les autres avaient tort." Il termina en se tournant vers Allah. C'est caractéristique des prophètes. L'obéissance ne les rendait pas arrogants. Elle les rendait plus humbles.</p>
+
+        <p><strong>Ce que Nuh a enseigné à l'humanité</strong></p>
+        <p>L'histoire de Nuh contient de nombreux enseignements. Le premier est le tawḥīd. Seul Allah mérite d'être adoré. Peu importe combien de temps s'est écoulé depuis Adam. Peu importe combien de générations sont apparues. Le message fondamental demeure.</p>
+        <p>Le deuxième enseignement est la patience. Nuh appela son peuple pendant 950 ans. Sa persévérance est l'un des plus grands exemples de patience dans l'histoire des prophètes.</p>
+        <p>Le troisième enseignement est que la majorité ne détermine pas la vérité. Nuh avait peu de disciples. Son peuple était beaucoup plus nombreux. Mais le nombre de personnes qui rejettent une vérité ne rend pas cette vérité fausse.</p>
+        <p>Le quatrième enseignement est que la famille ne remplace pas la foi. Nuh était prophète, mais il n'a pas pu sauver son fils simplement parce qu'il était son père.</p>
+        <p>Le cinquième enseignement est l'importance du repentir avant qu'il ne soit trop tard. Pendant des générations, le peuple de Nuh eut des opportunités. Mais lorsque le décret d'Allah arriva, ils ne purent plus le retarder.</p>
+
+        <p><strong>Nuh et le caractère du vrai croyant</strong></p>
+        <p>Nuh aurait pu répondre au rejet par le désespoir. Il aurait pu abandonner son peuple. Il aurait pu chercher la vengeance. Mais il continua d'accomplir sa mission. Et quand finalement le salut arriva, il resta humble.</p>
+        <p>Cela montre une caractéristique essentielle du croyant : faire ce qui est juste même quand le résultat n'apparaît pas immédiatement. Nuh ne savait pas quand son peuple accepterait. Il ne savait pas combien de temps il devrait attendre. Mais il savait qui lui avait ordonné de transmettre le message. Cela lui suffisait.</p>
+
+        <p><strong>L'ennemi de l'humanité</strong></p>
+        <p>L'histoire de Nuh montre aussi comment commence le shirk. Les gens n'abandonnent pas nécessairement le tawḥīd du jour au lendemain. Parfois, la déviation commence par quelque chose d'apparemment petit. Une personne juste est rappelée. Une image est créée. Puis son importance est exagérée. Puis on cherche son intercession. Puis on lui dirige des actes qui n'appartiennent qu'à Allah. Et des générations plus tard, les gens peuvent finir par adorer ce qui n'était à l'origine qu'un souvenir.</p>
+        <p>C'est pourquoi Nuh appela son peuple à revenir au message original. N'adorez pas les êtres humains. N'adorez pas les images. N'adorez pas les forces de la nature. N'adorez pas ce que vous-mêmes avez créé. Adorez Allah.</p>
+
+        <p><strong>L'héritage de Nuh</strong></p>
+        <p>Nuh occupe une position extraordinaire dans l'Islam. Il est l'un des grands prophètes. Le Coran contient même une sourate complète portant son nom : Sūrat Nūḥ, la sourate 71. Dans celle-ci, Allah nous permet de connaître une partie de l'appel de Nuh à son peuple.</p>
+        <p>Nuh n'était pas seulement un homme qui a construit un bateau. C'était un messager qui a consacré des siècles de sa vie à appeler l'humanité vers son Créateur. Son histoire représente le combat entre la vérité et l'arrogance. Entre l'obéissance et la rébellion. Entre la patience et le désespoir. Entre le tawḥīd et le shirk.</p>
+
+        <p><strong>La grande leçon</strong></p>
+        <p>Peut-être l'enseignement le plus profond de Nuh est-il qu'une personne ne doit pas mesurer son succès uniquement par le nombre de personnes qui la suivent. Nuh prêcha pendant 950 ans. Et pourtant, ils furent peu nombreux à croire. Mais Nuh n'a pas échoué.</p>
+        <p>Parce que sa mission ne consistait pas à contrôler les cœurs des gens. Sa mission était de transmettre le message d'Allah. Le succès d'un prophète ne se mesure pas au nombre de personnes qui le suivent. Il se mesure à sa fidélité à Allah.</p>
+        <p>Nuh fut fidèle. Quand il fut rejeté, il continua. Quand il fut ridiculisé, il continua. Quand son propre fils rejeta la foi, il continua de faire confiance à Allah. Quand le déluge arriva, il obéit. Et quand tout fut terminé, il revint à Allah avec humilité.</p>
+
+        <p><strong>Le souvenir de Nuh</strong></p>
+        <p>Des milliers d'années plus tard, les musulmans continuent de mentionner son nom. Quand un musulman lit l'histoire de Nuh, il se souvient que la vérité peut être rejetée pendant longtemps sans cesser d'être vraie. Il se souvient que la patience peut durer des années. Même des décennies. Même toute une vie. Il se souvient que l'arrogance peut détruire une personne. Et il se souvient qu'Allah peut ouvrir une porte de salut quand tout semble perdu.</p>
+        <p>Nuh enseigna à son peuple pendant des siècles. Mais il laissa aussi un message pour tous les êtres humains qui viendraient après lui : N'adorez personne excepté Allah. Ne permettez pas à la tradition de remplacer la vérité. Ne confondez pas la majorité avec la guidance. Ne vous laissez pas tromper par l'orgueil. Et quand la vérité vous est montrée, n'attendez pas qu'il soit trop tard pour l'accepter.</p>
+        <p>L'histoire de Nuh commença avec un peuple qui avait oublié Allah. Elle se termina avec un petit groupe de croyants sauvés d'une énorme inondation. Mais entre ces deux moments, il y eut 950 ans de patience. 950 ans d'appels. 950 ans d'avertissements. 950 ans pendant lesquels Nuh continua de dire, de différentes manières, le même message : Adorez Allah.</p>
+        <p>Et ce message, selon l'Islam, ne s'est pas terminé avec Nuh. Il continua avec Hud. Avec Salih. Avec Ibrahim. Avec Lut. Avec Ismail. Avec Ishaq. Avec Yaqub. Avec Yusuf. Avec Musa. Avec Dawud. Avec Sulayman. Avec Isa. Et finalement avec Muhammad ﷺ.</p>
+        <p>Tous appelèrent l'humanité vers le même fondement : Allah est Un. Il est le Créateur. Lui seul mérite d'être adoré. Et les fils d'Adam, génération après génération, continuent d'avoir le même choix qu'ont eu les peuples précédents : suivre la guidance d'Allah, ou s'en écarter.</p>
+        <p>L'histoire de Nuh reste comme un avertissement pour ceux qui rejettent la vérité et, en même temps, comme une espérance pour ceux qui restent fermes. Parce que la tempête peut être énorme. Les vagues peuvent sembler être des montagnes. Le monde entier peut sembler être contre toi. Mais pour celui qui fait confiance à Allah et suit Sa guidance, même un petit bateau peut devenir le lieu du salut.</p>`,
+
+                en: `<p><strong>A world that had forgotten Allah</strong></p>
+        <p>After Adam, humanity grew and spread across the Earth.</p>
+        <p>Generations passed.</p>
+        <p>The sons of Adam formed families, communities and nations. Over time, many people began to drift away from the teachings they had received from their ancestors.</p>
+        <p>At first, the drift was small. Then, little by little, new customs began to appear.</p>
+        <p>Human beings began to venerate people who had been considered important. Some righteous men had lived among previous generations. When they died, their relatives remembered them fondly. Over time, their descendants began to make images and representations of them.</p>
+        <p>At first they did not intend to worship them. They simply wanted to remember them. But generations passed. Those who had known the true purpose of those images died. And later generations forgot why they had been created.</p>
+        <p>Then the images began to receive veneration. Then came supplications. And finally, some began to direct acts of worship towards them.</p>
+        <p>Thus appeared one of humanity's greatest deviations: shirk, associating others with Allah in worship.</p>
+        <p>The Quran mentions some of the names of those figures:</p>
+        <p>"And they said: Do not abandon your gods; do not abandon Wadd, nor Suwāʿ, nor Yaghūth, nor Yaʿūq, nor Nasr."<br><em>— Quran 71:23</em></p>
+        <p>The people had turned away from tawḥīd, the belief that only Allah deserves to be worshipped. And then Allah sent one of the great prophets of history. His name was Nuh.</p>
+
+        <p><strong>Nuh, the messenger</strong></p>
+        <p>Nuh was sent to his people to call them back to Allah. He did not come seeking wealth. He did not seek power. He did not want to become a king. His mission was simple, but extraordinarily difficult: to worship Allah alone and abandon false gods.</p>
+        <p>Nuh told them:</p>
+        <p>"O my people! Worship Allah. You have no other god besides Him."<br><em>— Quran 7:59</em></p>
+        <p>That was the same fundamental message that the previous prophets had conveyed and that the later prophets would convey. One God. One worship. A life guided by Allah.</p>
+        <p>Nuh knew that his people had gone astray, but he did not stop calling them. He spoke to them. He explained. He warned. He reminded. And he waited.</p>
+
+        <p><strong>A call that lasted generations</strong></p>
+        <p>Nuh did not preach for a few days. The Quran says he remained among his people:</p>
+        <p>"A thousand years minus fifty."<br><em>— Quran 29:14</em></p>
+        <p>That is, 950 years. For nearly a millennium, Nuh called his people to Allah.</p>
+        <p>Imagine what that means. A person is born. Grows up. Grows old. Dies. Then another generation is born. And Nuh continues calling them. The children of one generation become the adults of the next. The elderly die. Houses change. Families grow. But Nuh remains with his mission. For centuries. And yet, his people continued to reject him.</p>
+
+        <p><strong>Nuh used every path</strong></p>
+        <p>Nuh did not speak to his people in only one way. He tried different methods. The Quran tells us he said:</p>
+        <p>"My Lord, I have called my people night and day."<br><em>— Quran 71:5</em></p>
+        <p>He spoke to them publicly. He spoke to them privately. He spoke to them during the day. He spoke to them during the night. He explained the consequences of rejecting Allah. And he also spoke to them of divine mercy.</p>
+        <p>He told them to ask forgiveness from Allah. And he reminded them that Allah could grant them abundance and blessings.</p>
+        <p>"Ask forgiveness of your Lord; indeed, He is All-Forgiving. He will send upon you abundant rain from the sky, and give you wealth and children, and grant you gardens and rivers."<br><em>— Quran 71:10-12</em></p>
+        <p>Nuh did not want to destroy his people. He wanted to save them. Every warning was an opportunity. Every call was an opportunity to repent. Every passing day was another opportunity to return to Allah.</p>
+
+        <p><strong>The people became more arrogant</strong></p>
+        <p>Instead of listening, many began to mock Nuh. The leaders of the people despised those who followed the prophet. They saw that among his followers there were humble and poor people. And they used that as a reason to reject the message.</p>
+        <p>They said, in essence: "How can we follow you when those with you are insignificant people?" For them, truth depended on wealth, social position and power.</p>
+        <p>But Nuh did not accept that way of thinking. Truth does not depend on who follows it. If a rich person believes in Allah, that does not make the message true. If a poor person believes in Allah, that does not make it false either. Truth belongs to Allah.</p>
+
+        <p><strong>The rejection</strong></p>
+        <p>The more Nuh insisted, the stronger the opposition became. Some covered their ears to avoid hearing him. The Quran describes his people's attitude:</p>
+        <p>"They put their fingers in their ears, covered themselves with their garments, persisted, and were filled with arrogance."<br><em>— Quran 71:7</em></p>
+        <p>It was a picture of enormous rejection. Nuh spoke. They walked away. Nuh warned. They mocked. Nuh invited to repentance. They responded with arrogance. And still, Nuh continued.</p>
+
+        <p><strong>The patience of a prophet</strong></p>
+        <p>The story of Nuh is also a story of patience. Anyone could have abandoned a mission after a few years. But Nuh continued for centuries. His perseverance shows the enormous responsibility that the prophets had.</p>
+        <p>They did not control who accepted the truth. Their responsibility was to convey the message. Guidance belongs to Allah. Nuh could speak. He could teach. He could warn. But he could not force anyone to believe.</p>
+        <p>Even within his own family, there would be people who would reject his message.</p>
+
+        <p><strong>Allah's decision</strong></p>
+        <p>Finally, a time came when Allah informed Nuh that very few of his people would believe after that. The Quran relates:</p>
+        <p>"And it was revealed to Nuh: None of your people will believe except those who have already believed."<br><em>— Quran 11:36</em></p>
+        <p>Nuh had done everything in his power. He had called his people for generations. He had used different methods. He had been patient. He had warned. But the rejection had reached such an extent that Allah's decision was determined.</p>
+        <p>Then began one of the most famous scenes in the story of Nuh. Allah ordered him to build a ship.</p>
+
+        <p><strong>Building a ship far from the sea</strong></p>
+        <p>Nuh began to build the ark. But his people did not understand what he was doing. According to the Quranic account, while he was building the ship, the leaders of his people passed by him and mocked him.</p>
+        <p>We can imagine the scene. An old man building an enormous vessel. Far from any place where it might seem necessary. The others watching him. Laughing. Wondering what he was doing.</p>
+        <p>Nuh was not intimidated. He continued building. Every piece of wood was part of a command from Allah. Every effort was a sign of obedience. Every mockery was a test of patience. And Nuh knew that Allah's promise was true.</p>
+
+        <p><strong>The arrival of the command</strong></p>
+        <p>Finally, the moment came. Allah indicated to Nuh that when the command came, he should bring into the ark the believers and pairs of animals. The Quran describes an important sign:</p>
+        <p>"Until when Our command came and the oven overflowed..."<br><em>— Quran 11:40</em></p>
+        <p>Then Nuh received instructions. The believers were to enter. The animals that Allah had ordered to bring were to enter. And Nuh was to leave behind those who had persistently rejected the truth. The storm was about to begin.</p>
+
+        <p><strong>The ark</strong></p>
+        <p>Nuh entered the ark. The believers entered with him. And the rains began. It was not an ordinary rain. The water began to fall with extraordinary force. The Quran describes that the gates of heaven were opened with abundant water and that the Earth caused its waters to gush forth.</p>
+        <p>The water began to rise. The people who had mocked Nuh found themselves facing a situation they could no longer ignore. The reality they had rejected for centuries was before them.</p>
+
+        <p><strong>Waves like mountains</strong></p>
+        <p>The water continued to rise. The Quran describes:</p>
+        <p>"And it sailed with them amid waves like mountains."<br><em>— Quran 11:42</em></p>
+        <p>The ark moved on an ocean of water. The waves were enormous. The earth had been covered by the waters of that flood. Inside the ark were Nuh and those who had believed. Outside were those who had rejected the warning.</p>
+        <p>But Nuh still had one last concern. His family.</p>
+
+        <p><strong>Nuh's son</strong></p>
+        <p>Nuh saw one of his sons separated from the others. And he called him. The Quran relates his words:</p>
+        <p>"O my son! Come aboard with us and do not be with the disbelievers."<br><em>— Quran 11:42</em></p>
+        <p>Nuh did not want to lose his son. He was his father. It was natural that he wanted to save him. But his son replied that he would take refuge on a mountain. He thought the mountain could protect him from the water.</p>
+        <p>Nuh explained:</p>
+        <p>"Today there is no protection from Allah's decree, except for the one He has mercy upon."<br><em>— Quran 11:43</em></p>
+        <p>Then a wave separated them. And Nuh's son drowned.</p>
+
+        <p><strong>A father's grief</strong></p>
+        <p>Nuh had seen his own son die. That is why he asked Allah about him. Nuh said:</p>
+        <p>"My Lord, my son is of my family and Your promise is true."<br><em>— Quran 11:45</em></p>
+        <p>But Allah taught him a fundamental lesson. The bond of blood does not replace faith. Allah replied:</p>
+        <p>"O Nuh! He is not of your family; his conduct is not righteous."<br><em>— Quran 11:46</em></p>
+        <p>This does not mean that Nuh was not his biological father. It means that, in the spiritual sense of the promise, that son had ceased to belong to those who were on the path of salvation.</p>
+        <p>The teaching was profound. A prophet cannot save someone simply because he is his son. A father cannot believe on behalf of his son. A son cannot believe on behalf of his father. Each person is accountable before Allah for their own faith and actions.</p>
+
+        <p><strong>Nuh's wife</strong></p>
+        <p>The Quran also mentions Nuh's wife as an example of someone who was related to a prophet but rejected faith. Allah says:</p>
+        <p>"Allah presents an example for those who disbelieve: the wife of Nuh and the wife of Lut."<br><em>— Quran 66:10</em></p>
+        <p>This shows again that family closeness to a righteous person does not guarantee salvation. Nuh was a prophet. But his wife did not believe. His son also did not believe. Faith is not automatically inherited.</p>
+
+        <p><strong>Mercy towards the believers</strong></p>
+        <p>Inside the ark, Nuh and the believers waited. The flood continued until Allah decreed that it should end. Then the divine command came.</p>
+        <p>"O earth, swallow your water! O sky, cease!"<br><em>— Quran 11:44</em></p>
+        <p>The water began to disappear. The waters subsided. And the ark finally settled on Mount Al-Jūdī. The storm was over. The believers had been saved. Nuh had fulfilled his mission.</p>
+
+        <p><strong>A new beginning</strong></p>
+        <p>The world they knew had changed. Nuh and the believers came out of the ark. Humanity would continue through those whom Allah had saved.</p>
+        <p>The story of Nuh was not simply the story of a flood. It was the story of a warning. It was the story of centuries of patience. It was the story of a people who received opportunities again and again. And it was the story of a truth that does not change because the majority rejects it.</p>
+
+        <p><strong>Nuh asks for forgiveness</strong></p>
+        <p>Even after all of this, Nuh maintained his humility before Allah. The Quran shows us one of his supplications:</p>
+        <p>"My Lord, forgive me, my parents, whoever enters my house as a believer, and all the believing men and women."<br><em>— Quran 71:28</em></p>
+        <p>Nuh did not end his story filled with pride saying: "I was right and everyone else was wrong." He ended by turning to Allah. That is characteristic of the prophets. Obedience did not make them arrogant. It made them more humble.</p>
+
+        <p><strong>What Nuh taught humanity</strong></p>
+        <p>The story of Nuh contains many teachings. The first is tawḥīd. Only Allah deserves to be worshipped. No matter how much time has passed since Adam. No matter how many generations have appeared. The fundamental message remains.</p>
+        <p>The second teaching is patience. Nuh called his people for 950 years. His perseverance is one of the greatest examples of patience in the history of the prophets.</p>
+        <p>The third teaching is that the majority does not determine the truth. Nuh had few followers. His people were much more numerous. But the number of people who reject a truth does not make that truth false.</p>
+        <p>The fourth teaching is that family does not replace faith. Nuh was a prophet, but he could not save his son simply for being his father.</p>
+        <p>The fifth teaching is the importance of repentance before it is too late. For generations, Nuh's people had opportunities. But when Allah's decree came, they could no longer delay it.</p>
+
+        <p><strong>Nuh and the character of the true believer</strong></p>
+        <p>Nuh could have responded to rejection with despair. He could have abandoned his people. He could have sought revenge. But he continued to fulfill his mission. And when salvation finally came, he remained humble.</p>
+        <p>This shows an essential characteristic of the believer: doing what is right even when the result does not appear immediately. Nuh did not know when his people would accept. He did not know how long he would have to wait. But he knew who had commanded him to convey the message. That was enough.</p>
+
+        <p><strong>The enemy of humanity</strong></p>
+        <p>The story of Nuh also shows how shirk begins. People do not necessarily abandon tawḥīd overnight. Sometimes deviation begins with something seemingly small. A righteous person is remembered. An image is created. Then its importance is exaggerated. Then its intercession is sought. Then acts that belong only to Allah are directed to it. And generations later, people may end up worshipping what was originally only a memory.</p>
+        <p>That is why Nuh called his people to return to the original message. Do not worship human beings. Do not worship images. Do not worship forces of nature. Do not worship what you yourselves have created. Worship Allah.</p>
+
+        <p><strong>Nuh's legacy</strong></p>
+        <p>Nuh occupies an extraordinary position in Islam. He is one of the great prophets. The Quran even contains a complete surah bearing his name: Sūrat Nūḥ, surah 71. In it, Allah allows us to learn part of Nuh's call to his people.</p>
+        <p>Nuh was not only a man who built a boat. He was a messenger who dedicated centuries of his life to calling humanity to its Creator. His story represents the struggle between truth and arrogance. Between obedience and rebellion. Between patience and despair. Between tawḥīd and shirk.</p>
+
+        <p><strong>The great lesson</strong></p>
+        <p>Perhaps the most profound teaching of Nuh is that a person should not measure their success solely by the number of people who follow them. Nuh preached for 950 years. And yet, few believed. But Nuh did not fail.</p>
+        <p>Because his mission was not to control people's hearts. His mission was to convey Allah's message. A prophet's success is not measured by how many people follow him. It is measured by his fidelity to Allah.</p>
+        <p>Nuh was faithful. When rejected, he continued. When ridiculed, he continued. When his own son rejected the faith, he continued to trust in Allah. When the flood came, he obeyed. And when it was all over, he returned to Allah with humility.</p>
+
+        <p><strong>The remembrance of Nuh</strong></p>
+        <p>Thousands of years later, Muslims still mention his name. When a Muslim reads the story of Nuh, they remember that truth can be rejected for a long time without ceasing to be true. They remember that patience can last for years. Even decades. Even a whole lifetime. They remember that arrogance can destroy a person. And they remember that Allah can open a door of salvation when all seems lost.</p>
+        <p>Nuh taught his people for centuries. But he also left a message for all human beings who would come after him: Do not worship anyone except Allah. Do not let tradition replace truth. Do not confuse majority with guidance. Do not be deceived by pride. And when truth is shown to you, do not wait until it is too late to accept it.</p>
+        <p>The story of Nuh began with a people who had forgotten Allah. It ended with a small group of believers saved from an enormous flood. But between those two moments, there were 950 years of patience. 950 years of calls. 950 years of warnings. 950 years in which Nuh continued to say, in different ways, the same message: Worship Allah.</p>
+        <p>And that message, according to Islam, did not end with Nuh. It continued with Hud. With Salih. With Ibrahim. With Lut. With Ismail. With Ishaq. With Yaqub. With Yusuf. With Musa. With Dawud. With Sulayman. With Isa. And finally with Muhammad ﷺ.</p>
+        <p>All of them called humanity to the same foundation: Allah is One. He is the Creator. Only He deserves to be worshipped. And the sons of Adam, generation after generation, continue to have the same choice that previous peoples had: to follow Allah's guidance, or to turn away from it.</p>
+        <p>The story of Nuh remains as a warning for those who reject the truth and, at the same time, as a hope for those who remain firm. Because the storm can be enormous. The waves can seem like mountains. The whole world can seem to be against you. But for those who trust in Allah and follow His guidance, even a small boat can become the place of salvation.</p>`,
+
+                ar: `<p><strong>عالم نسي الله</strong></p>
+        <p>بعد آدم، نمت البشرية وانتشرت في الأرض.</p>
+        <p>مرت الأجيال.</p>
+        <p>شكل أبناء آدم عائلات ومجتمعات وشعوباً. مع مرور الوقت، بدأ كثير من الناس يبتعدون عن التعاليم التي تلقوها من أسلافهم.</p>
+        <p>في البداية، كان الابتعاد صغيراً. ثم بدأت تظهر عادات جديدة شيئاً فشيئاً.</p>
+        <p>بدأ البشر يوقرون أشخاصاً كانوا يعتبرون مهمين. عاش بعض الرجال الصالحين بين الأجيال السابقة. عندما ماتوا، تذكرهم أقاربهم بحنان. مع مرور الزمن، بدأ أحفادهم يصنعون صوراً وتماثيل لهم.</p>
+        <p>في البداية لم يكونوا ينوون عبادتها. كانوا يريدون فقط تذكرهم. لكن الأجيال مضت. مات أولئك الذين عرفوا الغرض الحقيقي من تلك الصور. ونسيت الأجيال اللاحقة لماذا خلقت.</p>
+        <p>ثم بدأت الصور تتلقى التبجيل. ثم جاءت الدعوات. وأخيراً، بدأ البعض يوجهون أعمالاً عبادة تجاهها.</p>
+        <p>وهكذا ظهر أحد أعظم انحرافات البشرية: الشرك، وهو جعل آلهة مع الله في العبادة.</p>
+        <p>يذكر القرآن بعض أسماء تلك الشخصيات:</p>
+        <p>«وَقَالُوا لَا تَذَرُنَّ آلِهَتَكُمْ وَلَا تَذَرُنَّ وَدًّا وَلَا سُوَاعًا وَلَا يَغُوثَ وَيَعُوقَ وَنَسْرًا»<br><em>— القرآن 71:23</em></p>
+        <p>ابتعد القوم عن التوحيد، وهو الإيمان بأن الله وحده يستحق العبادة. فأرسل الله أحد كبار الأنبياء في التاريخ. كان اسمه نوح.</p>
+
+        <p><strong>نوح، الرسول</strong></p>
+        <p>أرسل نوح إلى قومه ليدعوهم إلى الله. لم يأتِ طالباً ثروة. لم يطلب سلطة. لم يرد أن يصبح ملكاً. كانت مهمته بسيطة، لكنها صعبة للغاية: عبادة الله وحده وترك الآلهة الباطلة.</p>
+        <p>قال نوح لهم:</p>
+        <p>«يَا قَوْمِ اعْبُدُوا اللَّهَ مَا لَكُم مِّنْ إِلَٰهٍ غَيْرُهُ»<br><em>— القرآن 7:59</em></p>
+        <p>كانت تلك هي الرسالة الأساسية نفسها التي نقلها الأنبياء السابقون والتي سينقلها الأنبياء اللاحقون. إله واحد. عبادة واحدة. حياة يهديها الله.</p>
+        <p>كان نوح يعلم أن قومه قد ضلوا، لكنه لم يكف عن دعوتهم. تحدث إليهم. شرح لهم. حذرهم. ذكرهم. وانتظر.</p>
+
+        <p><strong>دعوة استمرت أجيالاً</strong></p>
+        <p>لم يدعُ نوح بضعة أيام. يقول القرآن إنه مكث في قومه:</p>
+        <p>«أَلْفَ سَنَةٍ إِلَّا خَمْسِينَ عَامًا»<br><em>— القرآن 29:14</em></p>
+        <p>أي 950 سنة. طوال ما يقرب من ألف عام، دعا نوح قومه إلى الله.</p>
+        <p>تخيل ماذا يعني ذلك. يولد الإنسان. يكبر. يشيخ. يموت. ثم تولد أجيال أخرى. ونوح يواصل دعوتهم. يصبح أطفال جيل هم الكبار في الجيل التالي. يموت كبار السن. تتغير البيوت. تكبر العائلات. لكن نوح يبقى مع رسالته. لقرون. ومع ذلك، ظل قومه يرفضونه.</p>
+
+        <p><strong>استخدم نوح كل السبل</strong></p>
+        <p>لم يتحدث نوح إلى قومه بطريقة واحدة فقط. جرب أساليب مختلفة. يخبرنا القرآن أنه قال:</p>
+        <p>«رَبِّ إِنِّي دَعَوْتُ قَوْمِي لَيْلًا وَنَهَارًا»<br><em>— القرآن 71:5</em></p>
+        <p>تحدث إليهم علناً. تحدث إليهم سراً. تحدث إليهم نهاراً. تحدث إليهم ليلاً. شرح لهم عواقب رفض الله. وتحدث إليهم أيضاً عن الرحمة الإلهية.</p>
+        <p>قال لهم استغفروا الله. وذكرهم أن الله يمكن أن يمنحهم الوفرة والبركات.</p>
+        <p>«اسْتَغْفِرُوا رَبَّكُمْ إِنَّهُ كَانَ غَفَّارًا . يُرْسِلِ السَّمَاءَ عَلَيْكُم مِّدْرَارًا . وَيُمْدِدْكُم بِأَمْوَالٍ وَبَنِينَ وَيَجْعَل لَّكُمْ جَنَّاتٍ وَيَجْعَل لَّكُمْ أَنْهَارًا»<br><em>— القرآن 71:10-12</em></p>
+        <p>لم يرد نوح تدمير قومه. أراد إنقاذهم. كل تحذير كان فرصة. كل دعوة كانت فرصة للتوبة. كل يوم يمر كان فرصة أخرى للعودة إلى الله.</p>
+
+        <p><strong>ازداد القوم تكبراً</strong></p>
+        <p>بدلاً من الاستماع، بدأ كثيرون يسخرون من نوح. احتقر زعماء القوم من اتبعوا النبي. رأوا أن من بين أتباعه أناساً متواضعين وفقراء. واستخدموا ذلك كسبب لرفض الرسالة.</p>
+        <p>قالوا، في جوهره: "كيف نتبعك ومن معك أناس لا قيمة لهم؟" بالنسبة لهم، كانت الحقيقة تعتمد على الغنى والمكانة الاجتماعية والسلطة.</p>
+        <p>لكن نوح لم يقبل تلك الطريقة في التفكير. الحقيقة لا تعتمد على من يتبعها. إذا آمن رجل غني بالله، فهذا لا يجعل الرسالة صحيحة. إذا آمن رجل فقير بالله، فهذا لا يجعلها باطلة أيضاً. الحقيقة لله.</p>
+
+        <p><strong>الرفض</strong></p>
+        <p>كلما أصر نوح، كانت المعارضة أقوى. سدَّ بعضهم آذانهم حتى لا يسمعوه. يصف القرآن موقف قومه:</p>
+        <p>«وَإِنِّي كُلَّمَا دَعَوْتُهُمْ لِتَغْفِرَ لَهُمْ جَعَلُوا أَصَابِعَهُمْ فِي آذَانِهِمْ وَاسْتَغْشَوْا ثِيَابَهُمْ وَأَصَرُّوا وَاسْتَكْبَرُوا اسْتِكْبَارًا»<br><em>— القرآن 71:7</em></p>
+        <p>كانت صورة رفض هائل. نوح يتكلم. هم يبتعدون. نوح يحذر. هم يسخرون. نوح يدعو إلى التوبة. هم يردون بتكبر. ورغم ذلك، نوح مستمر.</p>
+
+        <p><strong>صبر نبي</strong></p>
+        <p>قصة نوح هي أيضاً قصة صبر. أي إنسان كان يمكنه التخلي عن مهمة بعد بضع سنوات. لكن نوح استمر لقرون. يُظهر مثابرته المسؤولية الهائلة التي كان يحملها الأنبياء.</p>
+        <p>لم يكونوا يتحكمون في من يقبل الحقيقة. كانت مسؤوليتهم نقل الرسالة. الهداية لله. كان نوح يستطيع التحدث. كان يستطيع التعليم. كان يستطيع التحذير. لكنه لم يستطع إجبار أحد على الإيمان.</p>
+        <p>حتى داخل عائلته سيكون هناك من يرفض رسالته.</p>
+
+        <p><strong>قرار الله</strong></p>
+        <p>وأخيراً، جاء وقت أخبر الله فيه نوحاً أنه لن يؤمن من قومه إلا من آمن بالفعل. يروي القرآن:</p>
+        <p>«وَأُوحِيَ إِلَىٰ نُوحٍ أَنَّهُ لَن يُؤْمِنَ مِن قَوْمِكَ إِلَّا مَن قَدْ آمَنَ»<br><em>— القرآن 11:36</em></p>
+        <p>كان نوح قد فعل كل ما في وسعه. دعا قومه لأجيال. استخدم أساليب مختلفة. كان صبوراً. حذر. لكن الرفض بلغ حداً جعل قرار الله محتوماً.</p>
+        <p>ثم بدأ أحد أشهر المشاهد في قصة نوح. أمره الله ببناء سفينة.</p>
+
+        <p><strong>بناء سفينة بعيداً عن البحر</strong></p>
+        <p>بدأ نوح في بناء السفينة. لكن قومه لم يفهموا ما كان يفعله. وفقاً للرواية القرآنية، بينما كان يبني السفينة، كان زعماء قومه يمرون بجانبه ويسخرون منه.</p>
+        <p>يمكننا تخيل المشهد. رجل عجوز يبني سفينة ضخمة. بعيداً عن أي مكان قد تبدو فيه ضرورية. الآخرون يراقبونه. يضحكون. يتساءلون ماذا يفعل.</p>
+        <p>لم يخف نوح. استمر في البناء. كل قطعة خشب كانت جزءاً من أمر الله. كل جهد كان علامة طاعة. كل سخرية كانت اختباراً للصبر. وكان نوح يعلم أن وعد الله حق.</p>
+
+        <p><strong>وصول الأمر</strong></p>
+        <p>وأخيراً، جاءت اللحظة. أشار الله إلى نوح أنه عندما يأتي الأمر، عليه أن يحمل في السفينة المؤمنين وأزواجاً من الحيوانات. يصف القرآن علامة مهمة:</p>
+        <p>«حَتَّىٰ إِذَا جَاءَ أَمْرُنَا وَفَارَ التَّنُّورُ»<br><em>— القرآن 11:40</em></p>
+        <p>ثم تلقى نوح التعليمات. كان على المؤمنين أن يدخلوا. كان على الحيوانات التي أمر الله بإحضارها أن تدخل. وكان على نوح أن يترك خلفه أولئك الذين رفضوا الحقيقة باستمرار. كانت العاصفة على وشك البدء.</p>
+
+        <p><strong>السفينة</strong></p>
+        <p>دخل نوح السفينة. دخل المؤمنون معه. وبدأت الأمطار. لم تكن أمطاراً عادية. بدأ الماء يتساقط بقوة غير عادية. يصف القرآن أن أبواب السماء فتحت بماء منهمر وأن الأرض فجرت عيونها.</p>
+        <p>بدأ الماء يرتفع. وجد القوم الذين سخروا من نوح أنفسهم أمام موقف لم يعد بإمكانهم تجاهله. كانت الحقيقة التي رفضوها لقرون أمامهم.</p>
+
+        <p><strong>أمواج كالجبال</strong></p>
+        <p>استمر الماء في الارتفاع. يصف القرآن:</p>
+        <p>«وَهِيَ تَجْرِي بِهِمْ فِي مَوْجٍ كَالْجِبَالِ»<br><em>— القرآن 11:42</em></p>
+        <p>كانت السفينة تتحرك على محيط من الماء. كانت الأمواج هائلة. غطت مياه الطوفان الأرض. داخل السفينة كان نوح ومن آمنوا. خارجها كان أولئك الذين رفضوا الإنذار.</p>
+        <p>لكن نوح كان لا يزال لديه قلق أخير. عائلته.</p>
+
+        <p><strong>ابن نوح</strong></p>
+        <p>رأى نوح أحد أبنائه منفصلاً عن الآخرين. فناداه. يروي القرآن كلماته:</p>
+        <p>«يَا بُنَيَّ ارْكَب مَّعَنَا وَلَا تَكُن مَّعَ الْكَافِرِينَ»<br><em>— القرآن 11:42</em></p>
+        <p>لم يرد نوح أن يفقد ابنه. كان أباه. كان من الطبيعي أن يريد إنقاذه. لكن ابنه رد بأنه سيلجأ إلى جبل. ظن أن الجبل سيحميه من الماء.</p>
+        <p>شرح له نوح:</p>
+        <p>«لَا عَاصِمَ الْيَوْمَ مِنْ أَمْرِ اللَّهِ إِلَّا مَن رَّحِمَ»<br><em>— القرآن 11:43</em></p>
+        <p>ثم فصلتهما موجة. وغرق ابن نوح.</p>
+
+        <p><strong>حزن الأب</strong></p>
+        <p>رأى نوح ابنه يموت. لذلك سأل الله عنه. قال نوح:</p>
+        <p>«رَبِّ إِنَّ ابْنِي مِنْ أَهْلِي وَإِنَّ وَعْدَكَ الْحَقُّ»<br><em>— القرآن 11:45</em></p>
+        <p>لكن الله علمه درساً أساسياً. رابطة الدم لا تحل محل الإيمان. رد الله:</p>
+        <p>«يَا نُوحُ إِنَّهُ لَيْسَ مِنْ أَهْلِكَ إِنَّهُ عَمَلٌ غَيْرُ صَالِحٍ»<br><em>— القرآن 11:46</em></p>
+        <p>هذا لا يعني أن نوحاً لم يكن أباه البيولوجي. بل يعني أنه، بالمعنى الروحي للوعد، كان ذلك الابن قد توقف عن الانتماء إلى أولئك الذين كانوا على طريق النجاة.</p>
+        <p>كان الدرس عميقاً. لا يستطيع نبي أن يخلص أحداً لمجرد أنه ابنه. لا يستطيع أب أن يؤمن مكان ابنه. لا يستطيع ابن أن يؤمن مكان أبيه. كل شخص مسؤول أمام الله عن إيمانه وأعماله.</p>
+
+        <p><strong>زوجة نوح</strong></p>
+        <p>يذكر القرآن أيضاً زوجة نوح كمثال لشخص كانت له صلة بنبي لكنه رفض الإيمان. يقول الله:</p>
+        <p>«ضَرَبَ اللَّهُ مَثَلًا لِّلَّذِينَ كَفَرُوا امْرَأَتَ نُوحٍ وَامْرَأَتَ لُوطٍ»<br><em>— القرآن 66:10</em></p>
+        <p>هذا يظهر مرة أخرى أن القرب العائلي من شخص صالح لا يضمن الخلاص. كان نوح نبياً. لكن زوجته لم تؤمن. وابنه أيضاً لم يؤمن. الإيمان لا يُورث تلقائياً.</p>
+
+        <p><strong>الرحمة بالمؤمنين</strong></p>
+        <p>داخل السفينة، كان نوح والمؤمنون ينتظرون. استمر الطوفان حتى أمر الله بانتهائه. ثم جاء الأمر الإلهي:</p>
+        <p>«يَا أَرْضُ ابْلَعِي مَاءَكِ وَيَا سَمَاءُ أَقْلِعِي»<br><em>— القرآن 11:44</em></p>
+        <p>بدأ الماء يختفي. نزلت المياه. واستقرت السفينة أخيراً على جبل الجودي. انتهت العاصفة. نجا المؤمنون. أنجز نوح مهمته.</p>
+
+        <p><strong>بداية جديدة</strong></p>
+        <p>تغير العالم الذي عرفوه. خرج نوح والمؤمنون من السفينة. ستستمر البشرية من خلال أولئك الذين أنقذهم الله.</p>
+        <p>لم تكن قصة نوح مجرد قصة طوفان. كانت قصة تحذير. كانت قصة قرون من الصبر. كانت قصة شعب تلقى الفرص مراراً وتكراراً. وكانت قصة حقيقة لا تتغير لأن الأغلبية ترفضها.</p>
+
+        <p><strong>نوح يطلب الغفران</strong></p>
+        <p>حتى بعد كل ذلك، حافظ نوح على تواضعه أمام الله. يظهر لنا القرآن أحد أدعيته:</p>
+        <p>«رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِمَن دَخَلَ بَيْتِيَ مُؤْمِنًا وَلِلْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ»<br><em>— القرآن 71:28</em></p>
+        <p>لم ينهِ نوح قصته مملوءاً بالكبرياء قائلاً: "كنت على صواب وكل الآخرين على خطأ." بل ختمها بالتوجه إلى الله. هذه سمة الأنبياء. الطاعة لم تجعلهم متكبرين. بل جعلتهم أكثر تواضعاً.</p>
+
+        <p><strong>ما علمه نوح للبشرية</strong></p>
+        <p>تحتوي قصة نوح على العديد من الدروس. الأول هو التوحيد. الله وحده يستحق العبادة. مهما مضى من وقت منذ آدم. مهما ظهرت أجيال. الرسالة الأساسية تبقى.</p>
+        <p>الدرس الثاني هو الصبر. دعا نوح قومه 950 عاماً. مثابرته من أعظم أمثلة الصبر في تاريخ الأنبياء.</p>
+        <p>الدرس الثالث هو أن الأغلبية لا تحدد الحقيقة. كان لنوح أتباع قليلون. كان قومه أكثر عدداً بكثير. لكن عدد من يرفضون الحقيقة لا يجعلها باطلة.</p>
+        <p>الدرس الرابع هو أن العائلة لا تحل محل الإيمان. كان نوح نبياً، لكنه لم يستطع إنقاذ ابنه لمجرد كونه أباه.</p>
+        <p>الدرس الخامس هو أهمية التوبة قبل فوات الأوان. لأجيال، كان لقوم نوح فرص. ولكن عندما جاء أمر الله، لم يعد بإمكانهم تأخيره.</p>
+
+        <p><strong>نوح وخلق المؤمن الحقيقي</strong></p>
+        <p>كان بإمكان نوح أن يرد على الرفض باليأس. كان بإمكانه التخلي عن قومه. كان بإمكانه طلب الانتقام. لكنه استمر في أداء مهمته. وعندما جاء الخلاص أخيراً، ظل متواضعاً.</p>
+        <p>هذا يظهر سمة أساسية للمؤمن: فعل الصواب حتى عندما لا تظهر النتيجة فوراً. لم يكن نوح يعلم متى سيقبل قومه. لم يكن يعلم كم سينتظر. لكنه كان يعلم من أمره بنقل الرسالة. كان ذلك كافياً.</p>
+
+        <p><strong>عدو البشرية</strong></p>
+        <p>تظهر قصة نوح أيضاً كيف يبدأ الشرك. لا يتخلى الناس بالضرورة عن التوحيد بين عشية وضحاها. أحياناً يبدأ الانحراف بشيء يبدو صغيراً. يُذكر شخص صالح. تُصنع صورة. ثم تُبالغ في أهميتها. ثم يُطلب شفاعته. ثم تُوجه إليه أفعال تخص الله فقط. وبعد أجيال، قد ينتهي الناس بعبادة ما كان في الأصل مجرد ذكرى.</p>
+        <p>لذلك دعا نوح قومه إلى العودة إلى الرسالة الأصلية. لا تعبدوا البشر. لا تعبدوا الصور. لا تعبدوا قوى الطبيعة. لا تعبدوا ما خلقتموه بأيديكم. اعبدوا الله.</p>
+
+        <p><strong>إرث نوح</strong></p>
+        <p>يحتل نوح مكانة استثنائية في الإسلام. هو من كبار الأنبياء. يحتوي القرآن حتى على سورة كاملة باسمه: سورة نوح، السورة 71. فيها يسمح لنا الله بالتعرف على جزء من دعوة نوح لقومه.</p>
+        <p>لم يكن نوح مجرد رجل بنى سفينة. كان رسولاً كرس قروناً من حياته لدعوة البشرية إلى خالقها. تمثل قصته الصراع بين الحق والكبرياء. بين الطاعة والتمرد. بين الصبر واليأس. بين التوحيد والشرك.</p>
+
+        <p><strong>الدرس الكبير</strong></p>
+        <p>لعل أعمق تعاليم نوح هو أن الإنسان لا يجب أن يقيس نجاحه بعدد من يتبعه. دعا نوح 950 عاماً. ورغم ذلك، آمن قليلون. لكن نوح لم يفشل.</p>
+        <p>لأن مهمته لم تكن التحكم في قلوب الناس. كانت مهمته نقل رسالة الله. نجاح النبي لا يقاس بعدد من يتبعه. يقاس بإخلاصه لله.</p>
+        <p>كان نوح مخلصاً. عندما رُفض، استمر. عندما سُخر منه، استمر. عندما رفض ابنه الإيمان، استمر في التوكل على الله. عندما جاء الطوفان، أطاع. وعندما انتهى كل شيء، عاد إلى الله بتواضع.</p>
+
+        <p><strong>ذكرى نوح</strong></p>
+        <p>بعد آلاف السنين، لا يزال المسلمون يذكرون اسمه. عندما يقرأ مسلم قصة نوح، يتذكر أن الحقيقة يمكن أن تُرفض لفترة طويلة دون أن تتوقف عن كونها حقيقة. يتذكر أن الصبر يمكن أن يستمر سنوات. حتى عقود. حتى عمراً كاملاً. يتذكر أن الكبرياء يمكن أن يدمر الإنسان. ويتذكر أن الله يمكن أن يفتح باب خلاص عندما يبدو كل شيء ضائعاً.</p>
+        <p>علم نوح قومه لقرون. لكنه ترك أيضاً رسالة لكل البشر الذين سيأتون بعده: لا تعبدوا أحداً إلا الله. لا تدعوا التقليد يحل محل الحقيقة. لا تخلطوا بين الأغلبية والهداية. لا تنخدعوا بالكبرياء. وعندما تُعرض عليكم الحقيقة، لا تنتظروا حتى فوات الأوان لقبولها.</p>
+        <p>بدأت قصة نوح بقوم نسوا الله. وانتهت بمجموعة صغيرة من المؤمنين نجوا من طوفان هائل. لكن بين هاتين اللحظتين كان هناك 950 عاماً من الصبر. 950 عاماً من الدعوات. 950 عاماً من التحذيرات. 950 عاماً ظل فيها نوح يقول، بطرق مختلفة، الرسالة نفسها: اعبدوا الله.</p>
+        <p>وتلك الرسالة، وفقاً للإسلام، لم تنتهِ مع نوح. استمرت مع هود. مع صالح. مع إبراهيم. مع لوط. مع إسماعيل. مع إسحاق. مع يعقوب. مع يوسف. مع موسى. مع داود. مع سليمان. مع عيسى. وأخيراً مع محمد ﷺ.</p>
+        <p>كلهم دعوا البشرية إلى نفس الأساس: الله واحد. هو الخالق. لا يستحق العبادة سواه. وأبناء آدم، جيلاً بعد جيل، لا يزالون أمام نفس الخيار الذي كانت عليه الأمم السابقة: اتباع هدى الله، أو الانحراف عنه.</p>
+        <p>تبقى قصة نوح تحذيراً لمن يرفضون الحقيقة، وفي الوقت نفسه، أملاً لمن يثبتون. لأن العاصفة يمكن أن تكون هائلة. الأمواج قد تبدو كالجبال. العالم كله قد يبدو ضدك. لكن لمن يثق بالله ويتبع هداه، حتى سفينة صغيرة يمكن أن تصبح مكان النجاة.</p>`
             }
-        }, {
+        },
+        // ================================================================
+        // OTRAS HISTORIAS (Abraham, Moisés, Jesús, Muhammad)
+        // ================================================================
+        {
             id: 'ibrahim',
             arabicName: 'إبراهيم',
             title: { es: 'Abraham', fr: 'Abraham', en: 'Abraham', ar: 'إبراهيم' },
