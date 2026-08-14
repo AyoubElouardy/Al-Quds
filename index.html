@@ -2391,14 +2391,14 @@
         ];
 
         // ================================================================
-// HISTORIAS
-// ================================================================
-const stories = [{
-    id: 'adam',
-    arabicName: 'آدم وحواء',
-    title: { es: 'Adán y Eva', fr: 'Adam et Ève', en: 'Adam and Eve', ar: 'آدم وحواء' },
-    text: {
-        es: `<p><strong>El comienzo de una historia que cambiaría el mundo</strong></p>
+        // HISTORIAS - CON LA NUEVA HISTORIA DE ADÁN Y EVA
+        // ================================================================
+        const stories = [{
+            id: 'adam',
+            arabicName: 'آدم وحواء',
+            title: { es: 'Adán y Eva', fr: 'Adam et Ève', en: 'Adam and Eve', ar: 'آدم وحواء' },
+            text: {
+                es: `<p><strong>El comienzo de una historia que cambiaría el mundo</strong></p>
         <p>Antes de que existieran las ciudades, los mares y las montañas habitadas por seres humanos; antes de que hubiera reyes, naciones, idiomas y generaciones; antes de que el ser humano caminara sobre la Tierra, Allah creó aquello que quiso con Su poder y Su sabiduría.</p>
         <p>Allah es el Creador de los cielos y de la Tierra. Él creó a los ángeles, creó a los yinn y creó todo cuanto existe.</p>
         <p>Y entonces Allah anunció a los ángeles algo extraordinario:</p>
@@ -2507,7 +2507,7 @@ const stories = [{
         <p>La historia que comenzó con Adán continúa con cada uno de sus descendientes. Y cada ser humano, al igual que Adán, se encuentra ante una elección: seguir los susurros de Iblis, o seguir la guía de Allah.</p>
         <p>Ese es el viaje de los hijos de Adán. Y ese viaje continúa hasta el Día del Juicio.</p>`,
 
-        fr: `<p><strong>Le début d'une histoire qui allait changer le monde</strong></p>
+                fr: `<p><strong>Le début d'une histoire qui allait changer le monde</strong></p>
         <p>Avant qu'il n'existe des villes, des mers et des montagnes habitées par des êtres humains ; avant qu'il n'y ait des rois, des nations, des langues et des générations ; avant que l'être humain ne marche sur la Terre, Allah créa ce qu'Il voulut par Sa puissance et Sa sagesse.</p>
         <p>Allah est le Créateur des cieux et de la Terre. Il créa les anges, créa les djinns et créa tout ce qui existe.</p>
         <p>Et alors Allah annonça aux anges quelque chose d'extraordinaire :</p>
@@ -2616,7 +2616,7 @@ const stories = [{
         <p>L'histoire qui a commencé avec Adam continue avec chacun de ses descendants. Et chaque être humain, comme Adam, se trouve devant un choix : suivre les chuchotements d'Iblis, ou suivre la guidance d'Allah.</p>
         <p>C'est le voyage des fils d'Adam. Et ce voyage continue jusqu'au Jour du Jugement.</p>`,
 
-        en: `<p><strong>The beginning of a story that would change the world</strong></p>
+                en: `<p><strong>The beginning of a story that would change the world</strong></p>
         <p>Before there were cities, seas and mountains inhabited by human beings; before there were kings, nations, languages and generations; before man walked on Earth, Allah created what He willed with His power and His wisdom.</p>
         <p>Allah is the Creator of the heavens and the earth. He created the angels, created the jinn and created everything that exists.</p>
         <p>And then Allah announced to the angels something extraordinary:</p>
@@ -2725,7 +2725,7 @@ const stories = [{
         <p>The story that began with Adam continues with each of his descendants. And every human being, like Adam, finds himself before a choice: to follow the whispers of Iblis, or to follow the guidance of Allah.</p>
         <p>That is the journey of Adam's children. And that journey continues until the Day of Judgment.</p>`,
 
-        ar: `<p><strong>بداية قصة ستغير العالم</strong></p>
+                ar: `<p><strong>بداية قصة ستغير العالم</strong></p>
         <p>قبل أن توجد المدن والبحار والجبال التي يسكنها البشر؛ قبل أن يكون هناك ملوك وأمم ولغات وأجيال؛ قبل أن يمشي الإنسان على الأرض، خلق الله ما شاء بقدرته وحكمته.</p>
         <p>الله هو خالق السموات والأرض. خلق الملائكة، وخلق الجن، وخلق كل ما يوجد.</p>
         <p>ثم أعلن الله للملائكة أمراً استثنائياً:</p>
@@ -2833,16 +2833,18 @@ const stories = [{
         <p>لأن الله هو الرحمن، الرحيم، والتواب، الذي يقبل التوبة باستمرار.</p>
         <p>القصة التي بدأت مع آدم تستمر مع كل من نسله. وكل إنسان، مثل آدم، يجد نفسه أمام خيار: اتباع وساوس إبليس، أو اتباع هدى الله.</p>
         <p>تلك هي رحلة أبناء آدم. وتستمر تلك الرحلة حتى يوم القيامة.</p>`
-    }
-},
-// ... resto de historias
-];, {
+            }
+        },
+        // ================================================================
+        // OTRAS HISTORIAS (Noé, Abraham, Moisés, Jesús, Muhammad)
+        // ================================================================
+        {
             id: 'nuh',
             arabicName: 'نوح',
-            title: { es: 'Noe', fr: 'Noe', en: 'Noah', ar: 'نوح' },
+            title: { es: 'Noé', fr: 'Noé', en: 'Noah', ar: 'نوح' },
             text: {
-                es: '<p>Nuh fue enviado a su pueblo que adoraba idolos. Durante 950 anos los llamo al monoteismo, pero solo unos pocos creyeron. Allah le ordeno construir un arca para salvar a los creyentes y a una pareja de cada especie. El diluvio cubrio la tierra y los incredulos perecieron. El arca se poso en el monte Judi, y la humanidad renacio.</p>',
-                fr: '<p>Nuh fut envoye a son peuple qui adorait des idoles. Pendant 950 ans, il les appela au monotheisme, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche pour sauver les croyants et un couple de chaque espece. Le deluge couvrit la terre et les mecreants perirent. L\'arche se posa sur le mont Judi, et l\'humanite renaquit.</p>',
+                es: '<p>Nuh fue enviado a su pueblo que adoraba ídolos. Durante 950 años los llamó al monoteísmo, pero solo unos pocos creyeron. Allah le ordenó construir un arca para salvar a los creyentes y a una pareja de cada especie. El diluvio cubrió la tierra y los incrédulos perecieron. El arca se posó en el monte Judi, y la humanidad renació.</p>',
+                fr: '<p>Nuh fut envoyé à son peuple qui adorait des idoles. Pendant 950 ans, il les appela au monothéisme, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche pour sauver les croyants et un couple de chaque espèce. Le déluge couvrit la terre et les mécréants périrent. L\'arche se posa sur le mont Judi, et l\'humanité renaquit.</p>',
                 en: '<p>Nuh was sent to his people who worshipped idols. For 950 years he called them to monotheism, but only a few believed. Allah ordered him to build an ark to save the believers and a pair of every species. The flood covered the earth and the disbelievers perished. The ark settled on Mount Judi, and humanity was reborn.</p>',
                 ar: '<p>أرسل نوح إلى قومه الذين يعبدون الأصنام. دعاهم إلى التوحيد 950 عاماً، لكن آمن معه قليلون. أمره الله ببناء سفينة لإنقاذ المؤمنين وزوجين من كل نوع. غمر الطوفان الأرض وهلك الكافرون. استقرت السفينة على جبل الجودي، وولدت البشرية من جديد.</p>'
             }
@@ -2851,28 +2853,28 @@ const stories = [{
             arabicName: 'إبراهيم',
             title: { es: 'Abraham', fr: 'Abraham', en: 'Abraham', ar: 'إبراهيم' },
             text: {
-                es: '<p>Ibrahim rompio los idolos de su pueblo y fue arrojado al fuego, que Allah hizo frio y seguro. Allah le ordeno sacrificar a su hijo Ismail, pero lo reemplazo con un cordero. Construyo la Kaaba con su hijo, estableciendo el monoteismo puro.</p>',
-                fr: '<p>Ibrahim brisa les idoles de son peuple et fut jete au feu, qu\'Allah rendit frais et sur. Allah lui ordonna de sacrifier son fils Ismael, mais le remplace par un belier. Il construisit la Kaaba avec son fils, etablissant le monotheisme pur.</p>',
+                es: '<p>Ibrahim rompió los ídolos de su pueblo y fue arrojado al fuego, que Allah hizo frío y seguro. Allah le ordenó sacrificar a su hijo Ismail, pero lo reemplazó con un cordero. Construyó la Kaaba con su hijo, estableciendo el monoteísmo puro.</p>',
+                fr: '<p>Ibrahim brisa les idoles de son peuple et fut jeté au feu, qu\'Allah rendit frais et sûr. Allah lui ordonna de sacrifier son fils Ismaël, mais le remplaça par un bélier. Il construisit la Kaaba avec son fils, établissant le monothéisme pur.</p>',
                 en: '<p>Ibrahim smashed his people\'s idols and was thrown into the fire, which Allah made cool and safe. Allah ordered him to sacrifice his son Isma\'il, but replaced him with a ram. He built the Kaaba with his son, establishing pure monotheism.</p>',
                 ar: '<p>حطم إبراهيم أصنام قومه وألقي في النار فجعلها الله برداً وسلاماً. أمره الله بذبح ابنه إسماعيل ففداه بكبش. بنى الكعبة مع ابنه، وأرسى التوحيد الخالص.</p>'
             }
         }, {
             id: 'musa',
             arabicName: 'موسى',
-            title: { es: 'Moises', fr: 'Moise', en: 'Moses', ar: 'موسى' },
+            title: { es: 'Moisés', fr: 'Moïse', en: 'Moses', ar: 'موسى' },
             text: {
-                es: '<p>Musa fue elegido para liberar a los israelitas de la opresion del Faraon. Realizo milagros como la vara que se convierte en serpiente y la division del mar. Recibio la Tora en el Sinai y guio a su pueblo durante cuarenta anos.</p>',
-                fr: '<p>Musa fut choisi pour liberer les Israelites de l\'oppression du Pharaon. Il accomplit des miracles comme le baton se transformant en serpent et la division de la mer. Il recut la Torah sur le Sinai et guida son peuple pendant quarante ans.</p>',
+                es: '<p>Musa fue elegido para liberar a los israelitas de la opresión del Faraón. Realizó milagros como la vara que se convierte en serpiente y la división del mar. Recibió la Torá en el Sinaí y guió a su pueblo durante cuarenta años.</p>',
+                fr: '<p>Musa fut choisi pour libérer les Israélites de l\'oppression du Pharaon. Il accomplit des miracles comme le bâton se transformant en serpent et la division de la mer. Il reçut la Torah sur le Sinaï et guida son peuple pendant quarante ans.</p>',
                 en: '<p>Musa was chosen to liberate the Israelites from Pharaoh\'s oppression. He performed miracles like the staff turning into a serpent and the parting of the sea. He received the Torah on Sinai and led his people for forty years.</p>',
                 ar: '<p>اختير موسى لتحرير بني إسرائيل من ظلم فرعون. أجرى معجزات كالعصا تتحول إلى ثعبان وشق البحر. تلقى التوراة في سيناء وقاد قومه أربعين سنة.</p>'
             }
         }, {
             id: 'isa',
             arabicName: 'عيسى',
-            title: { es: 'Jesus', fr: 'Jesus', en: 'Jesus', ar: 'عيسى' },
+            title: { es: 'Jesús', fr: 'Jésus', en: 'Jesus', ar: 'عيسى' },
             text: {
-                es: '<p>Isa nacio milagrosamente de la virgen Maria. Realizo milagros con el permiso de Allah: curo ciegos, resucito muertos y dio vida a figuras de barro. Fue elevado al cielo y regresara al final de los tiempos.</p>',
-                fr: '<p>Isa naquit miraculeusement de la vierge Marie. Il accomplit des miracles avec la permission d\'Allah : guerir les aveugles, ressusciter les morts et donner vie a des figures d\'argile. Il fut eleve au ciel et reviendra a la fin des temps.</p>',
+                es: '<p>Isa nació milagrosamente de la virgen María. Realizó milagros con el permiso de Allah: curó ciegos, resucitó muertos y dio vida a figuras de barro. Fue elevado al cielo y regresará al final de los tiempos.</p>',
+                fr: '<p>Isa naquit miraculeusement de la vierge Marie. Il accomplit des miracles avec la permission d\'Allah : guérir les aveugles, ressusciter les morts et donner vie à des figures d\'argile. Il fut élevé au ciel et reviendra à la fin des temps.</p>',
                 en: '<p>Isa was miraculously born to the virgin Mary. He performed miracles with Allah\'s permission: healing the blind, raising the dead, and giving life to clay figures. He was raised to heaven and will return at the end of times.</p>',
                 ar: '<p>ولد عيسى معجزة من مريم العذراء. أجرى معجزات بإذن الله: إبراء الأكمه والأبرص، وإحياء الموتى، ونفخ الطين. رفعه الله إليه وسيعود في آخر الزمان.</p>'
             }
@@ -2881,8 +2883,8 @@ const stories = [{
             arabicName: 'محمد',
             title: { es: 'Muhammad', fr: 'Muhammad', en: 'Muhammad', ar: 'محمد' },
             text: {
-                es: '<p>Muhammad (SAW) es el ultimo profeta, enviado a toda la humanidad. Recibio el Coran a traves del angel Gabriel. Enseno el monoteismo, la justicia y la compasion. Establecio la comunidad musulmana en Medina y conquisto pacificamente Makkah.</p>',
-                fr: '<p>Muhammad (SAW) est le dernier prophete, envoye a toute l\'humanite. Il recut le Coran par l\'ange Gabriel. Il enseigna le monotheisme, la justice et la compassion. Il etablit la communaute musulmane a Medine et conquit pacifiquement La Mecque.</p>',
+                es: '<p>Muhammad (SAW) es el último profeta, enviado a toda la humanidad. Recibió el Corán a través del ángel Gabriel. Enseñó el monoteísmo, la justicia y la compasión. Estableció la comunidad musulmana en Medina y conquistó pacíficamente Makkah.</p>',
+                fr: '<p>Muhammad (SAW) est le dernier prophète, envoyé à toute l\'humanité. Il reçut le Coran par l\'ange Gabriel. Il enseigna le monothéisme, la justice et la compassion. Il établit la communauté musulmane à Médine et conquit pacifiquement La Mecque.</p>',
                 en: '<p>Muhammad (SAW) is the last prophet, sent to all of humanity. He received the Quran through the angel Gabriel. He taught monotheism, justice, and compassion. He established the Muslim community in Medina and peacefully conquered Makkah.</p>',
                 ar: '<p>محمد (صلى الله عليه وسلم) هو آخر نبي أرسل إلى البشرية. تلقى القرآن عن جبريل. علم التوحيد والعدل والرحمة. أقام المجتمع المسلم في المدينة وفتح مكة سلمياً.</p>'
             }
@@ -3041,7 +3043,8 @@ const stories = [{
             const localeMap = { es: 'es-ES', fr: 'fr-FR', en: 'en-US', ar: 'ar-SA' };
             const locale = localeMap[currentLang] || 'es-ES';
             const dateStr = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
-            el.innerHTML = `<span class="dot"></span> 📍 ${currentCity} · ${dateStr} <span class="date-separator">|</span> ${hijri}`;
+            el.innerHTML =
+                `<span class="dot"></span> 📍 ${currentCity} · ${dateStr} <span class="date-separator">|</span> ${hijri}`;
         }
 
         function refreshCurrentTab() {
