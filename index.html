@@ -51,9 +51,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ================================================================
-           SCROLLBAR PERSONALIZADA
-           ================================================================ */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -65,9 +62,6 @@
             border-radius: 10px;
         }
 
-        /* ================================================================
-           CONTENEDOR PRINCIPAL
-           ================================================================ */
         .container {
             max-width: 480px;
             width: 100%;
@@ -121,7 +115,7 @@
         }
 
         /* ================================================================
-           SELECTOR DE IDIOMA (REDISEÑADO)
+           SELECTOR DE IDIOMA
            ================================================================ */
         .lang-selector {
             display: flex;
@@ -141,13 +135,13 @@
             border: none;
             background: transparent;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all var(--transition);
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
             position: relative;
         }
 
@@ -184,7 +178,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #fff;
         }
@@ -198,10 +192,10 @@
            FECHA Y UBICACIÓN
            ================================================================ */
         .location-bar {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             padding: 4px 12px 12px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             opacity: 0.7;
             display: flex;
             align-items: center;
@@ -218,6 +212,11 @@
             animation: pulse-dot 2s infinite;
         }
 
+        .location-bar .date-separator {
+            color: var(--text-dim);
+            margin: 0 2px;
+        }
+
         @keyframes pulse-dot {
             0%,
             100% {
@@ -231,7 +230,7 @@
         }
 
         /* ================================================================
-           MENÚ INFERIOR (TABS) - ESTILO APP NATIVA
+           MENÚ INFERIOR
            ================================================================ */
         .bottom-nav {
             position: fixed;
@@ -269,7 +268,7 @@
         }
 
         .bottom-nav .nav-item .nav-icon {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             line-height: 1;
             transition: all var(--transition);
         }
@@ -441,7 +440,7 @@
         }
 
         /* ================================================================
-           REZOS - GRID
+           REZOS
            ================================================================ */
         .prayer-grid {
             display: grid;
@@ -613,7 +612,7 @@
         }
 
         /* ================================================================
-           DUAS - ACORDEÓN MEJORADO
+           DUAS
            ================================================================ */
         .dua-accordion {
             margin-top: 4px;
@@ -715,7 +714,7 @@
         }
 
         /* ================================================================
-           HISTORIAS - ACORDEÓN MEJORADO
+           HISTORIAS
            ================================================================ */
         .stories-accordion {
             margin-top: 4px;
@@ -799,7 +798,7 @@
         }
 
         /* ================================================================
-           QIBLA / BRÚJULA - REDISEÑADA
+           QIBLA / BRÚJULA
            ================================================================ */
         .compass-wrapper {
             position: relative;
@@ -911,7 +910,7 @@
         }
 
         /* ================================================================
-           NOMBRES DE ALLAH - REDISEÑADOS
+           NOMBRES DE ALLAH
            ================================================================ */
         .allah-container .title {
             color: var(--gold);
@@ -987,7 +986,7 @@
         }
 
         /* ================================================================
-           REPRODUCTOR DE AUDIO - REDISEÑADO
+           REPRODUCTOR DE AUDIO
            ================================================================ */
         .audio-player-fixed {
             position: fixed;
@@ -1272,13 +1271,13 @@
             .lang-btn {
                 width: 28px;
                 height: 28px;
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .lang-btn .arabic-char {
                 width: 22px;
                 height: 22px;
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .bottom-nav .nav-item .nav-icon {
@@ -1457,9 +1456,6 @@
             }
         }
 
-        /* ================================================================
-           ANIMACIONES ADICIONALES
-           ================================================================ */
         .pulse-gold {
             animation: pulseGold 2s ease-in-out infinite;
         }
@@ -1478,9 +1474,6 @@
             text-shadow: 0 0 40px rgba(212, 175, 55, 0.05);
         }
 
-        /* ================================================================
-           ESTADO DE CARGA
-           ================================================================ */
         .loading-shimmer {
             background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
             background-size: 200% 100%;
@@ -1508,16 +1501,16 @@
         <!-- ===== HEADER ===== -->
         <header class="app-header">
             <div class="brand">
-                <span class="brand-icon">🕌</span>
+                <span class="brand-icon">ﱞ</span>
                 <div class="brand-text">
                     <h1>Al-Quds</h1>
                     <span class="subtitle">App Islámica</span>
                 </div>
             </div>
             <div class="lang-selector" id="langSelector">
-                <button class="lang-btn active" data-lang="es" title="Español" aria-label="Español">🇪🇸</button>
-                <button class="lang-btn" data-lang="fr" title="Français" aria-label="Français">🇫🇷</button>
-                <button class="lang-btn" data-lang="en" title="English" aria-label="English">🇬🇧</button>
+                <button class="lang-btn active" data-lang="es" title="Español" aria-label="Español">ES</button>
+                <button class="lang-btn" data-lang="fr" title="Français" aria-label="Français">FR</button>
+                <button class="lang-btn" data-lang="en" title="English" aria-label="English">EN</button>
                 <button class="lang-btn" data-lang="ar" title="العربية" aria-label="العربية">
                     <span class="arabic-char">ع</span>
                 </button>
@@ -1527,7 +1520,7 @@
         <!-- ===== UBICACIÓN Y FECHA ===== -->
         <div class="location-bar" id="fechaLocation">
             <span class="dot"></span>
-            Cargando ubicación…
+            Cargando ubicacion…
         </div>
 
         <!-- ================================================================
@@ -1542,7 +1535,7 @@
             </div>
 
             <div class="countdown-box" data-i18n="next_prayer">
-                Próximo rezo: <span id="countdownTimer">--:--:--</span>
+                Proximo rezo: <span id="countdownTimer">--:--:--</span>
             </div>
 
             <div id="prayerTimesContainer">
@@ -1555,18 +1548,17 @@
                     <div class="prayer-card"><div class="name" data-i18n="prayer_qibla">Qibla</div><div class="time" style="font-size:0.85rem;">Makkah</div></div>
                 </div>
                 <div id="cookieWarning" class="cookie-warning" style="display:none;">
-                    <strong>🍪</strong> Para ver los horarios, por favor <strong>acepta las cookies</strong>.
+                    <strong>Informacion</strong> Para ver los horarios, por favor <strong>acepta las cookies</strong>.
                 </div>
             </div>
 
-            <!-- Botón de Adhan -->
-            <button class="adhan-btn" id="enableAudioBtn">🔔 Activar sonido del Adhan</button>
+            <button class="adhan-btn" id="enableAudioBtn">Activar sonido del Adhan</button>
         </section>
 
         <!-- ===== TAB 2: CORÁN ===== -->
         <section id="tab2" class="tab-content" role="tabpanel">
             <div class="glass-card">
-                <h3 class="section-title" data-i18n="quran_title">El Sagrado Corán</h3>
+                <h3 class="section-title" data-i18n="quran_title">El Sagrado Coran</h3>
                 <div class="quran-text-area">
                     <div class="controls">
                         <select id="surahSelect" aria-label="Seleccionar sura">
@@ -1584,7 +1576,7 @@
         <!-- ===== TAB 3: DUAS ===== -->
         <section id="tab3" class="tab-content" role="tabpanel">
             <div class="glass-card">
-                <h3 class="section-title" data-i18n="dua_title">Súplicas (Duas)</h3>
+                <h3 class="section-title" data-i18n="dua_title">Suplicas (Duas)</h3>
                 <div id="duaAccordion" class="dua-accordion"></div>
             </div>
         </section>
@@ -1592,14 +1584,14 @@
         <!-- ===== TAB 4: QIBLA ===== -->
         <section id="tab4" class="tab-content" role="tabpanel">
             <div class="glass-card">
-                <h3 class="section-title" data-i18n="qibla_title">Dirección de la Qibla</h3>
+                <h3 class="section-title" data-i18n="qibla_title">Direccion de la Qibla</h3>
                 <div class="compass-wrapper">
-                    <canvas id="compassCanvas" width="500" height="500" aria-label="Brújula de la Qibla"></canvas>
+                    <canvas id="compassCanvas" width="500" height="500" aria-label="Brujula de la Qibla"></canvas>
                 </div>
                 <div class="qibla-info">
-                    <div data-i18n="qibla_angle">Ángulo desde el Norte:</div>
+                    <div data-i18n="qibla_angle">Angulo desde el Norte:</div>
                     <div class="qibla-angle" id="qiblaAngleDisplay">--°</div>
-                    <div data-i18n="qibla_direction">La Kaaba está hacia <strong id="qiblaDirectionText">--</strong></div>
+                    <div data-i18n="qibla_direction">La Kaaba esta hacia <strong id="qiblaDirectionText">--</strong></div>
                 </div>
                 <div class="compass-legend">
                     <span><span class="legend-dot north"></span> <span data-i18n="compass_north">Norte</span></span>
@@ -1607,7 +1599,7 @@
                 </div>
                 <div class="compass-note" data-i18n="compass_note">Gira tu dispositivo para que la flecha dorada apunte hacia la Qibla.</div>
                 <div style="text-align:center; margin-top:6px;">
-                    <span class="compass-status inactive" id="compassStatus">⏳ Esperando brújula...</span>
+                    <span class="compass-status inactive" id="compassStatus">Esperando brujula...</span>
                 </div>
             </div>
         </section>
@@ -1616,7 +1608,7 @@
         <section id="tab5" class="tab-content" role="tabpanel">
             <div class="glass-card">
                 <h3 class="section-title" data-i18n="allah_title">Los 99 Nombres de Allah</h3>
-                <p style="text-align:center; color:var(--text-secondary); margin-bottom:14px; font-size:0.85rem;" data-i18n="allah_subtitle">Asma'ul Husna — Los Nombres Más Bellos</p>
+                <p style="text-align:center; color:var(--text-secondary); margin-bottom:14px; font-size:0.85rem;" data-i18n="allah_subtitle">Asma'ul Husna — Los Nombres Mas Bellos</p>
                 <div id="allahList" class="allah-grid"></div>
             </div>
         </section>
@@ -1630,35 +1622,35 @@
         </section>
 
         <!-- ===== FOOTER ===== -->
-        <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automático</div>
+        <div class="footer" data-i18n="footer">Al-Quds · Horarios aproximados · Adhan automatico</div>
     </div>
 
     <!-- ================================================================
     MENÚ INFERIOR (NAVEGACIÓN)
     ================================================================ -->
-    <nav class="bottom-nav" role="tablist" aria-label="Navegación principal">
+    <nav class="bottom-nav" role="tablist" aria-label="Navegacion principal">
         <button class="nav-item active" data-tab="tab1" role="tab" aria-selected="true">
-            <span class="nav-icon">🕌</span>
+            <span class="nav-icon">ﲠ</span>
             <span class="nav-label" data-i18n="tab_prayers">Rezos</span>
         </button>
         <button class="nav-item" data-tab="tab2" role="tab" aria-selected="false">
-            <span class="nav-icon">📖</span>
-            <span class="nav-label" data-i18n="tab_quran">Corán</span>
+            <span class="nav-icon">ﳡ</span>
+            <span class="nav-label" data-i18n="tab_quran">Coran</span>
         </button>
         <button class="nav-item" data-tab="tab3" role="tab" aria-selected="false">
-            <span class="nav-icon">🤲</span>
+            <span class="nav-icon">ﲩ</span>
             <span class="nav-label" data-i18n="tab_dua">Dua</span>
         </button>
         <button class="nav-item" data-tab="tab4" role="tab" aria-selected="false">
-            <span class="nav-icon">🧭</span>
+            <span class="nav-icon">ﲬ</span>
             <span class="nav-label" data-i18n="tab_qibla">Qibla</span>
         </button>
         <button class="nav-item" data-tab="tab5" role="tab" aria-selected="false">
-            <span class="nav-icon">✨</span>
+            <span class="nav-icon">ﷲ</span>
             <span class="nav-label" data-i18n="tab_allah">Nombres</span>
         </button>
         <button class="nav-item" data-tab="tab6" role="tab" aria-selected="false">
-            <span class="nav-icon">📜</span>
+            <span class="nav-icon">ﱛ</span>
             <span class="nav-label" data-i18n="tab_stories">Historias</span>
         </button>
     </nav>
@@ -1666,7 +1658,7 @@
     <!-- ================================================================
     REPRODUCTOR DE AUDIO
     ================================================================ -->
-    <div class="audio-player-fixed" id="audioPlayerFixed" role="region" aria-label="Reproductor del Corán">
+    <div class="audio-player-fixed" id="audioPlayerFixed" role="region" aria-label="Reproductor del Coran">
         <div class="surah-info" id="surahInfo" data-i18n="select_surah_audio">Selecciona una sura para escuchar</div>
         <div class="controls-row">
             <button id="prevSurahBtn" aria-label="Anterior" title="Sura anterior">‹‹</button>
@@ -1681,7 +1673,7 @@
     COOKIE BANNER
     ================================================================ -->
     <div class="cookie-banner" id="cookieBanner" role="alert">
-        <p data-i18n="cookie_message"><strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.</p>
+        <p data-i18n="cookie_message"><strong>Informacion</strong> Para ofrecerte los horarios de oracion segun tu ubicacion, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.</p>
         <div class="cookie-buttons">
             <button class="accept-btn" id="acceptCookies" data-i18n="cookie_accept">Aceptar</button>
             <button class="reject-btn" id="rejectCookies" data-i18n="cookie_reject">Rechazar</button>
@@ -1698,66 +1690,66 @@
         const i18n = {
             es: {
                 tab_prayers: 'Rezos',
-                tab_quran: 'Corán',
+                tab_quran: 'Coran',
                 tab_dua: 'Dua',
                 tab_qibla: 'Qibla',
                 tab_allah: 'Nombres',
                 tab_stories: 'Historias',
                 search_btn: 'Buscar',
-                next_prayer: 'Próximo rezo: ',
+                next_prayer: 'Proximo rezo: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
                 prayer_asr: 'Asr',
                 prayer_maghrib: 'Maghrib',
                 prayer_isha: 'Isha',
                 prayer_qibla: 'Qibla',
-                quran_title: 'El Sagrado Corán',
+                quran_title: 'El Sagrado Coran',
                 select_surah: 'Selecciona una Sura',
                 quran_placeholder: 'Elige una sura para leer.',
                 select_surah_audio: 'Selecciona una sura para escuchar',
-                dua_title: 'Súplicas (Duas)',
-                qibla_title: 'Dirección de la Qibla',
-                qibla_angle: 'Ángulo desde el Norte:',
-                qibla_direction: 'La Kaaba está hacia ',
+                dua_title: 'Suplicas (Duas)',
+                qibla_title: 'Direccion de la Qibla',
+                qibla_angle: 'Angulo desde el Norte:',
+                qibla_direction: 'La Kaaba esta hacia ',
                 compass_north: 'Norte',
                 compass_qibla: 'Qibla',
                 compass_note: 'Gira tu dispositivo para que la flecha dorada apunte hacia la Qibla.',
-                footer: 'Al-Quds · Horarios aproximados · Adhan automático',
+                footer: 'Al-Quds · Horarios aproximados · Adhan automatico',
                 loading: 'Cargando…',
                 error_network: 'Error de red. Intenta de nuevo.',
                 error_load: 'Error al cargar la sura en el idioma seleccionado.',
-                audio_loading: '⏳ Cargando audio…',
-                audio_ready: '✅ Audio listo. Pulsa play.',
-                audio_playing: '▶️ Reproduciendo…',
-                audio_paused: '⏸️ Pausado',
-                audio_ended: '✅ Finalizado',
-                audio_error: '❌ Error al cargar el audio. Intenta otra sura.',
-                audio_play_error: '❌ No se pudo reproducir.',
+                audio_loading: 'Cargando audio…',
+                audio_ready: 'Audio listo. Pulsa play.',
+                audio_playing: 'Reproduciendo…',
+                audio_paused: 'Pausado',
+                audio_ended: 'Finalizado',
+                audio_error: 'Error al cargar el audio. Intenta otra sura.',
+                audio_play_error: 'No se pudo reproducir.',
                 city_placeholder: 'Ej: Madrid, Barcelona',
                 gps_denied: '(GPS denegado)',
                 no_gps: '(sin GPS)',
                 city_not_found: 'Ciudad no encontrada.',
-                search_error: 'Error en la búsqueda.',
-                translation_not_available: '[Traducción no disponible]',
+                search_error: 'Error en la busqueda.',
+                translation_not_available: '[Traduccion no disponible]',
                 cat_rizq: 'Rizq (Sustento)',
-                cat_istighfar: 'Istighfar (Perdón)',
-                cat_proteccion: 'Protección',
+                cat_istighfar: 'Istighfar (Perdon)',
+                cat_proteccion: 'Proteccion',
                 cat_salud: 'Salud',
                 cat_familia: 'Familia',
                 cat_viaje: 'Viaje',
                 cat_general: 'Generales',
-                cat_manana_tarde: 'Mañana y Tarde',
-                cookies_required: 'Acepta las cookies para ver los horarios de oración.',
+                cat_manana_tarde: 'Manana y Tarde',
+                cookies_required: 'Acepta las cookies para ver los horarios de oracion.',
                 allah_title: 'Los 99 Nombres de Allah',
-                allah_subtitle: 'Asma\'ul Husna — Los Nombres Más Bellos',
-                cookie_message: '<strong>🍪 ¡Hola!</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.',
+                allah_subtitle: 'Asma\'ul Husna — Los Nombres Mas Bellos',
+                cookie_message: 'Para ofrecerte los horarios de oracion segun tu ubicacion, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.',
                 cookie_accept: 'Aceptar',
                 cookie_reject: 'Rechazar',
                 stories_title: 'Historias del Islam',
-                compass_heading_on: '🧭 Brújula activa',
-                compass_heading_off: '📱 Brújula no disponible (usa el norte fijo)',
-                adhan_enable: '🔔 Habilitar sonido del Adhan',
-                adhan_enabled: '✅ Sonido habilitado'
+                compass_heading_on: 'Brujula activa',
+                compass_heading_off: 'Brujula no disponible (usa el norte fijo)',
+                adhan_enable: 'Activar sonido del Adhan',
+                adhan_enabled: 'Sonido habilitado'
             },
             fr: {
                 tab_prayers: 'Prières',
@@ -1767,7 +1759,7 @@
                 tab_allah: 'Noms',
                 tab_stories: 'Histoires',
                 search_btn: 'Chercher',
-                next_prayer: 'Prochaine prière: ',
+                next_prayer: 'Prochaine priere: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
                 prayer_asr: 'Asr',
@@ -1776,28 +1768,28 @@
                 prayer_qibla: 'Qibla',
                 quran_title: 'Le Saint Coran',
                 select_surah: 'Choisissez une Sourate',
-                quran_placeholder: 'Choisissez une sourate à lire.',
-                select_surah_audio: 'Choisissez une sourate à écouter',
+                quran_placeholder: 'Choisissez une sourate a lire.',
+                select_surah_audio: 'Choisissez une sourate a ecouter',
                 dua_title: 'Invocations (Douas)',
                 qibla_title: 'Direction de la Qibla',
                 qibla_angle: 'Angle depuis le Nord:',
                 qibla_direction: 'La Kaaba est vers ',
                 compass_north: 'Nord',
                 compass_qibla: 'Qibla',
-                compass_note: 'Tournez votre appareil pour que la flèche dorée pointe vers la Qibla.',
+                compass_note: 'Tournez votre appareil pour que la fleche doree pointe vers la Qibla.',
                 footer: 'Al-Quds · Horaires approximatifs · Adhan automatique',
                 loading: 'Chargement…',
-                error_network: 'Erreur réseau. Réessayez.',
+                error_network: 'Erreur reseau. Reessayez.',
                 error_load: 'Erreur lors du chargement de la sourate.',
-                audio_loading: '⏳ Chargement audio…',
-                audio_ready: '✅ Audio prêt. Appuyez sur play.',
-                audio_playing: '▶️ En cours…',
-                audio_paused: '⏸️ En pause',
-                audio_ended: '✅ Terminé',
-                audio_error: '❌ Erreur de chargement audio.',
-                audio_play_error: '❌ Impossible de lire.',
+                audio_loading: 'Chargement audio…',
+                audio_ready: 'Audio pret. Appuyez sur play.',
+                audio_playing: 'En cours…',
+                audio_paused: 'En pause',
+                audio_ended: 'Termine',
+                audio_error: 'Erreur de chargement audio.',
+                audio_play_error: 'Impossible de lire.',
                 city_placeholder: 'Ex: Paris, Lyon',
-                gps_denied: '(GPS refusé)',
+                gps_denied: '(GPS refuse)',
                 no_gps: '(sans GPS)',
                 city_not_found: 'Ville introuvable.',
                 search_error: 'Erreur de recherche.',
@@ -1805,22 +1797,22 @@
                 cat_rizq: 'Rizq (Subsistance)',
                 cat_istighfar: 'Istighfar (Pardon)',
                 cat_proteccion: 'Protection',
-                cat_salud: 'Santé',
+                cat_salud: 'Sante',
                 cat_familia: 'Famille',
                 cat_viaje: 'Voyage',
-                cat_general: 'Générales',
+                cat_general: 'Generales',
                 cat_manana_tarde: 'Matin et Soir',
                 cookies_required: 'Acceptez les cookies pour voir les horaires.',
                 allah_title: 'Les 99 Noms d\'Allah',
                 allah_subtitle: 'Asma\'ul Husna — Les Plus Beaux Noms',
-                cookie_message: '<strong>🍪 Bonjour !</strong> Pour vous offrir les horaires de prière selon votre localisation, nous avons besoin de votre consentement pour utiliser des cookies et mémoriser vos préférences.',
+                cookie_message: 'Pour vous offrir les horaires de priere selon votre localisation, nous avons besoin de votre consentement pour utiliser des cookies et memoriser vos preferences.',
                 cookie_accept: 'Accepter',
                 cookie_reject: 'Refuser',
                 stories_title: 'Histoires de l\'Islam',
-                compass_heading_on: '🧭 Boussole active',
-                compass_heading_off: '📱 Boussole indisponible',
-                adhan_enable: '🔔 Activer le son de l\'Adhan',
-                adhan_enabled: '✅ Son activé'
+                compass_heading_on: 'Boussole active',
+                compass_heading_off: 'Boussole indisponible',
+                adhan_enable: 'Activer le son de l\'Adhan',
+                adhan_enabled: 'Son active'
             },
             en: {
                 tab_prayers: 'Prayers',
@@ -1852,13 +1844,13 @@
                 loading: 'Loading…',
                 error_network: 'Network error. Try again.',
                 error_load: 'Error loading the surah.',
-                audio_loading: '⏳ Loading audio…',
-                audio_ready: '✅ Audio ready. Press play.',
-                audio_playing: '▶️ Playing…',
-                audio_paused: '⏸️ Paused',
-                audio_ended: '✅ Finished',
-                audio_error: '❌ Error loading audio.',
-                audio_play_error: '❌ Could not play.',
+                audio_loading: 'Loading audio…',
+                audio_ready: 'Audio ready. Press play.',
+                audio_playing: 'Playing…',
+                audio_paused: 'Paused',
+                audio_ended: 'Finished',
+                audio_error: 'Error loading audio.',
+                audio_play_error: 'Could not play.',
                 city_placeholder: 'e.g. London, New York',
                 gps_denied: '(GPS denied)',
                 no_gps: '(no GPS)',
@@ -1876,14 +1868,14 @@
                 cookies_required: 'Accept cookies to see prayer times.',
                 allah_title: 'The 99 Names of Allah',
                 allah_subtitle: 'Asma\'ul Husna — The Most Beautiful Names',
-                cookie_message: '<strong>🍪 Hello!</strong> To provide you with prayer times based on your location, we need your consent to use cookies and remember your preferences.',
+                cookie_message: 'To provide you with prayer times based on your location, we need your consent to use cookies and remember your preferences.',
                 cookie_accept: 'Accept',
                 cookie_reject: 'Reject',
                 stories_title: 'Stories of Islam',
-                compass_heading_on: '🧭 Compass active',
-                compass_heading_off: '📱 Compass unavailable',
-                adhan_enable: '🔔 Enable Adhan sound',
-                adhan_enabled: '✅ Sound enabled'
+                compass_heading_on: 'Compass active',
+                compass_heading_off: 'Compass unavailable',
+                adhan_enable: 'Enable Adhan sound',
+                adhan_enabled: 'Sound enabled'
             },
             ar: {
                 tab_prayers: 'الصلوات',
@@ -1915,13 +1907,13 @@
                 loading: 'جاري التحميل…',
                 error_network: 'خطأ في الشبكة. حاول مرة أخرى.',
                 error_load: 'خطأ في تحميل السورة باللغة المختارة.',
-                audio_loading: '⏳ جاري تحميل الصوت…',
-                audio_ready: '✅ الصوت جاهز. اضغط تشغيل.',
-                audio_playing: '▶️ جاري التشغيل…',
-                audio_paused: '⏸️ متوقف مؤقت',
-                audio_ended: '✅ انتهى',
-                audio_error: '❌ خطأ في تحميل الصوت. جرب سورة أخرى.',
-                audio_play_error: '❌ تعذر التشغيل.',
+                audio_loading: 'جاري تحميل الصوت…',
+                audio_ready: 'الصوت جاهز. اضغط تشغيل.',
+                audio_playing: 'جاري التشغيل…',
+                audio_paused: 'متوقف مؤقت',
+                audio_ended: 'انتهى',
+                audio_error: 'خطأ في تحميل الصوت. جرب سورة أخرى.',
+                audio_play_error: 'تعذر التشغيل.',
                 city_placeholder: 'مثال: الرياض، القاهرة',
                 gps_denied: '(تم رفض GPS)',
                 no_gps: '(بدون GPS)',
@@ -1939,14 +1931,14 @@
                 cookies_required: 'اقبل ملفات الارتباط لمشاهدة أوقات الصلاة.',
                 allah_title: 'أسماء الله الحسنى',
                 allah_subtitle: 'أسماء الله الحسنى — الأسماء الأكثر جمالاً',
-                cookie_message: '<strong>🍪 مرحباً!</strong> لتقديم أوقات الصلاة بناءً على موقعك، نحتاج إلى موافقتك لاستخدام ملفات الارتباط وتذكر تفضيلاتك.',
+                cookie_message: 'لتقديم أوقات الصلاة بناءً على موقعك، نحتاج إلى موافقتك لاستخدام ملفات الارتباط وتذكر تفضيلاتك.',
                 cookie_accept: 'قبول',
                 cookie_reject: 'رفض',
                 stories_title: 'قصص الإسلام',
-                compass_heading_on: '🧭 البوصلة نشطة',
-                compass_heading_off: '📱 البوصلة غير متوفرة',
-                adhan_enable: '🔔 تمكين صوت الأذان',
-                adhan_enabled: '✅ تم تمكين الصوت'
+                compass_heading_on: 'البوصلة نشطة',
+                compass_heading_off: 'البوصلة غير متوفرة',
+                adhan_enable: 'تمكين صوت الأذان',
+                adhan_enabled: 'تم تمكين الصوت'
             }
         };
 
@@ -1955,79 +1947,79 @@
         // ================================================================
         const duaTranslations = {
             es: [
-                'Oh Allah, te pido el sustento, la suficiencia y la bendición en lo que nos has concedido.',
-                'Oh Allah, provee para mí un sustento lícito y puro, y no me hagas dependiente de nadie.',
+                'Oh Allah, te pido el sustento, la suficiencia y la bendicion en lo que nos has concedido.',
+                'Oh Allah, provee para mi un sustento licito y puro, y no me hagas dependiente de nadie.',
                 'Oh Allah, bendice nuestro alimento y danos el sustento de Tu generosidad.',
                 'Oh Allah, te pido el sustento abundante, la salud duradera y la muerte en la fe.',
-                'Oh Allah, no me hagas depender de la creación, y provee para mí desde donde no espero.',
-                'Oh Allah, perdona mis pecados y errores, y límpiame como se limpia la tela blanca.',
-                'Oh Allah, te pido el perdón y la salud en mi religión, mi vida y mi familia.',
-                'Oh Allah, he sido injusto conmigo mismo, así que perdóname, pues solo Tú perdonas los pecados.',
-                'Oh Allah, te pido el perdón y la protección contra el castigo del fuego y la tumba.',
-                'Oh Allah, te pido el perdón de lo que he hecho y lo que he dejado de hacer.',
+                'Oh Allah, no me hagas depender de la creacion, y provee para mi desde donde no espero.',
+                'Oh Allah, perdona mis pecados y errores, y limpia me como se limpia la tela blanca.',
+                'Oh Allah, te pido el perdon y la salud en mi religion, mi vida y mi familia.',
+                'Oh Allah, he sido injusto conmigo mismo, asi que perdoname, pues solo Tu perdonas los pecados.',
+                'Oh Allah, te pido el perdon y la proteccion contra el castigo del fuego y la tumba.',
+                'Oh Allah, te pido el perdon de lo que he hecho y lo que he dejado de hacer.',
                 'Oh Allah, me refugio en Ti de todo mal y de las acciones malvadas.',
-                'Oh Allah, me refugio en Ti de la pobreza, la miseria y la humillación.',
+                'Oh Allah, me refugio en Ti de la pobreza, la miseria y la humillacion.',
                 'Oh Allah, me refugio en Ti de la ansiedad, la tristeza y la debilidad.',
                 'Oh Allah, me refugio en Ti de la incredulidad, la pobreza y el castigo de la tumba.',
-                'Oh Allah, me refugio en Ti de la opresión de los opresores y de las maquinaciones de los enemigos.',
-                'Oh Allah, te pido la salud en este mundo y en el más allá.',
+                'Oh Allah, me refugio en Ti de la opresion de los opresores y de las maquinaciones de los enemigos.',
+                'Oh Allah, te pido la salud en este mundo y en el mas alla.',
                 'Oh Allah, te pido la salud, la seguridad y la buena fe en todo momento.',
-                'Oh Allah, te pido la salud en mi cuerpo, en mi audición y en mi vista.',
-                'Oh Allah, te pido la salud, la seguridad y la protección contra toda enfermedad.',
-                'Oh Allah, te pido la salud en mi corazón y en mis acciones.',
-                'Oh Allah, protege a mi familia y a mis seres queridos, y bendícenos con Tu misericordia.',
-                'Oh Allah, reúne a mi familia en el bien y guíanos hacia lo que amas.',
-                'Oh Allah, protege a mis hijos y a mi cónyuge de todo mal.',
-                'Oh Allah, bendice nuestro hogar y nuestra unión familiar.',
+                'Oh Allah, te pido la salud en mi cuerpo, en mi audicion y en mi vista.',
+                'Oh Allah, te pido la salud, la seguridad y la proteccion contra toda enfermedad.',
+                'Oh Allah, te pido la salud en mi corazon y en mis acciones.',
+                'Oh Allah, protege a mi familia y a mis seres queridos, y ben d icenos con Tu misericordia.',
+                'Oh Allah, reune a mi familia en el bien y guianos hacia lo que amas.',
+                'Oh Allah, protege a mis hijos y a mi conyuge de todo mal.',
+                'Oh Allah, bendice nuestro hogar y nuestra union familiar.',
                 'Oh Allah, haz que mi familia sea de los que aman y son amados por Ti.',
-                'Oh Allah, te pido la seguridad en el viaje y la bendición en el destino.',
-                'Oh Allah, haz que este viaje sea fácil y llévanos a nuestro destino con bien.',
-                'Oh Allah, te pido la protección durante el viaje y el regreso a salvo.',
-                'Oh Allah, te pido el buen viaje y la buena compañía.',
-                'Oh Allah, te pido la seguridad en el camino y la protección contra todo peligro.',
-                'Oh Allah, te pido el bien en este mundo y en el más allá.',
+                'Oh Allah, te pido la seguridad en el viaje y la bendicion en el destino.',
+                'Oh Allah, haz que este viaje sea facil y llevanos a nuestro destino con bien.',
+                'Oh Allah, te pido la proteccion durante el viaje y el regreso a salvo.',
+                'Oh Allah, te pido el buen viaje y la buena compania.',
+                'Oh Allah, te pido la seguridad en el camino y la proteccion contra todo peligro.',
+                'Oh Allah, te pido el bien en este mundo y en el mas alla.',
                 'Oh Allah, te pido el bien de lo que he hecho y el bien de lo que no he hecho.',
                 'Oh Allah, te pido la constancia en el bien y el buen juicio.',
-                'Oh Allah, te pido el paraíso y la protección del infierno.',
+                'Oh Allah, te pido el paraiso y la proteccion del infierno.',
                 'Oh Allah, te pido el amor a Ti, el amor a quienes Te aman y el amor a las obras que me acercan a Ti.',
-                'Oh Allah, te pido el bien de la mañana y el bien de la noche.',
-                'Oh Allah, te pido el bien del día y el bien de la noche que sigue.',
-                'Oh Allah, te pido la protección en la mañana y en la tarde.',
+                'Oh Allah, te pido el bien de la manana y el bien de la noche.',
+                'Oh Allah, te pido el bien del dia y el bien de la noche que sigue.',
+                'Oh Allah, te pido la proteccion en la manana y en la tarde.',
                 'Oh Allah, te pido la seguridad en el amanecer y en el anochecer.',
-                'Oh Allah, te pido el bien en el día y en la noche, y me refugio en Ti de su mal.'
+                'Oh Allah, te pido el bien en el dia y en la noche, y me refugio en Ti de su mal.'
             ],
             fr: [
-                'Ô Allah, je Te demande la subsistance, la suffisance et la bénédiction dans ce que Tu nous as accordé.',
-                'Ô Allah, accorde-moi une subsistance licite et pure, et ne me rends pas dépendant de personne.',
-                'Ô Allah, bénis notre nourriture et donne-nous la subsistance de Ta générosité.',
-                'Ô Allah, je Te demande la subsistance abondante, la santé durable et la mort dans la foi.',
-                'Ô Allah, ne me rends pas dépendant de la création, et pourvois-moi d\'où je ne m\'y attends pas.',
-                'Ô Allah, pardonne mes péchés et mes erreurs, et purifie-moi comme on purifie le vêtement blanc.',
-                'Ô Allah, je Te demande le pardon et la santé dans ma religion, ma vie et ma famille.',
-                'Ô Allah, j\'ai été injuste envers moi-même, alors pardonne-moi, car Toi seul pardonnes les péchés.',
-                'Ô Allah, je Te demande le pardon et la protection contre le châtiment du feu et de la tombe.',
-                'Ô Allah, je Te demande le pardon de ce que j\'ai fait et de ce que j\'ai laissé faire.',
+                'Ô Allah, je Te demande la subsistance, la suffisance et la benediction dans ce que Tu nous as accorde.',
+                'Ô Allah, accorde-moi une subsistance licite et pure, et ne me rends pas dependant de personne.',
+                'Ô Allah, benis notre nourriture et donne-nous la subsistance de Ta generosite.',
+                'Ô Allah, je Te demande la subsistance abondante, la sante durable et la mort dans la foi.',
+                'Ô Allah, ne me rends pas dependant de la creation, et pourvois-moi d\'ou je ne m\'y attends pas.',
+                'Ô Allah, pardonne mes peches et mes erreurs, et purifie-moi comme on purifie le vetement blanc.',
+                'Ô Allah, je Te demande le pardon et la sante dans ma religion, ma vie et ma famille.',
+                'Ô Allah, j\'ai ete injuste envers moi-meme, alors pardonne-moi, car Toi seul pardonnes les peches.',
+                'Ô Allah, je Te demande le pardon et la protection contre le chatiment du feu et de la tombe.',
+                'Ô Allah, je Te demande le pardon de ce que j\'ai fait et de ce que j\'ai laisse faire.',
                 'Ô Allah, je cherche refuge en Toi contre tout mal et les mauvaises actions.',
-                'Ô Allah, je cherche refuge en Toi contre la pauvreté, la misère et l\'humiliation.',
-                'Ô Allah, je cherche refuge en Toi contre l\'anxiété, la tristesse et la faiblesse.',
-                'Ô Allah, je cherche refuge en Toi contre la mécréance, la pauvreté et le châtiment de la tombe.',
+                'Ô Allah, je cherche refuge en Toi contre la pauvrete, la misere et l\'humiliation.',
+                'Ô Allah, je cherche refuge en Toi contre l\'anxiete, la tristesse et la faiblesse.',
+                'Ô Allah, je cherche refuge en Toi contre la mecreance, la pauvrete et le chatiment de la tombe.',
                 'Ô Allah, je cherche refuge en Toi contre l\'oppression des oppresseurs et les manœuvres des ennemis.',
-                'Ô Allah, je Te demande la santé dans ce monde et dans l\'au-delà.',
-                'Ô Allah, je Te demande la santé, la sécurité et la bonne foi en tout temps.',
-                'Ô Allah, je Te demande la santé dans mon corps, dans mon ouïe et dans ma vue.',
-                'Ô Allah, je Te demande la santé, la sécurité et la protection contre toute maladie.',
-                'Ô Allah, je Te demande la santé dans mon cœur et dans mes actions.',
-                'Ô Allah, protège ma famille et mes proches, et bénis-nous de Ta miséricorde.',
-                'Ô Allah, réunis ma famille dans le bien et guide-nous vers ce que Tu aimes.',
-                'Ô Allah, protège mes enfants et mon conjoint de tout mal.',
-                'Ô Allah, bénis notre foyer et notre union familiale.',
-                'Ô Allah, fais que ma famille soit de ceux qui T\'aiment et sont aimés par Toi.',
-                'Ô Allah, je Te demande la sécurité pendant le voyage et la bénédiction à destination.',
-                'Ô Allah, rends ce voyage facile et amène-nous à destination en toute sécurité.',
-                'Ô Allah, je Te demande la protection pendant le voyage et le retour en sécurité.',
+                'Ô Allah, je Te demande la sante dans ce monde et dans l\'au-dela.',
+                'Ô Allah, je Te demande la sante, la securite et la bonne foi en tout temps.',
+                'Ô Allah, je Te demande la sante dans mon corps, dans mon ouie et dans ma vue.',
+                'Ô Allah, je Te demande la sante, la securite et la protection contre toute maladie.',
+                'Ô Allah, je Te demande la sante dans mon cœur et dans mes actions.',
+                'Ô Allah, protege ma famille et mes proches, et benis-nous de Ta misericorde.',
+                'Ô Allah, reunis ma famille dans le bien et guide-nous vers ce que Tu aimes.',
+                'Ô Allah, protege mes enfants et mon conjoint de tout mal.',
+                'Ô Allah, benis notre foyer et notre union familiale.',
+                'Ô Allah, fais que ma famille soit de ceux qui T\'aiment et sont aimes par Toi.',
+                'Ô Allah, je Te demande la securite pendant le voyage et la benediction a destination.',
+                'Ô Allah, rends ce voyage facile et amene-nous a destination en toute securite.',
+                'Ô Allah, je Te demande la protection pendant le voyage et le retour en securite.',
                 'Ô Allah, je Te demande le bon voyage et la bonne compagnie.',
-                'Ô Allah, je Te demande la sécurité sur la route et la protection contre tout danger.',
-                'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-delà.',
+                'Ô Allah, je Te demande la securite sur la route et la protection contre tout danger.',
+                'Ô Allah, je Te demande le bien dans ce monde et dans l\'au-dela.',
                 'Ô Allah, je Te demande le bien de ce que j\'ai fait et le bien de ce que je n\'ai pas fait.',
                 'Ô Allah, je Te demande la constance dans le bien et le bon jugement.',
                 'Ô Allah, je Te demande le Paradis et la protection de l\'Enfer.',
@@ -2035,7 +2027,7 @@
                 'Ô Allah, je Te demande le bien du matin et le bien de la nuit.',
                 'Ô Allah, je Te demande le bien du jour et le bien de la nuit qui suit.',
                 'Ô Allah, je Te demande la protection au matin et au soir.',
-                'Ô Allah, je Te demande la sécurité à l\'aube et au crépuscule.',
+                'Ô Allah, je Te demande la securite a l\'aube et au crepuscule.',
                 'Ô Allah, je Te demande le bien dans le jour et dans la nuit, et je cherche refuge en Toi contre leur mal.'
             ],
             en: [
@@ -2130,80 +2122,80 @@
         const duas = [
             { category: 'rizq', title: { es: 'Dua por el sustento', fr: 'Dua pour la subsistance', en: 'Dua for sustenance',
                     ar: 'دعاء الرزق' }, arabic: duaTranslations.ar[0] },
-            { category: 'rizq', title: { es: 'Dua por sustento lícito', fr: 'Dua pour une subsistance licite',
+            { category: 'rizq', title: { es: 'Dua por sustento licito', fr: 'Dua pour une subsistance licite',
                     en: 'Dua for lawful sustenance', ar: 'دعاء الرزق الحلال' }, arabic: duaTranslations.ar[1] },
-            { category: 'rizq', title: { es: 'Dua por bendición en el alimento', fr: 'Dua pour la bénédiction dans la nourriture',
+            { category: 'rizq', title: { es: 'Dua por bendicion en el alimento', fr: 'Dua pour la benediction dans la nourriture',
                     en: 'Dua for blessing in food', ar: 'دعاء البركة في الطعام' }, arabic: duaTranslations.ar[2] },
             { category: 'rizq', title: { es: 'Dua por sustento abundante', fr: 'Dua pour une subsistance abondante',
                     en: 'Dua for abundant sustenance', ar: 'دعاء الرزق الواسع' }, arabic: duaTranslations.ar[3] },
-            { category: 'rizq', title: { es: 'Dua para no depender de la creación',
-                    fr: 'Dua pour ne pas dépendre de la création', en: 'Dua to not depend on creation',
+            { category: 'rizq', title: { es: 'Dua para no depender de la creacion',
+                    fr: 'Dua pour ne pas dependre de la creation', en: 'Dua to not depend on creation',
                     ar: 'دعاء عدم الحاجة للخلق' }, arabic: duaTranslations.ar[4] },
-            { category: 'istighfar', title: { es: 'Dua por perdón y purificación', fr: 'Dua pour le pardon et la purification',
+            { category: 'istighfar', title: { es: 'Dua por perdon y purificacion', fr: 'Dua pour le pardon et la purification',
                     en: 'Dua for forgiveness and purification', ar: 'دعاء المغفرة والتطهير' }, arabic: duaTranslations.ar[5] },
-            { category: 'istighfar', title: { es: 'Dua por perdón y salud', fr: 'Dua pour le pardon et la santé',
+            { category: 'istighfar', title: { es: 'Dua por perdon y salud', fr: 'Dua pour le pardon et la sante',
                     en: 'Dua for forgiveness and health', ar: 'دعاء العفو والعافية' }, arabic: duaTranslations.ar[6] },
-            { category: 'istighfar', title: { es: 'Dua por perdón de la injusticia propia',
+            { category: 'istighfar', title: { es: 'Dua por perdon de la injusticia propia',
                     fr: 'Dua pour le pardon de l\'injustice personnelle', en: 'Dua for forgiveness of self-injustice',
                     ar: 'دعاء ظلم النفس' }, arabic: duaTranslations.ar[7] },
-            { category: 'istighfar', title: { es: 'Dua por perdón y protección del castigo',
-                    fr: 'Dua pour le pardon et la protection du châtiment', en: 'Dua for forgiveness and protection from punishment',
+            { category: 'istighfar', title: { es: 'Dua por perdon y proteccion del castigo',
+                    fr: 'Dua pour le pardon et la protection du chatiment', en: 'Dua for forgiveness and protection from punishment',
                     ar: 'دعاء العفو من العذاب' }, arabic: duaTranslations.ar[8] },
-            { category: 'istighfar', title: { es: 'Dua por perdón de lo hecho y lo omitido',
+            { category: 'istighfar', title: { es: 'Dua por perdon de lo hecho y lo omitido',
                     fr: 'Dua pour le pardon de ce qui est fait et omis', en: 'Dua for forgiveness of done and undone',
                     ar: 'دعاء ما عملت وما تركت' }, arabic: duaTranslations.ar[9] },
             { category: 'proteccion', title: { es: 'Dua contra el mal', fr: 'Dua contre le mal', en: 'Dua against evil',
                     ar: 'دعاء الشر' }, arabic: duaTranslations.ar[10] },
-            { category: 'proteccion', title: { es: 'Dua contra la pobreza y la humillación',
-                    fr: 'Dua contre la pauvreté et l\'humiliation', en: 'Dua against poverty and humiliation',
+            { category: 'proteccion', title: { es: 'Dua contra la pobreza y la humillacion',
+                    fr: 'Dua contre la pauvrete et l\'humiliation', en: 'Dua against poverty and humiliation',
                     ar: 'دعاء الفقر والذل' }, arabic: duaTranslations.ar[11] },
             { category: 'proteccion', title: { es: 'Dua contra la ansiedad y la tristeza',
-                    fr: 'Dua contre l\'anxiété et la tristesse', en: 'Dua against anxiety and sorrow',
+                    fr: 'Dua contre l\'anxiete et la tristesse', en: 'Dua against anxiety and sorrow',
                     ar: 'دعاء الهم والحزن' }, arabic: duaTranslations.ar[12] },
             { category: 'proteccion', title: { es: 'Dua contra la incredulidad y el castigo de la tumba',
-                    fr: 'Dua contre la mécréance et le châtiment de la tombe', en: 'Dua against disbelief and grave punishment',
+                    fr: 'Dua contre la mecreance et le chatiment de la tombe', en: 'Dua against disbelief and grave punishment',
                     ar: 'دعاء الكفر وعذاب القبر' }, arabic: duaTranslations.ar[13] },
             { category: 'proteccion', title: { es: 'Dua contra los opresores y enemigos',
                     fr: 'Dua contre les oppresseurs et les ennemis', en: 'Dua against oppressors and enemies',
                     ar: 'دعاء الظالمين والأعداء' }, arabic: duaTranslations.ar[14] },
-            { category: 'salud', title: { es: 'Dua por salud en ambos mundos', fr: 'Dua pour la santé dans les deux mondes',
+            { category: 'salud', title: { es: 'Dua por salud en ambos mundos', fr: 'Dua pour la sante dans les deux mondes',
                     en: 'Dua for health in both worlds', ar: 'دعاء العافية في الدنيا والآخرة' }, arabic: duaTranslations.ar[
                 15] },
             { category: 'salud', title: { es: 'Dua por salud, seguridad y buena fe',
-                    fr: 'Dua pour la santé, la sécurité et la bonne foi', en: 'Dua for health, safety and good faith',
+                    fr: 'Dua pour la sante, la securite et la bonne foi', en: 'Dua for health, safety and good faith',
                     ar: 'دعاء العافية والسلامة وحسن اليقين' }, arabic: duaTranslations.ar[16] },
-            { category: 'salud', title: { es: 'Dua por salud en el cuerpo, oído y vista',
-                    fr: 'Dua pour la santé du corps, de l\'ouïe et de la vue', en: 'Dua for health in body, hearing and sight',
+            { category: 'salud', title: { es: 'Dua por salud en el cuerpo, oido y vista',
+                    fr: 'Dua pour la sante du corps, de l\'ouie et de la vue', en: 'Dua for health in body, hearing and sight',
                     ar: 'دعاء العافية في البدن والسمع والبصر' }, arabic: duaTranslations.ar[17] },
-            { category: 'salud', title: { es: 'Dua por protección contra enfermedades',
+            { category: 'salud', title: { es: 'Dua por proteccion contra enfermedades',
                     fr: 'Dua pour la protection contre les maladies', en: 'Dua for protection from diseases',
                     ar: 'دعاء الوقاية من الأمراض' }, arabic: duaTranslations.ar[18] },
-            { category: 'salud', title: { es: 'Dua por salud en el corazón y las acciones',
-                    fr: 'Dua pour la santé du cœur et des actions', en: 'Dua for health in heart and actions',
+            { category: 'salud', title: { es: 'Dua por salud en el corazon y las acciones',
+                    fr: 'Dua pour la sante du cœur et des actions', en: 'Dua for health in heart and actions',
                     ar: 'دعاء العافية في القلب والعمل' }, arabic: duaTranslations.ar[19] },
-            { category: 'familia', title: { es: 'Dua por protección de la familia', fr: 'Dua pour la protection de la famille',
+            { category: 'familia', title: { es: 'Dua por proteccion de la familia', fr: 'Dua pour la protection de la famille',
                     en: 'Dua for family protection', ar: 'دعاء حفظ العائلة' }, arabic: duaTranslations.ar[20] },
-            { category: 'familia', title: { es: 'Dua por unidad y guía familiar', fr: 'Dua pour l\'unité et la guidance familiale',
+            { category: 'familia', title: { es: 'Dua por unidad y guia familiar', fr: 'Dua pour l\'unite et la guidance familiale',
                     en: 'Dua for family unity and guidance', ar: 'دعاء جمع شمل العائلة' }, arabic: duaTranslations.ar[21] },
-            { category: 'familia', title: { es: 'Dua por protección de hijos y cónyuge',
+            { category: 'familia', title: { es: 'Dua por proteccion de hijos y conyuge',
                     fr: 'Dua pour la protection des enfants et du conjoint', en: 'Dua for protection of children and spouse',
                     ar: 'دعاء حفظ الأولاد والزوجة' }, arabic: duaTranslations.ar[22] },
-            { category: 'familia', title: { es: 'Dua por bendición del hogar', fr: 'Dua pour la bénédiction du foyer',
+            { category: 'familia', title: { es: 'Dua por bendicion del hogar', fr: 'Dua pour la benediction du foyer',
                     en: 'Dua for blessing of the home', ar: 'دعاء بركة البيت' }, arabic: duaTranslations.ar[23] },
             { category: 'familia', title: { es: 'Dua por el amor de la familia hacia Allah',
                     fr: 'Dua pour l\'amour de la famille envers Allah', en: 'Dua for family\'s love for Allah',
                     ar: 'دعاء حب العائلة لله' }, arabic: duaTranslations.ar[24] },
-            { category: 'viaje', title: { es: 'Dua por seguridad en el viaje', fr: 'Dua pour la sécurité en voyage',
+            { category: 'viaje', title: { es: 'Dua por seguridad en el viaje', fr: 'Dua pour la securite en voyage',
                     en: 'Dua for safety during travel', ar: 'دعاء السلامة في السفر' }, arabic: duaTranslations.ar[25] },
-            { category: 'viaje', title: { es: 'Dua por facilidad en el viaje', fr: 'Dua pour la facilité en voyage',
+            { category: 'viaje', title: { es: 'Dua por facilidad en el viaje', fr: 'Dua pour la facilite en voyage',
                     en: 'Dua for ease in travel', ar: 'دعاء تيسير السفر' }, arabic: duaTranslations.ar[26] },
-            { category: 'viaje', title: { es: 'Dua por protección y regreso seguro',
-                    fr: 'Dua pour la protection et le retour en sécurité', en: 'Dua for protection and safe return',
+            { category: 'viaje', title: { es: 'Dua por proteccion y regreso seguro',
+                    fr: 'Dua pour la protection et le retour en securite', en: 'Dua for protection and safe return',
                     ar: 'دعاء الحفظ في السفر والرجوع' }, arabic: duaTranslations.ar[27] },
-            { category: 'viaje', title: { es: 'Dua por buen viaje y buena compañía',
+            { category: 'viaje', title: { es: 'Dua por buen viaje y buena compania',
                     fr: 'Dua pour un bon voyage et une bonne compagnie', en: 'Dua for good journey and good company',
                     ar: 'دعاء حسن السفر والصُحبة' }, arabic: duaTranslations.ar[28] },
-            { category: 'viaje', title: { es: 'Dua por seguridad en el camino', fr: 'Dua pour la sécurité sur la route',
+            { category: 'viaje', title: { es: 'Dua por seguridad en el camino', fr: 'Dua pour la securite sur la route',
                     en: 'Dua for safety on the road', ar: 'دعاء السلامة في الطريق' }, arabic: duaTranslations.ar[29] },
             { category: 'general', title: { es: 'Dua por el bien en ambos mundos', fr: 'Dua pour le bien dans les deux mondes',
                     en: 'Dua for good in both worlds', ar: 'دعاء خير الدنيا والآخرة' }, arabic: duaTranslations.ar[30] },
@@ -2213,24 +2205,24 @@
             { category: 'general', title: { es: 'Dua por constancia y buen juicio',
                     fr: 'Dua pour la constance et le bon jugement', en: 'Dua for steadfastness and sound judgment',
                     ar: 'دعاء الثبات والعزم' }, arabic: duaTranslations.ar[32] },
-            { category: 'general', title: { es: 'Dua por el paraíso y protección del infierno',
+            { category: 'general', title: { es: 'Dua por el paraiso y proteccion del infierno',
                     fr: 'Dua pour le Paradis et la protection de l\'Enfer', en: 'Dua for Paradise and protection from Hell',
                     ar: 'دعاء الجنة والنار' }, arabic: duaTranslations.ar[33] },
             { category: 'general', title: { es: 'Dua por el amor a Allah', fr: 'Dua pour l\'amour d\'Allah',
                     en: 'Dua for love of Allah', ar: 'دعاء حب الله' }, arabic: duaTranslations.ar[34] },
-            { category: 'manana_tarde', title: { es: 'Dua por el bien de la mañana y la noche',
+            { category: 'manana_tarde', title: { es: 'Dua por el bien de la manana y la noche',
                     fr: 'Dua pour le bien du matin et du soir', en: 'Dua for the good of morning and night',
                     ar: 'دعاء خير الصباح والمساء' }, arabic: duaTranslations.ar[35] },
-            { category: 'manana_tarde', title: { es: 'Dua por el bien del día y la noche',
+            { category: 'manana_tarde', title: { es: 'Dua por el bien del dia y la noche',
                     fr: 'Dua pour le bien du jour et de la nuit', en: 'Dua for the good of day and night',
                     ar: 'دعاء خير اليوم والليل' }, arabic: duaTranslations.ar[36] },
-            { category: 'manana_tarde', title: { es: 'Dua por protección en la mañana y tarde',
+            { category: 'manana_tarde', title: { es: 'Dua por proteccion en la manana y tarde',
                     fr: 'Dua pour la protection au matin et au soir', en: 'Dua for protection in morning and evening',
                     ar: 'دعاء الحفظ في الصباح والمساء' }, arabic: duaTranslations.ar[37] },
             { category: 'manana_tarde', title: { es: 'Dua por seguridad al amanecer y anochecer',
-                    fr: 'Dua pour la sécurité à l\'aube et au crépuscule', en: 'Dua for safety at dawn and dusk',
+                    fr: 'Dua pour la securite a l\'aube et au crepuscule', en: 'Dua for safety at dawn and dusk',
                     ar: 'دعاء السلامة في الفجر والغروب' }, arabic: duaTranslations.ar[38] },
-            { category: 'manana_tarde', title: { es: 'Dua por el bien del día y la noche y refugio del mal',
+            { category: 'manana_tarde', title: { es: 'Dua por el bien del dia y la noche y refugio del mal',
                     fr: 'Dua pour le bien du jour et de la nuit et refuge contre leur mal',
                     en: 'Dua for the good of day and night and refuge from their evil',
                     ar: 'دعاء خير اليوم والليل والتعوذ من شرهما' }, arabic: duaTranslations.ar[39] }
@@ -2240,24 +2232,24 @@
         // NOMBRES DE ALLAH
         // ================================================================
         const allahNames = [
-            { arabic: 'الرحمن', translations: { es: 'El Misericordioso', fr: 'Le Miséricordieux', en: 'The Most Gracious',
+            { arabic: 'الرحمن', translations: { es: 'El Misericordioso', fr: 'Le Misericordieux', en: 'The Most Gracious',
                     ar: 'الرحمن' } },
-            { arabic: 'الرحيم', translations: { es: 'El Compasivo', fr: 'Le Très Miséricordieux', en: 'The Most Merciful',
+            { arabic: 'الرحيم', translations: { es: 'El Compasivo', fr: 'Le Tres Misericordieux', en: 'The Most Merciful',
                     ar: 'الرحيم' } },
             { arabic: 'الملك', translations: { es: 'El Soberano', fr: 'Le Souverain', en: 'The King', ar: 'الملك' } },
-            { arabic: 'القدوس', translations: { es: 'El Santísimo', fr: 'Le Très Saint', en: 'The Holy', ar: 'القدوس' } },
+            { arabic: 'القدوس', translations: { es: 'El Santisimo', fr: 'Le Tres Saint', en: 'The Holy', ar: 'القدوس' } },
             { arabic: 'السلام', translations: { es: 'La Paz', fr: 'La Paix', en: 'The Peace', ar: 'السلام' } },
-            { arabic: 'المؤمن', translations: { es: 'El Fiel', fr: 'Le Sécurisant', en: 'The Faithful', ar: 'المؤمن' } },
-            { arabic: 'المهيمن', translations: { es: 'El Protector', fr: 'Le Prédominant', en: 'The Guardian',
+            { arabic: 'المؤمن', translations: { es: 'El Fiel', fr: 'Le Securisant', en: 'The Faithful', ar: 'المؤمن' } },
+            { arabic: 'المهيمن', translations: { es: 'El Protector', fr: 'Le Predominant', en: 'The Guardian',
                     ar: 'المهيمن' } },
             { arabic: 'العزيز', translations: { es: 'El Poderoso', fr: 'Le Tout-Puissant', en: 'The Almighty',
                     ar: 'العزيز' } },
             { arabic: 'الجبار', translations: { es: 'El Compulsivo', fr: 'Le Contraignant', en: 'The Compeller',
                     ar: 'الجبار' } },
-            { arabic: 'المتكبر', translations: { es: 'El Soberbio', fr: 'Le Très Grand', en: 'The Majestic',
+            { arabic: 'المتكبر', translations: { es: 'El Soberbio', fr: 'Le Tres Grand', en: 'The Majestic',
                     ar: 'المتكبر' } },
-            { arabic: 'الخالق', translations: { es: 'El Creador', fr: 'Le Créateur', en: 'The Creator', ar: 'الخالق' } },
-            { arabic: 'البارئ', translations: { es: 'El Formador', fr: 'Le Créateur parfait', en: 'The Maker',
+            { arabic: 'الخالق', translations: { es: 'El Creador', fr: 'Le Createur', en: 'The Creator', ar: 'الخالق' } },
+            { arabic: 'البارئ', translations: { es: 'El Formador', fr: 'Le Createur parfait', en: 'The Maker',
                     ar: 'البارئ' } },
             { arabic: 'المصور', translations: { es: 'El Modelador', fr: 'Le Donneur de forme', en: 'The Fashioner',
                     ar: 'المصور' } },
@@ -2272,11 +2264,11 @@
                     ar: 'العليم' } },
             { arabic: 'القابض', translations: { es: 'El Restringidor', fr: 'Celui qui retient', en: 'The Restrainer',
                     ar: 'القابض' } },
-            { arabic: 'الباسط', translations: { es: 'El Expansivo', fr: 'Celui qui étend', en: 'The Expander',
+            { arabic: 'الباسط', translations: { es: 'El Expansivo', fr: 'Celui qui etend', en: 'The Expander',
                     ar: 'الباسط' } },
             { arabic: 'الخافض', translations: { es: 'El Humillador', fr: 'Celui qui abaisse', en: 'The Abaser',
                     ar: 'الخافض' } },
-            { arabic: 'الرافع', translations: { es: 'El Elevador', fr: 'Celui qui élève', en: 'The Exalter',
+            { arabic: 'الرافع', translations: { es: 'El Elevador', fr: 'Celui qui eleve', en: 'The Exalter',
                     ar: 'الرافع' } },
             { arabic: 'المعز', translations: { es: 'El Honrador', fr: 'Celui qui donne la gloire', en: 'The Honorer',
                     ar: 'المعز' } },
@@ -2290,16 +2282,16 @@
             { arabic: 'اللطيف', translations: { es: 'El Sutil', fr: 'Le Subtil', en: 'The Subtle', ar: 'اللطيف' } },
             { arabic: 'الخبير', translations: { es: 'El Conocedor', fr: 'Le Connaisseur', en: 'The All-Aware',
                     ar: 'الخبير' } },
-            { arabic: 'الحليم', translations: { es: 'El Tolerante', fr: 'Le Clément', en: 'The Forbearing', ar: 'الحليم' } },
-            { arabic: 'العظيم', translations: { es: 'El Magnífico', fr: 'Le Très Grand', en: 'The Magnificent',
+            { arabic: 'الحليم', translations: { es: 'El Tolerante', fr: 'Le Clement', en: 'The Forbearing', ar: 'الحليم' } },
+            { arabic: 'العظيم', translations: { es: 'El Magnifico', fr: 'Le Tres Grand', en: 'The Magnificent',
                     ar: 'العظيم' } },
             { arabic: 'الغفور', translations: { es: 'El Indulgente', fr: 'Le Pardonneur', en: 'The Forgiving',
                     ar: 'الغفور' } },
             { arabic: 'الشكور', translations: { es: 'El Agradecido', fr: 'Le Reconnaissant', en: 'The Appreciative',
                     ar: 'الشكور' } },
-            { arabic: 'العلي', translations: { es: 'El Sublime', fr: 'Le Très Haut', en: 'The Most High', ar: 'العلي' } },
+            { arabic: 'العلي', translations: { es: 'El Sublime', fr: 'Le Tres Haut', en: 'The Most High', ar: 'العلي' } },
             { arabic: 'الكبير', translations: { es: 'El Grande', fr: 'Le Grand', en: 'The Great', ar: 'الكبير' } },
-            { arabic: 'الحفيظ', translations: { es: 'El Preservador', fr: 'Le Préservateur', en: 'The Preserver',
+            { arabic: 'الحفيظ', translations: { es: 'El Preservador', fr: 'Le Preservateur', en: 'The Preserver',
                     ar: 'الحفيظ' } },
             { arabic: 'المقيت', translations: { es: 'El Sustentador', fr: 'Celui qui donne la subsistance', en: 'The Sustainer',
                     ar: 'المقيت' } },
@@ -2307,9 +2299,9 @@
                     ar: 'الحسيب' } },
             { arabic: 'الجليل', translations: { es: 'El Majestuoso', fr: 'Le Majestueux', en: 'The Sublime',
                     ar: 'الجليل' } },
-            { arabic: 'الكريم', translations: { es: 'El Generoso', fr: 'Le Généreux', en: 'The Generous', ar: 'الكريم' } },
+            { arabic: 'الكريم', translations: { es: 'El Generoso', fr: 'Le Genereux', en: 'The Generous', ar: 'الكريم' } },
             { arabic: 'الرقيب', translations: { es: 'El Vigilante', fr: 'Le Vigilant', en: 'The Watchful', ar: 'الرقيب' } },
-            { arabic: 'المجيب', translations: { es: 'El Responsivo', fr: 'Celui qui répond', en: 'The Responsive',
+            { arabic: 'المجيب', translations: { es: 'El Responsivo', fr: 'Celui qui repond', en: 'The Responsive',
                     ar: 'المجيب' } },
             { arabic: 'الواسع', translations: { es: 'El Vasto', fr: 'Le Vaste', en: 'The Vast', ar: 'الواسع' } },
             { arabic: 'الحكيم', translations: { es: 'El Sabio', fr: 'Le Sage', en: 'The Wise', ar: 'الحكيم' } },
@@ -2317,17 +2309,17 @@
             { arabic: 'المجيد', translations: { es: 'El Glorioso', fr: 'Le Glorieux', en: 'The Glorious', ar: 'المجيد' } },
             { arabic: 'الباعث', translations: { es: 'El Resucitador', fr: 'Celui qui ressuscite', en: 'The Resurrector',
                     ar: 'الباعث' } },
-            { arabic: 'الشهيد', translations: { es: 'El Testigo', fr: 'Le Témoin', en: 'The Witness', ar: 'الشهيد' } },
-            { arabic: 'الحق', translations: { es: 'La Verdad', fr: 'La Vérité', en: 'The Truth', ar: 'الحق' } },
+            { arabic: 'الشهيد', translations: { es: 'El Testigo', fr: 'Le Temoin', en: 'The Witness', ar: 'الشهيد' } },
+            { arabic: 'الحق', translations: { es: 'La Verdad', fr: 'La Verite', en: 'The Truth', ar: 'الحق' } },
             { arabic: 'الوكيل', translations: { es: 'El Administrador', fr: 'Le Protecteur', en: 'The Trustee',
                     ar: 'الوكيل' } },
-            { arabic: 'القوي', translations: { es: 'El Fuerte', fr: 'Le Très Fort', en: 'The Strong', ar: 'القوي' } },
+            { arabic: 'القوي', translations: { es: 'El Fuerte', fr: 'Le Tres Fort', en: 'The Strong', ar: 'القوي' } },
             { arabic: 'المتين', translations: { es: 'El Firme', fr: 'Le Solide', en: 'The Firm', ar: 'المتين' } },
             { arabic: 'الولي', translations: { es: 'El Protector', fr: 'Le Protecteur', en: 'The Protector',
                     ar: 'الولي' } },
             { arabic: 'الحميد', translations: { es: 'El Digno de Alabanza', fr: 'Le Digne de Louange', en: 'The Praiseworthy',
                     ar: 'الحميد' } },
-            { arabic: 'المحصي', translations: { es: 'El Contador', fr: 'Celui qui dénombre', en: 'The Reckoner',
+            { arabic: 'المحصي', translations: { es: 'El Contador', fr: 'Celui qui denombre', en: 'The Reckoner',
                     ar: 'المحصي' } },
             { arabic: 'المبدئ', translations: { es: 'El Iniciador', fr: 'Celui qui commence', en: 'The Originator',
                     ar: 'المبدئ' } },
@@ -2343,9 +2335,9 @@
             { arabic: 'الواجد', translations: { es: 'El Encontrador', fr: 'Celui qui trouve', en: 'The Finder',
                     ar: 'الواجد' } },
             { arabic: 'الماجد', translations: { es: 'El Noble', fr: 'Le Glorieux', en: 'The Noble', ar: 'الماجد' } },
-            { arabic: 'الواحد', translations: { es: 'El Único', fr: 'L\'Unique', en: 'The One', ar: 'الواحد' } },
+            { arabic: 'الواحد', translations: { es: 'El Unico', fr: 'L\'Unique', en: 'The One', ar: 'الواحد' } },
             { arabic: 'الاحد', translations: { es: 'El Singular', fr: 'Le Seul', en: 'The Singular', ar: 'الاحد' } },
-            { arabic: 'الصمد', translations: { es: 'El Eterno', fr: 'L\'Éternel', en: 'The Eternal', ar: 'الصمد' } },
+            { arabic: 'الصمد', translations: { es: 'El Eterno', fr: 'L\'Eternel', en: 'The Eternal', ar: 'الصمد' } },
             { arabic: 'القادر', translations: { es: 'El Poderoso', fr: 'Le Capable', en: 'The Able', ar: 'القادر' } },
             { arabic: 'المقتدر', translations: { es: 'El Poderoso Absoluto', fr: 'Le Tout Puissant', en: 'The Powerful',
                     ar: 'المقتدر' } },
@@ -2354,12 +2346,12 @@
             { arabic: 'المؤخر', translations: { es: 'El Retrasador', fr: 'Celui qui retarde', en: 'The Delayer',
                     ar: 'المؤخر' } },
             { arabic: 'الأول', translations: { es: 'El Primero', fr: 'Le Premier', en: 'The First', ar: 'الأول' } },
-            { arabic: 'الأخر', translations: { es: 'El Último', fr: 'Le Dernier', en: 'The Last', ar: 'الأخر' } },
+            { arabic: 'الأخر', translations: { es: 'El Ultimo', fr: 'Le Dernier', en: 'The Last', ar: 'الأخر' } },
             { arabic: 'الظاهر', translations: { es: 'El Manifiesto', fr: 'L\'Apparent', en: 'The Manifest', ar: 'الظاهر' } },
-            { arabic: 'الباطن', translations: { es: 'El Oculto', fr: 'Le Caché', en: 'The Hidden', ar: 'الباطن' } },
+            { arabic: 'الباطن', translations: { es: 'El Oculto', fr: 'Le Cache', en: 'The Hidden', ar: 'الباطن' } },
             { arabic: 'الوالي', translations: { es: 'El Gobernador', fr: 'Le Protecteur', en: 'The Governor',
                     ar: 'الوالي' } },
-            { arabic: 'المتعالي', translations: { es: 'El Supremo', fr: 'Le Très-Haut', en: 'The Exalted', ar: 'المتعالي' } },
+            { arabic: 'المتعالي', translations: { es: 'El Supremo', fr: 'Le Tres-Haut', en: 'The Exalted', ar: 'المتعالي' } },
             { arabic: 'البر', translations: { es: 'El Bondadoso', fr: 'Le Bienfaisant', en: 'The Beneficent',
                     ar: 'البر' } },
             { arabic: 'التواب', translations: { es: 'El Aceptador del Arrepentimiento', fr: 'Celui qui accueille le repentir',
@@ -2367,33 +2359,33 @@
             { arabic: 'المنتقم', translations: { es: 'El Vengador', fr: 'Le Vengeur', en: 'The Avenger', ar: 'المنتقم' } },
             { arabic: 'العفو', translations: { es: 'El Perdonador', fr: 'Le Pardonneur', en: 'The Pardoner',
                     ar: 'العفو' } },
-            { arabic: 'الرؤوف', translations: { es: 'El Compasivo', fr: 'Le Très Compatissant', en: 'The Compassionate',
+            { arabic: 'الرؤوف', translations: { es: 'El Compasivo', fr: 'Le Tres Compatissant', en: 'The Compassionate',
                     ar: 'الرؤوف' } },
-            { arabic: 'مالك الملك', translations: { es: 'El Propietario de la Soberanía', fr: 'Le Maître de la Royauté',
+            { arabic: 'مالك الملك', translations: { es: 'El Propietario de la Soberania', fr: 'Le Maitre de la Royaute',
                     en: 'The Owner of Dominion', ar: 'مالك الملك' } },
-            { arabic: 'ذو الجلال والإكرام', translations: { es: 'El Dueño de la Majestad y la Generosidad',
+            { arabic: 'ذو الجلال والإكرام', translations: { es: 'El Dueno de la Majestad y la Generosidad',
                     fr: 'Le Possesseur de la Gloire et de l\'Honneur', en: 'The Possessor of Majesty and Generosity',
                     ar: 'ذو الجلال والإكرام' } },
-            { arabic: 'المقسط', translations: { es: 'El Equitativo', fr: 'L\'Équitable', en: 'The Equitable',
+            { arabic: 'المقسط', translations: { es: 'El Equitativo', fr: 'L\'Equitable', en: 'The Equitable',
                     ar: 'المقسط' } },
             { arabic: 'الجامع', translations: { es: 'El Reunidor', fr: 'Celui qui rassemble', en: 'The Gatherer',
                     ar: 'الجامع' } },
             { arabic: 'الغني', translations: { es: 'El Rico', fr: 'Le Riche', en: 'The Rich', ar: 'الغني' } },
             { arabic: 'المغني', translations: { es: 'El Enriquecedor', fr: 'Celui qui enrichit', en: 'The Enricher',
                     ar: 'المغني' } },
-            { arabic: 'المانع', translations: { es: 'El Impedidor', fr: 'Celui qui empêche', en: 'The Withholder',
+            { arabic: 'المانع', translations: { es: 'El Impedidor', fr: 'Celui qui empeche', en: 'The Withholder',
                     ar: 'المانع' } },
-            { arabic: 'الضار', translations: { es: 'El Dañador', fr: 'Celui qui cause le mal', en: 'The Distresser',
+            { arabic: 'الضار', translations: { es: 'El Danador', fr: 'Celui qui cause le mal', en: 'The Distresser',
                     ar: 'الضار' } },
             { arabic: 'النافع', translations: { es: 'El Benefactor', fr: 'Celui qui profite', en: 'The Benefiter',
                     ar: 'النافع' } },
-            { arabic: 'النور', translations: { es: 'La Luz', fr: 'La Lumière', en: 'The Light', ar: 'النور' } },
-            { arabic: 'الهادي', translations: { es: 'El Guía', fr: 'Le Guide', en: 'The Guide', ar: 'الهادي' } },
-            { arabic: 'البديع', translations: { es: 'El Primordial', fr: 'Le Créateur original', en: 'The Incomparable',
+            { arabic: 'النور', translations: { es: 'La Luz', fr: 'La Lumiere', en: 'The Light', ar: 'النور' } },
+            { arabic: 'الهادي', translations: { es: 'El Guia', fr: 'Le Guide', en: 'The Guide', ar: 'الهادي' } },
+            { arabic: 'البديع', translations: { es: 'El Primordial', fr: 'Le Createur original', en: 'The Incomparable',
                     ar: 'البديع' } },
-            { arabic: 'الباقي', translations: { es: 'El Eterno', fr: 'L\'Éternel', en: 'The Everlasting', ar: 'الباقي' } },
-            { arabic: 'الوارث', translations: { es: 'El Heredero', fr: 'L\'Héritier', en: 'The Inheritor', ar: 'الوارث' } },
-            { arabic: 'الرشيد', translations: { es: 'El Guía a la Rectitud', fr: 'Le Guide vers la droiture',
+            { arabic: 'الباقي', translations: { es: 'El Eterno', fr: 'L\'Eternel', en: 'The Everlasting', ar: 'الباقي' } },
+            { arabic: 'الوارث', translations: { es: 'El Heredero', fr: 'L\'Heritier', en: 'The Inheritor', ar: 'الوارث' } },
+            { arabic: 'الرشيد', translations: { es: 'El Guia a la Rectitud', fr: 'Le Guide vers la droiture',
                     en: 'The Guide to Right Path', ar: 'الرشيد' } },
             { arabic: 'الصبور', translations: { es: 'El Paciente', fr: 'Le Patient', en: 'The Patient', ar: 'الصبور' } }
         ];
@@ -2404,20 +2396,20 @@
         const stories = [{
             id: 'adam',
             arabicName: 'آدم وحواء',
-            title: { es: 'Adán y Eva', fr: 'Adam et Ève', en: 'Adam and Eve', ar: 'آدم وحواء' },
+            title: { es: 'Adan y Eva', fr: 'Adam et Eve', en: 'Adam and Eve', ar: 'آدم وحواء' },
             text: {
-                es: '<p>Allah creó a Adán de arcilla y le insufló Su espíritu. Los ángeles se postraron, excepto Iblis. Adán y Hawá vivieron en el Paraíso hasta que Iblis los engañó para comer del árbol prohibido. Se arrepintieron y Allah los perdonó, pero los envió a la Tierra como Su primera comunidad de creyentes.</p>',
-                fr: '<p>Allah créa Adam d\'argile et lui insuffla Son esprit. Les anges se prosternèrent, sauf Iblis. Adam et Hawâ vécurent au Paradis jusqu\'à ce qu\'Iblis les trompe pour manger de l\'arbre interdit. Ils se repentirent et Allah les pardonna, mais les envoya sur Terre comme Sa première communauté de croyants.</p>',
-                en: '<p>Allah created Adam from clay and breathed His spirit into him. The angels prostrated, except Iblis. Adam and Hawā lived in Paradise until Iblis deceived them into eating from the forbidden tree. They repented and Allah forgave them, but sent them to Earth as His first community of believers.</p>',
+                es: '<p>Allah creo a Adan de arcilla y le insuflo Su espiritu. Los angeles se postraron, excepto Iblis. Adan y Hawa vivieron en el Paraiso hasta que Iblis los engano para comer del arbol prohibido. Se arrepintieron y Allah los perdono, pero los envio a la Tierra como Su primera comunidad de creyentes.</p>',
+                fr: '<p>Allah crea Adam d\'argile et lui insuffla Son esprit. Les anges se prosternerent, sauf Iblis. Adam et Hawa vecurent au Paradis jusqu\'a ce qu\'Iblis les trompe pour manger de l\'arbre interdit. Ils se repentirent et Allah les pardonna, mais les envoya sur Terre comme Sa premiere communaute de croyants.</p>',
+                en: '<p>Allah created Adam from clay and breathed His spirit into him. The angels prostrated, except Iblis. Adam and Hawa lived in Paradise until Iblis deceived them into eating from the forbidden tree. They repented and Allah forgave them, but sent them to Earth as His first community of believers.</p>',
                 ar: '<p>خلق الله آدم من طين ونفخ فيه من روحه. سجدت الملائكة إلا إبليس. عاش آدم وحواء في الجنة حتى خدعهما إبليس ليأكلا من الشجرة المحرمة. تابا فتاب الله عليهما، لكن أرسلهما إلى الأرض كأول جماعة من المؤمنين.</p>'
             }
         }, {
             id: 'nuh',
             arabicName: 'نوح',
-            title: { es: 'Noé', fr: 'Noé', en: 'Noah', ar: 'نوح' },
+            title: { es: 'Noe', fr: 'Noe', en: 'Noah', ar: 'نوح' },
             text: {
-                es: '<p>Nuh fue enviado a su pueblo que adoraba ídolos. Durante 950 años los llamó al monoteísmo, pero solo unos pocos creyeron. Allah le ordenó construir un arca para salvar a los creyentes y a una pareja de cada especie. El diluvio cubrió la tierra y los incrédulos perecieron. El arca se posó en el monte Judi, y la humanidad renació.</p>',
-                fr: '<p>Nuh fut envoyé à son peuple qui adorait des idoles. Pendant 950 ans, il les appela au monothéisme, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche pour sauver les croyants et un couple de chaque espèce. Le déluge couvrit la terre et les mécréants périrent. L\'arche se posa sur le mont Judi, et l\'humanité renaquit.</p>',
+                es: '<p>Nuh fue enviado a su pueblo que adoraba idolos. Durante 950 anos los llamo al monoteismo, pero solo unos pocos creyeron. Allah le ordeno construir un arca para salvar a los creyentes y a una pareja de cada especie. El diluvio cubrio la tierra y los incredulos perecieron. El arca se poso en el monte Judi, y la humanidad renacio.</p>',
+                fr: '<p>Nuh fut envoye a son peuple qui adorait des idoles. Pendant 950 ans, il les appela au monotheisme, mais seuls quelques-uns crurent. Allah lui ordonna de construire une arche pour sauver les croyants et un couple de chaque espece. Le deluge couvrit la terre et les mecreants perirent. L\'arche se posa sur le mont Judi, et l\'humanite renaquit.</p>',
                 en: '<p>Nuh was sent to his people who worshipped idols. For 950 years he called them to monotheism, but only a few believed. Allah ordered him to build an ark to save the believers and a pair of every species. The flood covered the earth and the disbelievers perished. The ark settled on Mount Judi, and humanity was reborn.</p>',
                 ar: '<p>أرسل نوح إلى قومه الذين يعبدون الأصنام. دعاهم إلى التوحيد 950 عاماً، لكن آمن معه قليلون. أمره الله ببناء سفينة لإنقاذ المؤمنين وزوجين من كل نوع. غمر الطوفان الأرض وهلك الكافرون. استقرت السفينة على جبل الجودي، وولدت البشرية من جديد.</p>'
             }
@@ -2426,28 +2418,28 @@
             arabicName: 'إبراهيم',
             title: { es: 'Abraham', fr: 'Abraham', en: 'Abraham', ar: 'إبراهيم' },
             text: {
-                es: '<p>Ibrahim rompió los ídolos de su pueblo y fue arrojado al fuego, que Allah hizo frío y seguro. Allah le ordenó sacrificar a su hijo Ismail, pero lo reemplazó con un cordero. Construyó la Kaaba con su hijo, estableciendo el monoteísmo puro.</p>',
-                fr: '<p>Ibrahim brisa les idoles de son peuple et fut jeté au feu, qu\'Allah rendit frais et sûr. Allah lui ordonna de sacrifier son fils Ismaël, mais le remplaça par un bélier. Il construisit la Kaaba avec son fils, établissant le monothéisme pur.</p>',
+                es: '<p>Ibrahim rompio los idolos de su pueblo y fue arrojado al fuego, que Allah hizo frio y seguro. Allah le ordeno sacrificar a su hijo Ismail, pero lo reemplazo con un cordero. Construyo la Kaaba con su hijo, estableciendo el monoteismo puro.</p>',
+                fr: '<p>Ibrahim brisa les idoles de son peuple et fut jete au feu, qu\'Allah rendit frais et sur. Allah lui ordonna de sacrifier son fils Ismael, mais le remplace par un belier. Il construisit la Kaaba avec son fils, etablissant le monotheisme pur.</p>',
                 en: '<p>Ibrahim smashed his people\'s idols and was thrown into the fire, which Allah made cool and safe. Allah ordered him to sacrifice his son Isma\'il, but replaced him with a ram. He built the Kaaba with his son, establishing pure monotheism.</p>',
                 ar: '<p>حطم إبراهيم أصنام قومه وألقي في النار فجعلها الله برداً وسلاماً. أمره الله بذبح ابنه إسماعيل ففداه بكبش. بنى الكعبة مع ابنه، وأرسى التوحيد الخالص.</p>'
             }
         }, {
             id: 'musa',
             arabicName: 'موسى',
-            title: { es: 'Moisés', fr: 'Moïse', en: 'Moses', ar: 'موسى' },
+            title: { es: 'Moises', fr: 'Moise', en: 'Moses', ar: 'موسى' },
             text: {
-                es: '<p>Musa fue elegido para liberar a los israelitas de la opresión del Faraón. Realizó milagros como la vara que se convierte en serpiente y la división del mar. Recibió la Torá en el Sinaí y guió a su pueblo durante cuarenta años.</p>',
-                fr: '<p>Musa fut choisi pour libérer les Israélites de l\'oppression du Pharaon. Il accomplit des miracles comme le bâton se transformant en serpent et la division de la mer. Il reçut la Torah sur le Sinaï et guida son peuple pendant quarante ans.</p>',
+                es: '<p>Musa fue elegido para liberar a los israelitas de la opresion del Faraon. Realizo milagros como la vara que se convierte en serpiente y la division del mar. Recibio la Tora en el Sinai y guio a su pueblo durante cuarenta anos.</p>',
+                fr: '<p>Musa fut choisi pour liberer les Israelites de l\'oppression du Pharaon. Il accomplit des miracles comme le baton se transformant en serpent et la division de la mer. Il recut la Torah sur le Sinai et guida son peuple pendant quarante ans.</p>',
                 en: '<p>Musa was chosen to liberate the Israelites from Pharaoh\'s oppression. He performed miracles like the staff turning into a serpent and the parting of the sea. He received the Torah on Sinai and led his people for forty years.</p>',
                 ar: '<p>اختير موسى لتحرير بني إسرائيل من ظلم فرعون. أجرى معجزات كالعصا تتحول إلى ثعبان وشق البحر. تلقى التوراة في سيناء وقاد قومه أربعين سنة.</p>'
             }
         }, {
             id: 'isa',
             arabicName: 'عيسى',
-            title: { es: 'Jesús', fr: 'Jésus', en: 'Jesus', ar: 'عيسى' },
+            title: { es: 'Jesus', fr: 'Jesus', en: 'Jesus', ar: 'عيسى' },
             text: {
-                es: '<p>Isa nació milagrosamente de la virgen María. Realizó milagros con el permiso de Allah: curó ciegos, resucitó muertos y dio vida a figuras de barro. Fue elevado al cielo y regresará al final de los tiempos.</p>',
-                fr: '<p>Isa naquit miraculeusement de la vierge Marie. Il accomplit des miracles avec la permission d\'Allah : guérir les aveugles, ressusciter les morts et donner vie à des figures d\'argile. Il fut élevé au ciel et reviendra à la fin des temps.</p>',
+                es: '<p>Isa nacio milagrosamente de la virgen Maria. Realizo milagros con el permiso de Allah: curo ciegos, resucito muertos y dio vida a figuras de barro. Fue elevado al cielo y regresara al final de los tiempos.</p>',
+                fr: '<p>Isa naquit miraculeusement de la vierge Marie. Il accomplit des miracles avec la permission d\'Allah : guerir les aveugles, ressusciter les morts et donner vie a des figures d\'argile. Il fut eleve au ciel et reviendra a la fin des temps.</p>',
                 en: '<p>Isa was miraculously born to the virgin Mary. He performed miracles with Allah\'s permission: healing the blind, raising the dead, and giving life to clay figures. He was raised to heaven and will return at the end of times.</p>',
                 ar: '<p>ولد عيسى معجزة من مريم العذراء. أجرى معجزات بإذن الله: إبراء الأكمه والأبرص، وإحياء الموتى، ونفخ الطين. رفعه الله إليه وسيعود في آخر الزمان.</p>'
             }
@@ -2456,8 +2448,8 @@
             arabicName: 'محمد',
             title: { es: 'Muhammad', fr: 'Muhammad', en: 'Muhammad', ar: 'محمد' },
             text: {
-                es: '<p>Muhammad (SAW) es el último profeta, enviado a toda la humanidad. Recibió el Corán a través del ángel Gabriel. Enseñó el monoteísmo, la justicia y la compasión. Estableció la comunidad musulmana en Medina y conquistó pacíficamente Makkah.</p>',
-                fr: '<p>Muhammad (SAW) est le dernier prophète, envoyé à toute l\'humanité. Il reçut le Coran par l\'ange Gabriel. Il enseigna le monothéisme, la justice et la compassion. Il établit la communauté musulmane à Médine et conquit pacifiquement La Mecque.</p>',
+                es: '<p>Muhammad (SAW) es el ultimo profeta, enviado a toda la humanidad. Recibio el Coran a traves del angel Gabriel. Enseno el monoteismo, la justicia y la compasion. Establecio la comunidad musulmana en Medina y conquisto pacificamente Makkah.</p>',
+                fr: '<p>Muhammad (SAW) est le dernier prophete, envoye a toute l\'humanite. Il recut le Coran par l\'ange Gabriel. Il enseigna le monotheisme, la justice et la compassion. Il etablit la communaute musulmane a Medine et conquit pacifiquement La Mecque.</p>',
                 en: '<p>Muhammad (SAW) is the last prophet, sent to all of humanity. He received the Quran through the angel Gabriel. He taught monotheism, justice, and compassion. He established the Muslim community in Medina and peacefully conquered Makkah.</p>',
                 ar: '<p>محمد (صلى الله عليه وسلم) هو آخر نبي أرسل إلى البشرية. تلقى القرآن عن جبريل. علم التوحيد والعدل والرحمة. أقام المجتمع المسلم في المدينة وفتح مكة سلمياً.</p>'
             }
@@ -2502,6 +2494,145 @@
 
         function getCategoryTitle(catKey) {
             return getTranslation('cat_' + catKey);
+        }
+
+        // ================================================================
+        // FECHA ISLÁMICA (Hijri)
+        // ================================================================
+        function getIslamicDate() {
+            const today = new Date();
+            const islamicDate = new Intl.DateTimeFormat('ar-TN-u-ca-islamic', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(today);
+
+            const meses = {
+                'جانفي': 'Muharram',
+                'فيفري': 'Safar',
+                'مارس': 'Rabi\' al-Awwal',
+                'أفريل': 'Rabi\' al-Thani',
+                'ماي': 'Jumada al-Awwal',
+                'جوان': 'Jumada al-Thani',
+                'جويلية': 'Rajab',
+                'أوت': 'Sha\'ban',
+                'سبتمبر': 'Ramadan',
+                'أكتوبر': 'Shawwal',
+                'نوفمبر': 'Dhu al-Qi\'dah',
+                'ديسمبر': 'Dhu al-Hijjah'
+            };
+
+            const partes = islamicDate.split(' ');
+            const dia = partes[0];
+            const mesAr = partes[1];
+            const anio = partes[2];
+
+            const mesEs = meses[mesAr] || mesAr;
+
+            return { dia, mes: mesEs, anio };
+        }
+
+        function getFormattedIslamicDate(lang) {
+            const hijri = getIslamicDate();
+            const labels = {
+                es: { day: 'Dia', month: 'Mes', year: 'Ano' },
+                fr: { day: 'Jour', month: 'Mois', year: 'Annee' },
+                en: { day: 'Day', month: 'Month', year: 'Year' },
+                ar: { day: 'يوم', month: 'شهر', year: 'سنة' }
+            };
+            const l = labels[lang] || labels['es'];
+            return `${hijri.dia} ${hijri.mes} ${hijri.anio} H`;
+        }
+
+        // ================================================================
+        // ACTUALIZAR IDIOMA
+        // ================================================================
+        function updateUILanguage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                let text = getTranslation(key);
+                if (el.classList.contains('countdown-box') || el.id === 'countdownBox') {
+                    const span = el.querySelector('span');
+                    if (span) {
+                        const parts = el.childNodes;
+                        parts.forEach(node => {
+                            if (node.nodeType === 3) node.textContent = text;
+                        });
+                    } else {
+                        el.textContent = text;
+                    }
+                } else {
+                    el.textContent = text;
+                }
+            });
+
+            document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+
+            const surahSelect = document.getElementById('surahSelect');
+            const defaultOption = surahSelect.querySelector('option[value=""]');
+            if (defaultOption) defaultOption.textContent = getTranslation('select_surah');
+
+            updateLocationDisplay();
+            refreshCurrentTab();
+
+            if (document.getElementById('tab4').classList.contains('active')) {
+                actualizarInfoQibla();
+                dibujarBrújula();
+            }
+
+            const enableBtn = document.getElementById('enableAudioBtn');
+            if (adhanEnabled) {
+                enableBtn.textContent = getTranslation('adhan_enabled');
+                enableBtn.className = 'adhan-btn enabled';
+            } else {
+                enableBtn.textContent = getTranslation('adhan_enable');
+                enableBtn.className = 'adhan-btn';
+            }
+
+            if (!locationEnabled) {
+                document.getElementById('cookieWarning').style.display = 'block';
+                document.getElementById('cookieWarning').innerHTML =
+                    `<strong>Informacion</strong> ${getTranslation('cookies_required')}`;
+            } else {
+                document.getElementById('cookieWarning').style.display = 'none';
+            }
+        }
+
+        function updateLocationDisplay() {
+            const el = document.getElementById('fechaLocation');
+            const hijri = getFormattedIslamicDate(currentLang);
+            if (!currentCity) {
+                el.innerHTML = `<span class="dot"></span> ${getTranslation('loading')}`;
+                return;
+            }
+            const localeMap = { es: 'es-ES', fr: 'fr-FR', en: 'en-US', ar: 'ar-SA' };
+            const locale = localeMap[currentLang] || 'es-ES';
+            const dateStr = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+            el.innerHTML = `<span class="dot"></span> 📍 ${currentCity} · ${dateStr} <span class="date-separator">|</span> ${hijri}`;
+        }
+
+        function refreshCurrentTab() {
+            const activeTab = document.querySelector('.tab-content.active');
+            if (!activeTab) return;
+            const tabId = activeTab.id;
+            if (tabId === 'tab2') {
+                if (currentSurah) loadQuran(currentSurah);
+                else {
+                    document.getElementById('quranDisplay').innerHTML =
+                        `<p style="text-align:center;color:var(--text-secondary);">${getTranslation('quran_placeholder')}</p>`;
+                    document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
+                    document.getElementById('audioStatus').textContent = '';
+                }
+            } else if (tabId === 'tab3') {
+                loadDuaAccordion();
+            } else if (tabId === 'tab5') {
+                loadAllahNames();
+            } else if (tabId === 'tab4') {
+                actualizarInfoQibla();
+                dibujarBrújula();
+            } else if (tabId === 'tab6') {
+                loadStoriesAccordion();
+            }
         }
 
         // ================================================================
@@ -2581,94 +2712,6 @@
         }
 
         // ================================================================
-        // ACTUALIZAR IDIOMA
-        // ================================================================
-        function updateUILanguage() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                let text = getTranslation(key);
-                if (el.classList.contains('countdown-box') || el.id === 'countdownBox') {
-                    const span = el.querySelector('span');
-                    if (span) {
-                        const parts = el.childNodes;
-                        parts.forEach(node => {
-                            if (node.nodeType === 3) node.textContent = text;
-                        });
-                    } else {
-                        el.textContent = text;
-                    }
-                } else {
-                    el.textContent = text;
-                }
-            });
-
-            document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
-
-            const surahSelect = document.getElementById('surahSelect');
-            const defaultOption = surahSelect.querySelector('option[value=""]');
-            if (defaultOption) defaultOption.textContent = getTranslation('select_surah');
-
-            updateLocationDisplay();
-            refreshCurrentTab();
-
-            if (document.getElementById('tab4').classList.contains('active')) {
-                actualizarInfoQibla();
-                dibujarBrújula();
-            }
-
-            const enableBtn = document.getElementById('enableAudioBtn');
-            if (adhanEnabled) {
-                enableBtn.textContent = getTranslation('adhan_enabled');
-                enableBtn.className = 'adhan-btn enabled';
-            } else {
-                enableBtn.textContent = getTranslation('adhan_enable');
-                enableBtn.className = 'adhan-btn';
-            }
-
-            if (!locationEnabled) {
-                document.getElementById('cookieWarning').style.display = 'block';
-                document.getElementById('cookieWarning').innerHTML =
-                    `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
-            } else {
-                document.getElementById('cookieWarning').style.display = 'none';
-            }
-        }
-
-        function updateLocationDisplay() {
-            const el = document.getElementById('fechaLocation');
-            if (!currentCity) { el.innerHTML =
-                    `<span class="dot"></span> ${getTranslation('loading')}`; return; }
-            const localeMap = { es: 'es-ES', fr: 'fr-FR', en: 'en-US', ar: 'ar-SA' };
-            const locale = localeMap[currentLang] || 'es-ES';
-            const dateStr = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
-            el.innerHTML = `<span class="dot"></span> 📍 ${currentCity} · ${dateStr}`;
-        }
-
-        function refreshCurrentTab() {
-            const activeTab = document.querySelector('.tab-content.active');
-            if (!activeTab) return;
-            const tabId = activeTab.id;
-            if (tabId === 'tab2') {
-                if (currentSurah) loadQuran(currentSurah);
-                else {
-                    document.getElementById('quranDisplay').innerHTML =
-                        `<p style="text-align:center;color:var(--text-secondary);">${getTranslation('quran_placeholder')}</p>`;
-                    document.getElementById('surahInfo').textContent = getTranslation('select_surah_audio');
-                    document.getElementById('audioStatus').textContent = '';
-                }
-            } else if (tabId === 'tab3') {
-                loadDuaAccordion();
-            } else if (tabId === 'tab5') {
-                loadAllahNames();
-            } else if (tabId === 'tab4') {
-                actualizarInfoQibla();
-                dibujarBrújula();
-            } else if (tabId === 'tab6') {
-                loadStoriesAccordion();
-            }
-        }
-
-        // ================================================================
         // COOKIES
         // ================================================================
         function checkCookies() {
@@ -2678,6 +2721,7 @@
                 cookiesAccepted = true;
                 locationEnabled = true;
                 banner.classList.remove('visible');
+                habilitarFuncionalidad();
                 if (!restorePreferences()) getUserLocation();
             } else if (stored === 'false') {
                 cookiesAccepted = false;
@@ -2696,7 +2740,8 @@
             document.getElementById('fechaLocation').innerHTML =
                 `<span class="dot"></span> 📍 ${getTranslation('cookies_required')}`;
             document.getElementById('cookieWarning').style.display = 'block';
-            document.getElementById('cookieWarning').innerHTML = `<strong>🍪</strong> ${getTranslation('cookies_required')}`;
+            document.getElementById('cookieWarning').innerHTML =
+                `<strong>Informacion</strong> ${getTranslation('cookies_required')}`;
             document.getElementById('prayerGrid').style.display = 'none';
             document.getElementById('countdownTimer').textContent = '--:--:--';
             document.getElementById('searchBtn').disabled = true;
