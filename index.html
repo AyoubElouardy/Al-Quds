@@ -612,7 +612,7 @@
         }
 
         /* ================================================================
-           DUAS
+           DUAS  (✅ MODIFICADO: grid-template-rows en vez de max-height)
            ================================================================ */
         .dua-accordion {
             margin-top: 4px;
@@ -663,15 +663,23 @@
             transform: rotate(180deg);
         }
 
+        /* ✅ NUEVO sistema de acordeón con grid-template-rows */
         .dua-category-body {
-            max-height: 0;
+            display: grid;
+            grid-template-rows: 0fr;
             overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0 16px;
         }
 
+        .dua-category-body > .dua-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
+
         .dua-category-item.active .dua-category-body {
-            max-height: 6000px;
+            grid-template-rows: 1fr;
             padding: 0 16px 16px 16px;
         }
 
@@ -714,7 +722,7 @@
         }
 
         /* ================================================================
-           HISTORIAS
+           HISTORIAS  (✅ MODIFICADO: grid-template-rows en vez de max-height)
            ================================================================ */
         .stories-accordion {
             margin-top: 4px;
@@ -774,15 +782,23 @@
             transform: rotate(180deg);
         }
 
+        /* ✅ NUEVO sistema de acordeón con grid-template-rows */
         .story-body {
-            max-height: 0;
+            display: grid;
+            grid-template-rows: 0fr;
             overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0 16px;
         }
 
+        .story-body > .story-text {
+            min-height: 0;
+            overflow: hidden;
+        }
+
         .story-item.active .story-body {
-            max-height: 6000px;
+            grid-template-rows: 1fr;
             padding: 0 16px 16px 16px;
         }
 
@@ -4276,7 +4292,7 @@
         });
 
         // ================================================================
-        // DUAS
+        // DUAS  (✅ MODIFICADO: envuelto con .dua-inner)
         // ================================================================
         function loadDuaAccordion() {
             const container = document.getElementById('duaAccordion');
@@ -4293,6 +4309,7 @@
                             <span class="cat-toggle">▼</span>
                         </div>
                         <div class="dua-category-body">
+                            <div class="dua-inner">
                 `;
                 filtered.forEach(dua => {
                     const originalIndex = duas.indexOf(dua);
@@ -4306,7 +4323,7 @@
                         </div>
                     `;
                 });
-                html += `</div></div>`;
+                html += `</div></div></div>`;
             });
 
             container.innerHTML = html;
@@ -4324,7 +4341,7 @@
         }
 
         // ================================================================
-        // HISTORIAS (MODIFICADO: SOLO UNA ABIERTA A LA VEZ)
+        // HISTORIAS (✅ MODIFICADO: ya funciona con grid-template-rows sin tocar JS)
         // ================================================================
         function loadStoriesAccordion() {
             const container = document.getElementById('storiesAccordion');
