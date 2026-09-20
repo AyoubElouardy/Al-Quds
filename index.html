@@ -414,6 +414,78 @@
             cursor: not-allowed;
             transform: none;
         }
+    /* ================================================================
+   BOTÓN DE GEOLOCALIZACIÓN
+   ================================================================ */
+.geo-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 11px 18px;
+    border-radius: 60px;
+    border: 1px solid var(--gold);
+    background: rgba(212, 175, 55, 0.06);
+    color: var(--gold);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all var(--transition);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.geo-btn:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.12);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.12);
+    transform: translateY(-1px);
+}
+
+.geo-btn:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.geo-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.geo-btn .geo-icon {
+    font-size: 1rem;
+    line-height: 1;
+    animation: pulse-dot 2s infinite;
+}
+
+.geo-btn.loading .geo-icon {
+    animation: spin 1s linear infinite;
+    font-size: 0;
+}
+
+.geo-btn.loading .geo-icon::before {
+    content: '⏳';
+    font-size: 1rem;
+}
+
+.geo-btn.success {
+    border-color: #00e676;
+    color: #00e676;
+    background: rgba(0, 230, 118, 0.06);
+}
+
+.geo-btn.error {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.06);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
         /* ================================================================
            COUNTDOWN
@@ -1546,9 +1618,13 @@
         <!-- ===== TAB 1: REZOS ===== -->
         <section id="tab1" class="tab-content active" role="tabpanel">
             <div class="city-input">
-                <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" aria-label="Ciudad" />
-                <button id="searchBtn" data-i18n="search_btn">Buscar</button>
-            </div>
+    <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" aria-label="Ciudad" />
+    <button id="searchBtn" data-i18n="search_btn">Buscar</button>
+</div>
+<button class="geo-btn" id="geoBtn" title="Usar mi ubicación actual">
+    <span class="geo-icon">📍</span>
+    <span data-i18n="geo_btn">Usar mi ubicación</span>
+</button>
 
             <div class="countdown-box" data-i18n="next_prayer">
                 Proximo rezo: <span id="countdownTimer">--:--:--</span>
@@ -1712,6 +1788,11 @@
                 tab_allah: 'Nombres',
                 tab_stories: 'Historias',
                 search_btn: 'Buscar',
+                geo_btn: 'Usar mi ubicación',
+                geo_btn_loading: 'Detectando...',
+                geo_btn_success: '¡Ubicación actualizada!',
+                geo_btn_error: 'No se pudo obtener',
+                geo_btn_denied: 'Permiso denegado',
                 next_prayer: 'Proximo rezo: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1775,6 +1856,11 @@
                 tab_allah: 'Noms',
                 tab_stories: 'Histoires',
                 search_btn: 'Chercher',
+                geo_btn: 'Utiliser ma position',
+                geo_btn_loading: 'Détection...',
+                geo_btn_success: 'Position mise à jour !',
+                geo_btn_error: 'Impossible d\'obtenir',
+                geo_btn_denied: 'Permission refusée',
                 next_prayer: 'Prochaine priere: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1838,6 +1924,11 @@
                 tab_allah: 'Names',
                 tab_stories: 'Stories',
                 search_btn: 'Search',
+                geo_btn: 'Use my location',
+                geo_btn_loading: 'Detecting...',
+                geo_btn_success: 'Location updated!',
+                geo_btn_error: 'Could not get',
+                geo_btn_denied: 'Permission denied',
                 next_prayer: 'Next prayer: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1901,6 +1992,11 @@
                 tab_allah: 'الأسماء',
                 tab_stories: 'قصص',
                 search_btn: 'بحث',
+                geo_btn: 'استخدم موقعي',
+                geo_btn_loading: 'جاري الكشف...',
+                geo_btn_success: 'تم تحديث الموقع!',
+                geo_btn_error: 'تعذر الحصول',
+                geo_btn_denied: 'تم رفض الإذن',
                 next_prayer: 'الصلاة القادمة: ',
                 prayer_fajr: 'الفجر',
                 prayer_dhuhr: 'الظهر',
@@ -9531,6 +9627,15 @@
 
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
 
+            // Actualizar texto del botón de ubicación si no está en estado loading/success/error
+const geoBtn = document.getElementById('geoBtn');
+if (geoBtn && !geoBtn.classList.contains('loading') &&
+    !geoBtn.classList.contains('success') &&
+    !geoBtn.classList.contains('error')) {
+    const geoTextEl = geoBtn.querySelector('[data-i18n]');
+    if (geoTextEl) geoTextEl.textContent = getTranslation('geo_btn');
+}
+
             const surahSelect = document.getElementById('surahSelect');
             const defaultOption = surahSelect.querySelector('option[value=""]');
             if (defaultOption) defaultOption.textContent = getTranslation('select_surah');
@@ -10083,6 +10188,79 @@ function setFallbackLocation() {
                 })
                 .catch(() => alert(getTranslation('search_error')));
         });
+
+        // ================================================================
+// BOTÓN MANUAL DE GEOLOCALIZACIÓN
+// ================================================================
+document.getElementById('geoBtn').addEventListener('click', function() {
+    const btn = this;
+    const textEl = btn.querySelector('[data-i18n]');
+
+    // Estado: cargando
+    btn.disabled = true;
+    btn.classList.remove('success', 'error');
+    btn.classList.add('loading');
+    if (textEl) textEl.textContent = getTranslation('geo_btn_loading');
+
+    if (!navigator.geolocation) {
+        btn.classList.remove('loading');
+        btn.classList.add('error');
+        if (textEl) textEl.textContent = getTranslation('geo_btn_error');
+        setTimeout(resetGeoBtn, 3000);
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            userLat = pos.coords.latitude;
+            userLng = pos.coords.longitude;
+            locationEnabled = true;
+            cookiesAccepted = true;
+            habilitarFuncionalidad();
+
+            // Actualizar ubicación
+            reverseGeocode(userLat, userLng);
+            calcularQibla(userLat, userLng);
+
+            // Guardar preferencias
+            localStorage.setItem('cookiesAccepted', 'true');
+            saveCurrentPreferences();
+
+            // Ocultar banner de cookies si estuviera visible
+            document.getElementById('cookieBanner').classList.remove('visible');
+
+            // Estado: éxito
+            btn.classList.remove('loading');
+            btn.classList.add('success');
+            if (textEl) textEl.textContent = getTranslation('geo_btn_success');
+            setTimeout(resetGeoBtn, 2500);
+        },
+        (err) => {
+            console.warn('Error geolocalización:', err.message);
+            btn.classList.remove('loading');
+            btn.classList.add('error');
+
+            // Mensaje según el tipo de error
+            if (err.code === err.PERMISSION_DENIED) {
+                if (textEl) textEl.textContent = getTranslation('geo_btn_denied');
+            } else {
+                if (textEl) textEl.textContent = getTranslation('geo_btn_error');
+            }
+            setTimeout(resetGeoBtn, 3000);
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+    );
+
+    function resetGeoBtn() {
+        btn.disabled = false;
+        btn.classList.remove('loading', 'success', 'error');
+        if (textEl) textEl.textContent = getTranslation('geo_btn');
+    }
+});
 
         // ================================================================
         // INTERACCIÓN DEL USUARIO PARA ADHAN
