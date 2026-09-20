@@ -9679,26 +9679,85 @@
         // COOKIES
         // ================================================================
         function checkCookies() {
-            const stored = localStorage.getItem('cookiesAccepted');
-            const banner = document.getElementById('cookieBanner');
-            if (stored === 'true') {
-                cookiesAccepted = true;
-                locationEnabled = true;
-                banner.classList.remove('visible');
-                habilitarFuncionalidad();
-                if (!restorePreferences()) getUserLocation();
-            } else if (stored === 'false') {
-                cookiesAccepted = false;
-                locationEnabled = false;
-                banner.classList.remove('visible');
-                mostrarMensajeSinCookies();
-            } else {
-                cookiesAccepted = false;
-                locationEnabled = false;
-                banner.classList.add('visible');
-                mostrarMensajeSinCookies();
-            }
+    const stored = localStorage.getItem('cookiesAccepted');
+    const banner = document.getElementById('cookieBanner');
+    if (stored === 'true') {
+        cookiesAccepted = true;
+        locationEnabled = true;
+        banner.classList.remove('visible');
+        habilitarFuncionalidad();
+        // Intentar restaurar preferencias guardadas o detectar ubicación
+        if (!restorePreferences()) {
+            getUserLocation();
         }
+    } else if (stored === 'false') {
+        cookiesAccepted = false;
+        locationEnabled = false;
+        banner.classList.remove('visible');
+        mostrarMensajeSinCookies();
+        // Aun así intentar obtener ubicación por GPS si el navegador lo permite
+        autoDetectLocationSilently();
+    } else {
+        // Primera visita: pedir ubicación inmediatamente y mostrar banner como respaldo
+        cookiesAccepted = false;
+        locationEnabled = false;
+        banner.classList.add('visible');
+        mostrarMensajeSinCookies();
+        // Solicitar ubicación de inmediato
+        autoDetectLocationSilently();
+    }
+}
+        // ================================================================
+// DETECCIÓN AUTOMÁTICA DE UBICACIÓN AL ENTRAR
+// ================================================================
+function autoDetectLocationSilently() {
+    if (!navigator.geolocation) {
+        // Sin soporte de geolocalización: usar Madrid por defecto
+        setFallbackLocation();
+        return;
+    }
+
+    // Mostrar estado "detectando ubicación…"
+    document.getElementById('fechaLocation').innerHTML =
+        `<span class="dot"></span> 📍 ${getTranslation('loading')}`;
+
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            userLat = pos.coords.latitude;
+            userLng = pos.coords.longitude;
+            // Aunque las cookies no estén aceptadas, permitimos cargar los horarios
+            locationEnabled = true;
+            habilitarFuncionalidad();
+            reverseGeocode(userLat, userLng);
+            calcularQibla(userLat, userLng);
+            // Guardar si el usuario ya había aceptado cookies
+            if (cookiesAccepted) saveCurrentPreferences();
+        },
+        (err) => {
+            // El usuario denegó el permiso o hubo un error
+            console.warn('Geolocalización no disponible:', err.message);
+            setFallbackLocation();
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 600000 // 10 minutos de caché
+        }
+    );
+}
+
+function setFallbackLocation() {
+    // Ubicación por defecto: Madrid
+    userLat = 40.4165;
+    userLng = -3.7026;
+    currentCity = 'Madrid';
+    locationEnabled = true;
+    habilitarFuncionalidad();
+    document.getElementById('cityInput').value = 'Madrid';
+    updateLocationDisplay();
+    fetchPrayerTimes(userLat, userLng);
+    calcularQibla(userLat, userLng);
+}
 
         function mostrarMensajeSinCookies() {
             document.getElementById('fechaLocation').innerHTML =
@@ -9721,15 +9780,24 @@
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
         }
 
-        function acceptCookies() {
-            localStorage.setItem('cookiesAccepted', 'true');
-            cookiesAccepted = true;
-            locationEnabled = true;
-            document.getElementById('cookieBanner').classList.remove('visible');
-            habilitarFuncionalidad();
-            saveCurrentPreferences();
-            getUserLocation();
-        }
+       function acceptCookies() {
+    localStorage.setItem('cookiesAccepted', 'true');
+    cookiesAccepted = true;
+    locationEnabled = true;
+    document.getElementById('cookieBanner').classList.remove('visible');
+    habilitarFuncionalidad();
+    saveCurrentPreferences();
+    // Si ya tenemos coordenadas detectadas, no volver a pedirlas
+    if (userLat && userLng && currentCity && currentCity !== 'Madrid') {
+        // Ya tenemos ubicación, solo actualizar horarios
+        fetchPrayerTimes(userLat, userLng);
+        calcularQibla(userLat, userLng);
+        updateLocationDisplay();
+    } else {
+        // Si no, intentar obtenerla
+        getUserLocation();
+    }
+}
 
         function rejectCookies() {
             localStorage.setItem('cookiesAccepted', 'false');
@@ -10567,20 +10635,22 @@
         document.getElementById('rejectCookies').addEventListener('click', rejectCookies);
 
         window.onload = function() {
-            checkCookies();
-            loadSurahList();
-            updateUILanguage();
-            loadDuaAccordion();
-            loadStoriesAccordion();
-            loadAdhan();
-            setTimeout(() => { if (qiblaAngle !== 0) dibujarBrújula(); }, 500);
-            setTimeout(() => {
-                if (userInteracted) {
-                    adhanEnabled = true;
-                    document.getElementById('enableAudioBtn').style.display = 'none';
-                }
-            }, 1000);
-        };
+    // 1. Primero: iniciar detección de ubicación automática
+    checkCookies();
+    // 2. Cargar el resto de la interfaz
+    loadSurahList();
+    updateUILanguage();
+    loadDuaAccordion();
+    loadStoriesAccordion();
+    loadAdhan();
+    setTimeout(() => { if (qiblaAngle !== 0) dibujarBrújula(); }, 500);
+    setTimeout(() => {
+        if (userInteracted) {
+            adhanEnabled = true;
+            document.getElementById('enableAudioBtn').style.display = 'none';
+        }
+    }, 1000);
+};
 
         window.addEventListener('resize', () => {
             if (document.getElementById('tab4').classList.contains('active')) dibujarBrújula();
