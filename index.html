@@ -415,6 +415,20 @@
             transform: none;
         }
 
+        .city-input .location-btn {
+            padding-inline: 14px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            box-shadow: none;
+            white-space: nowrap;
+        }
+
+        .city-input .location-btn:hover:not(:disabled) {
+            background: var(--gold-dim);
+            box-shadow: none;
+        }
+
         /* ================================================================
            COUNTDOWN
            ================================================================ */
@@ -1548,6 +1562,7 @@
             <div class="city-input">
                 <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" aria-label="Ciudad" />
                 <button id="searchBtn" data-i18n="search_btn">Buscar</button>
+                <button id="detectLocationBtn" class="location-btn" type="button" data-i18n="detect_location" aria-label="Usar mi ubicación">Mi ubicación</button>
             </div>
 
             <div class="countdown-box" data-i18n="next_prayer">
@@ -1712,6 +1727,9 @@
                 tab_allah: 'Nombres',
                 tab_stories: 'Historias',
                 search_btn: 'Buscar',
+                detect_location: 'Mi ubicación',
+                locating: 'Detectando tu ubicación…',
+                location_unavailable: 'No se pudo detectar tu ubicación. Busca tu ciudad.',
                 next_prayer: 'Proximo rezo: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1775,6 +1793,9 @@
                 tab_allah: 'Noms',
                 tab_stories: 'Histoires',
                 search_btn: 'Chercher',
+                detect_location: 'Ma position',
+                locating: 'Recherche de votre position…',
+                location_unavailable: 'Position introuvable. Recherchez votre ville.',
                 next_prayer: 'Prochaine priere: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1838,6 +1859,9 @@
                 tab_allah: 'Names',
                 tab_stories: 'Stories',
                 search_btn: 'Search',
+                detect_location: 'My location',
+                locating: 'Finding your location…',
+                location_unavailable: 'We could not find your location. Search for your city.',
                 next_prayer: 'Next prayer: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1901,6 +1925,9 @@
                 tab_allah: 'الأسماء',
                 tab_stories: 'قصص',
                 search_btn: 'بحث',
+                detect_location: 'موقعي',
+                locating: 'جارٍ تحديد موقعك…',
+                location_unavailable: 'تعذر تحديد موقعك. ابحث عن مدينتك.',
                 next_prayer: 'الصلاة القادمة: ',
                 prayer_fajr: 'الفجر',
                 prayer_dhuhr: 'الظهر',
@@ -9439,6 +9466,7 @@
         let deviceHeading = 0;
         let headingAvailable = false;
         let adhanEnabled = false;
+        let prayerTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         // ================================================================
         // FUNCIONES DE INTERNACIONALIZACIÓN
@@ -9711,53 +9739,54 @@
 // DETECCIÓN AUTOMÁTICA DE UBICACIÓN AL ENTRAR
 // ================================================================
 function autoDetectLocationSilently() {
-    if (!navigator.geolocation) {
-        // Sin soporte de geolocalización: usar Madrid por defecto
-        setFallbackLocation();
-        return;
-    }
-
-    // Mostrar estado "detectando ubicación…"
-    document.getElementById('fechaLocation').innerHTML =
-        `<span class="dot"></span> 📍 ${getTranslation('loading')}`;
+    if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            userLat = pos.coords.latitude;
-            userLng = pos.coords.longitude;
-            // Aunque las cookies no estén aceptadas, permitimos cargar los horarios
-            locationEnabled = true;
-            habilitarFuncionalidad();
-            reverseGeocode(userLat, userLng);
-            calcularQibla(userLat, userLng);
-            // Guardar si el usuario ya había aceptado cookies
-            if (cookiesAccepted) saveCurrentPreferences();
-        },
-        (err) => {
-            // El usuario denegó el permiso o hubo un error
-            console.warn('Geolocalización no disponible:', err.message);
-            setFallbackLocation();
-        },
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 600000 // 10 minutos de caché
-        }
+        applyDetectedLocation,
+        (err) => console.warn('Geolocalización no disponible:', err.message),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
     );
 }
 
-function setFallbackLocation() {
-    // Ubicación por defecto: Madrid
-    userLat = 40.4165;
-    userLng = -3.7026;
-    currentCity = 'Madrid';
+function requestUserLocation() {
+    const button = document.getElementById('detectLocationBtn');
+    if (!navigator.geolocation) {
+        alert(getTranslation('location_unavailable'));
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = getTranslation('locating');
+    document.getElementById('fechaLocation').innerHTML =
+        `<span class="dot"></span> 📍 ${getTranslation('locating')}`;
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            applyDetectedLocation(position);
+            button.disabled = false;
+            button.textContent = getTranslation('detect_location');
+        },
+        (err) => {
+            console.warn('Geolocalización no disponible:', err.message);
+            button.disabled = false;
+            button.textContent = getTranslation('detect_location');
+            updateLocationDisplay();
+            alert(getTranslation('location_unavailable'));
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+}
+
+function applyDetectedLocation(pos) {
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
     locationEnabled = true;
     habilitarFuncionalidad();
-    document.getElementById('cityInput').value = 'Madrid';
-    updateLocationDisplay();
-    fetchPrayerTimes(userLat, userLng);
+    reverseGeocode(userLat, userLng);
     calcularQibla(userLat, userLng);
+    if (cookiesAccepted) saveCurrentPreferences();
 }
+
 
         function mostrarMensajeSinCookies() {
             document.getElementById('fechaLocation').innerHTML =
@@ -9767,15 +9796,17 @@ function setFallbackLocation() {
                 `<strong>Informacion</strong> ${getTranslation('cookies_required')}`;
             document.getElementById('prayerGrid').style.display = 'none';
             document.getElementById('countdownTimer').textContent = '--:--:--';
-            document.getElementById('searchBtn').disabled = true;
-            document.getElementById('cityInput').disabled = true;
-            document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
+            document.getElementById('searchBtn').disabled = false;
+            document.getElementById('detectLocationBtn').disabled = false;
+            document.getElementById('cityInput').disabled = false;
+            document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
         }
 
         function habilitarFuncionalidad() {
             document.getElementById('prayerGrid').style.display = 'grid';
             document.getElementById('cookieWarning').style.display = 'none';
             document.getElementById('searchBtn').disabled = false;
+            document.getElementById('detectLocationBtn').disabled = false;
             document.getElementById('cityInput').disabled = false;
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
         }
@@ -9892,32 +9923,7 @@ function setFallbackLocation() {
         // UBICACIÓN
         // ================================================================
         function getUserLocation() {
-            if (!cookiesAccepted || !locationEnabled) { mostrarMensajeSinCookies(); return; }
-            if (restorePreferences()) return;
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        userLat = pos.coords.latitude;
-                        userLng = pos.coords.longitude;
-                        reverseGeocode(userLat, userLng);
-                        calcularQibla(userLat, userLng);
-                        if (cookiesAccepted) saveCurrentPreferences();
-                    },
-                    () => {
-                        document.getElementById('fechaLocation').innerHTML =
-                            `<span class="dot"></span> 📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
-                        fetchPrayerTimes(userLat, userLng);
-                        calcularQibla(userLat, userLng);
-                        habilitarFuncionalidad();
-                    }
-                );
-            } else {
-                document.getElementById('fechaLocation').innerHTML =
-                    `<span class="dot"></span> 📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
-                fetchPrayerTimes(userLat, userLng);
-                calcularQibla(userLat, userLng);
-                habilitarFuncionalidad();
-            }
+            requestUserLocation();
         }
 
         function reverseGeocode(lat, lng) {
@@ -9954,12 +9960,14 @@ function setFallbackLocation() {
                 .then(data => {
                     if (data.code === 200) {
                         const timings = data.data.timings;
+                        prayerTimeZone = data.data.meta?.timezone || prayerTimeZone;
+                        const clockTime = value => String(value).match(/\d{1,2}:\d{2}/)?.[0] || '--:--';
                         prayerTimes = {
-                            Fajr: timings.Fajr,
-                            Dhuhr: timings.Dhuhr,
-                            Asr: timings.Asr,
-                            Maghrib: timings.Maghrib,
-                            Isha: timings.Isha
+                            Fajr: clockTime(timings.Fajr),
+                            Dhuhr: clockTime(timings.Dhuhr),
+                            Asr: clockTime(timings.Asr),
+                            Maghrib: clockTime(timings.Maghrib),
+                            Isha: clockTime(timings.Isha)
                         };
                         prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
                         startCountdownAndAdhan();
@@ -9978,32 +9986,20 @@ function setFallbackLocation() {
 
             function updateTimer() {
                 const now = new Date();
-                const todayStr = now.toISOString().split('T')[0];
-
-                let prayerDates = prayerIds.map(id => {
+                const cityClock = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: prayerTimeZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+                }).formatToParts(now);
+                const cityPart = type => Number(cityClock.find(part => part.type === type)?.value || 0);
+                const currentSeconds = cityPart('hour') * 3600 + cityPart('minute') * 60 + cityPart('second');
+                const prayerSeconds = id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
-                    return { id, time: new Date(`${todayStr}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`) };
-                });
-                prayerDates.sort((a, b) => a.time - b.time);
+                    return h * 3600 + m * 60;
+                };
+                const nextId = prayerIds.find(id => prayerSeconds(id) > currentSeconds) || prayerIds[0];
 
-                let next = null;
-                for (let p of prayerDates) {
-                    if (p.time > now) { next = p; break; }
-                }
-
-                if (!next && prayerDates.length > 0) {
-                    const first = prayerDates[0];
-                    const tomorrow = new Date(now);
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    const [h, m] = prayerTimes[first.id].split(':').map(Number);
-                    tomorrow.setHours(h, m, 0, 0);
-                    next = { id: first.id, time: tomorrow };
-                }
-
-                if (next) {
-                    let diff = (next.time - now) / 1000;
-                    if (diff < 0) diff = 0;
-                    if (diff > 86400) diff = 86400;
+                if (nextId) {
+                    let diff = prayerSeconds(nextId) - currentSeconds;
+                    if (diff <= 0) diff += 86400;
                     const hrs = Math.floor(diff / 3600);
                     const mins = Math.floor((diff % 3600) / 60);
                     const secs = Math.floor(diff % 60);
@@ -10013,7 +10009,7 @@ function setFallbackLocation() {
                     document.getElementById('countdownTimer').innerText = '00:00:00';
                 }
 
-                const currentMin = now.getHours() * 60 + now.getMinutes();
+                const currentMin = cityPart('hour') * 60 + cityPart('minute');
                 prayerIds.forEach(id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
                     const prayerMin = h * 60 + m;
@@ -10036,8 +10032,11 @@ function setFallbackLocation() {
 
         function highlightCurrentPrayer() {
             if (!locationEnabled || Object.keys(prayerTimes).length === 0) return;
-            const now = new Date();
-            const currentMin = now.getHours() * 60 + now.getMinutes();
+            const cityClock = new Intl.DateTimeFormat('en-GB', {
+                timeZone: prayerTimeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+            }).formatToParts(new Date());
+            const currentMin = Number(cityClock.find(part => part.type === 'hour')?.value || 0) * 60 +
+                Number(cityClock.find(part => part.type === 'minute')?.value || 0);
             let activeId = null;
             let minDiff = Infinity;
 
@@ -10062,7 +10061,6 @@ function setFallbackLocation() {
         // BÚSQUEDA DE CIUDAD
         // ================================================================
         document.getElementById('searchBtn').addEventListener('click', function() {
-            if (!cookiesAccepted || !locationEnabled) { alert(getTranslation('cookies_required')); return; }
             const city = document.getElementById('cityInput').value.trim();
             if (!city) return;
             const sanitized = encodeURIComponent(city.replace(/[<>]/g, ''));
@@ -10075,14 +10073,18 @@ function setFallbackLocation() {
                         userLat = lat;
                         userLng = lng;
                         currentCity = data[0].display_name.split(',')[0];
+                        locationEnabled = true;
                         updateLocationDisplay();
                         fetchPrayerTimes(lat, lng);
                         calcularQibla(lat, lng);
+                        habilitarFuncionalidad();
                         if (cookiesAccepted) saveCurrentPreferences();
                     } else alert(getTranslation('city_not_found'));
                 })
                 .catch(() => alert(getTranslation('search_error')));
         });
+
+        document.getElementById('detectLocationBtn').addEventListener('click', requestUserLocation);
 
         // ================================================================
         // INTERACCIÓN DEL USUARIO PARA ADHAN
