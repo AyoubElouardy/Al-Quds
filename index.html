@@ -415,6 +415,20 @@
             transform: none;
         }
 
+        .city-input .location-btn {
+            padding-inline: 14px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            box-shadow: none;
+            white-space: nowrap;
+        }
+
+        .city-input .location-btn:hover:not(:disabled) {
+            background: var(--gold-dim);
+            box-shadow: none;
+        }
+
         /* ================================================================
            COUNTDOWN
            ================================================================ */
@@ -1433,6 +1447,26 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .city-input {
+                flex-wrap: wrap;
+                border-radius: var(--radius-sm);
+                gap: 6px;
+            }
+
+            .city-input input {
+                flex: 1 0 100%;
+                min-height: 44px;
+            }
+
+            .city-input button,
+            .city-input .location-btn {
+                flex: 1 1 calc(50% - 3px);
+                min-height: 44px;
+                padding-inline: 10px;
+            }
+        }
+
         @media (max-width: 380px) {
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1548,6 +1582,7 @@
             <div class="city-input">
                 <input type="text" id="cityInput" placeholder="Ej: Madrid, Barcelona" value="Madrid" aria-label="Ciudad" />
                 <button id="searchBtn" data-i18n="search_btn">Buscar</button>
+                <button id="detectLocationBtn" class="location-btn" type="button" data-i18n="detect_location" aria-label="Usar mi ubicación">Mi ubicación</button>
             </div>
 
             <div class="countdown-box" data-i18n="next_prayer">
@@ -1689,7 +1724,7 @@
     COOKIE BANNER
     ================================================================ -->
     <div class="cookie-banner" id="cookieBanner" role="alert">
-        <p data-i18n="cookie_message"><strong>Informacion</strong> Para ofrecerte los horarios de oracion segun tu ubicacion, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.</p>
+        <p data-i18n="cookie_message"><strong>Información:</strong> al aceptar, guardaremos tus preferencias y usaremos una ubicación aproximada basada en tu dirección IP para calcular los horarios de oración.</p>
         <div class="cookie-buttons">
             <button class="accept-btn" id="acceptCookies" data-i18n="cookie_accept">Aceptar</button>
             <button class="reject-btn" id="rejectCookies" data-i18n="cookie_reject">Rechazar</button>
@@ -1712,6 +1747,10 @@
                 tab_allah: 'Nombres',
                 tab_stories: 'Historias',
                 search_btn: 'Buscar',
+                detect_location: 'Mi ubicación',
+                locating: 'Detectando tu ubicación…',
+                location_unavailable: 'No se pudo detectar tu ubicación exacta. Se usará la ubicación aproximada por IP o puedes buscar tu ciudad.',
+                ip_location_unavailable: 'No se pudo obtener la ubicación por IP. Busca tu ciudad.' ,
                 next_prayer: 'Proximo rezo: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1755,10 +1794,10 @@
                 cat_viaje: 'Viaje',
                 cat_general: 'Generales',
                 cat_manana_tarde: 'Manana y Tarde',
-                cookies_required: 'Acepta las cookies para ver los horarios de oracion.',
+                cookies_required: 'Acepta las cookies para usar la ubicación aproximada o busca tu ciudad.',
                 allah_title: 'Los 99 Nombres de Allah',
                 allah_subtitle: 'Asma\'ul Husna — Los Nombres Mas Bellos',
-                cookie_message: 'Para ofrecerte los horarios de oracion segun tu ubicacion, necesitamos tu consentimiento para usar cookies y recordar tus preferencias. Tu privacidad es importante.',
+                cookie_message: 'Al aceptar, guardaremos tus preferencias y usaremos una ubicación aproximada basada en tu dirección IP para calcular los horarios de oración.',
                 cookie_accept: 'Aceptar',
                 cookie_reject: 'Rechazar',
                 stories_title: 'Historias del Islam',
@@ -1775,6 +1814,10 @@
                 tab_allah: 'Noms',
                 tab_stories: 'Histoires',
                 search_btn: 'Chercher',
+                detect_location: 'Ma position',
+                locating: 'Recherche de votre position…',
+                location_unavailable: 'Votre position exacte est introuvable. La position IP approximative sera utilisée ou recherchez votre ville.',
+                ip_location_unavailable: 'La position IP est introuvable. Recherchez votre ville.' ,
                 next_prayer: 'Prochaine priere: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1818,10 +1861,10 @@
                 cat_viaje: 'Voyage',
                 cat_general: 'Generales',
                 cat_manana_tarde: 'Matin et Soir',
-                cookies_required: 'Acceptez les cookies pour voir les horaires.',
+                cookies_required: 'Acceptez les cookies pour utiliser la localisation approximative ou recherchez votre ville.',
                 allah_title: 'Les 99 Noms d\'Allah',
                 allah_subtitle: 'Asma\'ul Husna — Les Plus Beaux Noms',
-                cookie_message: 'Pour vous offrir les horaires de priere selon votre localisation, nous avons besoin de votre consentement pour utiliser des cookies et memoriser vos preferences.',
+                cookie_message: 'En acceptant, nous enregistrerons vos préférences et utiliserons une localisation approximative basée sur votre adresse IP pour calculer les heures de prière.',
                 cookie_accept: 'Accepter',
                 cookie_reject: 'Refuser',
                 stories_title: 'Histoires de l\'Islam',
@@ -1838,6 +1881,10 @@
                 tab_allah: 'Names',
                 tab_stories: 'Stories',
                 search_btn: 'Search',
+                detect_location: 'My location',
+                locating: 'Finding your location…',
+                location_unavailable: 'We could not find your exact location. Your approximate IP location will be used, or search for your city.',
+                ip_location_unavailable: 'We could not determine your IP location. Search for your city.' ,
                 next_prayer: 'Next prayer: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1881,10 +1928,10 @@
                 cat_viaje: 'Travel',
                 cat_general: 'General',
                 cat_manana_tarde: 'Morning & Evening',
-                cookies_required: 'Accept cookies to see prayer times.',
+                cookies_required: 'Accept cookies to use approximate location or search for your city.',
                 allah_title: 'The 99 Names of Allah',
                 allah_subtitle: 'Asma\'ul Husna — The Most Beautiful Names',
-                cookie_message: 'To provide you with prayer times based on your location, we need your consent to use cookies and remember your preferences.',
+                cookie_message: 'By accepting, we will save your preferences and use an approximate IP-based location to calculate prayer times.',
                 cookie_accept: 'Accept',
                 cookie_reject: 'Reject',
                 stories_title: 'Stories of Islam',
@@ -1901,6 +1948,10 @@
                 tab_allah: 'الأسماء',
                 tab_stories: 'قصص',
                 search_btn: 'بحث',
+                detect_location: 'موقعي',
+                locating: 'جارٍ تحديد موقعك…',
+                location_unavailable: 'تعذر تحديد موقعك الدقيق. سيُستخدم موقع تقريبي عبر IP أو ابحث عن مدينتك.',
+                ip_location_unavailable: 'تعذر تحديد الموقع عبر IP. ابحث عن مدينتك.' ,
                 next_prayer: 'الصلاة القادمة: ',
                 prayer_fajr: 'الفجر',
                 prayer_dhuhr: 'الظهر',
@@ -1944,10 +1995,10 @@
                 cat_viaje: 'السفر',
                 cat_general: 'عامة',
                 cat_manana_tarde: 'الصباح والمساء',
-                cookies_required: 'اقبل ملفات الارتباط لمشاهدة أوقات الصلاة.',
+                cookies_required: 'اقبل ملفات الارتباط لاستخدام الموقع التقريبي أو ابحث عن مدينتك.',
                 allah_title: 'أسماء الله الحسنى',
                 allah_subtitle: 'أسماء الله الحسنى — الأسماء الأكثر جمالاً',
-                cookie_message: 'لتقديم أوقات الصلاة بناءً على موقعك، نحتاج إلى موافقتك لاستخدام ملفات الارتباط وتذكر تفضيلاتك.',
+                cookie_message: 'بقبولك، سنحفظ تفضيلاتك ونستخدم موقعًا تقريبيًا يعتمد على عنوان IP لحساب أوقات الصلاة.',
                 cookie_accept: 'قبول',
                 cookie_reject: 'رفض',
                 stories_title: 'قصص الإسلام',
@@ -9439,6 +9490,7 @@
         let deviceHeading = 0;
         let headingAvailable = false;
         let adhanEnabled = false;
+        let prayerTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         // ================================================================
         // FUNCIONES DE INTERNACIONALIZACIÓN
@@ -9564,6 +9616,10 @@
         function updateLocationDisplay() {
             const el = document.getElementById('fechaLocation');
             const hijri = getFormattedIslamicDate(currentLang);
+            if (!locationEnabled) {
+                el.innerHTML = `<span class="dot"></span> 📍 ${getTranslation('cookies_required')}`;
+                return;
+            }
             if (!currentCity) {
                 el.innerHTML = `<span class="dot"></span> ${getTranslation('loading')}`;
                 return;
@@ -9679,85 +9735,87 @@
         // COOKIES
         // ================================================================
         function checkCookies() {
-    const stored = localStorage.getItem('cookiesAccepted');
-    const banner = document.getElementById('cookieBanner');
-    if (stored === 'true') {
-        cookiesAccepted = true;
-        locationEnabled = true;
-        banner.classList.remove('visible');
-        habilitarFuncionalidad();
-        // Intentar restaurar preferencias guardadas o detectar ubicación
-        if (!restorePreferences()) {
-            getUserLocation();
+            const stored = localStorage.getItem('cookiesAccepted');
+            const banner = document.getElementById('cookieBanner');
+
+            if (stored === 'true') {
+                cookiesAccepted = true;
+                banner.classList.remove('visible');
+                if (!restorePreferences()) detectLocationFromIp();
+                return;
+            }
+
+            cookiesAccepted = false;
+            locationEnabled = false;
+            if (stored === 'false') banner.classList.remove('visible');
+            else banner.classList.add('visible');
+            mostrarMensajeSinCookies();
         }
-    } else if (stored === 'false') {
-        cookiesAccepted = false;
-        locationEnabled = false;
-        banner.classList.remove('visible');
-        mostrarMensajeSinCookies();
-        // Aun así intentar obtener ubicación por GPS si el navegador lo permite
-        autoDetectLocationSilently();
-    } else {
-        // Primera visita: pedir ubicación inmediatamente y mostrar banner como respaldo
-        cookiesAccepted = false;
-        locationEnabled = false;
-        banner.classList.add('visible');
-        mostrarMensajeSinCookies();
-        // Solicitar ubicación de inmediato
-        autoDetectLocationSilently();
-    }
-}
-        // ================================================================
-// DETECCIÓN AUTOMÁTICA DE UBICACIÓN AL ENTRAR
-// ================================================================
-function autoDetectLocationSilently() {
-    if (!navigator.geolocation) {
-        // Sin soporte de geolocalización: usar Madrid por defecto
-        setFallbackLocation();
-        return;
-    }
 
-    // Mostrar estado "detectando ubicación…"
-    document.getElementById('fechaLocation').innerHTML =
-        `<span class="dot"></span> 📍 ${getTranslation('loading')}`;
+        // La ubicación por IP no muestra el diálogo del GPS y se ejecuta solo tras el consentimiento.
+        function detectLocationFromIp() {
+            document.getElementById('fechaLocation').innerHTML =
+                `<span class="dot"></span> 📍 ${getTranslation('locating')}`;
 
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            userLat = pos.coords.latitude;
-            userLng = pos.coords.longitude;
-            // Aunque las cookies no estén aceptadas, permitimos cargar los horarios
+            fetch('https://ipwho.is/')
+                .then(response => {
+                    if (!response.ok) throw new Error('IP geolocation unavailable');
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.success || !Number.isFinite(Number(data.latitude)) || !Number.isFinite(Number(data.longitude))) {
+                        throw new Error('Invalid IP geolocation response');
+                    }
+                    applyLocation(Number(data.latitude), Number(data.longitude), data.city || data.region || '');
+                })
+                .catch(error => {
+                    console.warn('No se pudo obtener la ubicación por IP:', error);
+                    document.getElementById('fechaLocation').innerHTML =
+                        `<span class="dot"></span> 📍 ${getTranslation('ip_location_unavailable')}`;
+                });
+        }
+
+        function requestUserLocation() {
+            const button = document.getElementById('detectLocationBtn');
+            if (!navigator.geolocation) {
+                detectLocationFromIp();
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = getTranslation('locating');
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    applyLocation(position.coords.latitude, position.coords.longitude);
+                    button.disabled = false;
+                    button.textContent = getTranslation('detect_location');
+                },
+                error => {
+                    console.warn('Geolocalización no disponible:', error.message);
+                    button.disabled = false;
+                    button.textContent = getTranslation('detect_location');
+                    detectLocationFromIp();
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        }
+
+        function applyLocation(lat, lng, city = '') {
+            userLat = lat;
+            userLng = lng;
             locationEnabled = true;
             habilitarFuncionalidad();
-            reverseGeocode(userLat, userLng);
-            calcularQibla(userLat, userLng);
-            // Guardar si el usuario ya había aceptado cookies
+            calcularQibla(lat, lng);
+            if (city) {
+                currentCity = city;
+                document.getElementById('cityInput').value = city;
+                updateLocationDisplay();
+                fetchPrayerTimes(lat, lng);
+            } else {
+                reverseGeocode(lat, lng);
+            }
             if (cookiesAccepted) saveCurrentPreferences();
-        },
-        (err) => {
-            // El usuario denegó el permiso o hubo un error
-            console.warn('Geolocalización no disponible:', err.message);
-            setFallbackLocation();
-        },
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 600000 // 10 minutos de caché
         }
-    );
-}
-
-function setFallbackLocation() {
-    // Ubicación por defecto: Madrid
-    userLat = 40.4165;
-    userLng = -3.7026;
-    currentCity = 'Madrid';
-    locationEnabled = true;
-    habilitarFuncionalidad();
-    document.getElementById('cityInput').value = 'Madrid';
-    updateLocationDisplay();
-    fetchPrayerTimes(userLat, userLng);
-    calcularQibla(userLat, userLng);
-}
 
         function mostrarMensajeSinCookies() {
             document.getElementById('fechaLocation').innerHTML =
@@ -9767,37 +9825,27 @@ function setFallbackLocation() {
                 `<strong>Informacion</strong> ${getTranslation('cookies_required')}`;
             document.getElementById('prayerGrid').style.display = 'none';
             document.getElementById('countdownTimer').textContent = '--:--:--';
-            document.getElementById('searchBtn').disabled = true;
-            document.getElementById('cityInput').disabled = true;
-            document.getElementById('cityInput').placeholder = getTranslation('cookies_required');
+            document.getElementById('searchBtn').disabled = false;
+            document.getElementById('detectLocationBtn').disabled = false;
+            document.getElementById('cityInput').disabled = false;
+            document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
         }
 
         function habilitarFuncionalidad() {
             document.getElementById('prayerGrid').style.display = 'grid';
             document.getElementById('cookieWarning').style.display = 'none';
             document.getElementById('searchBtn').disabled = false;
+            document.getElementById('detectLocationBtn').disabled = false;
             document.getElementById('cityInput').disabled = false;
             document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
         }
 
-       function acceptCookies() {
-    localStorage.setItem('cookiesAccepted', 'true');
-    cookiesAccepted = true;
-    locationEnabled = true;
-    document.getElementById('cookieBanner').classList.remove('visible');
-    habilitarFuncionalidad();
-    saveCurrentPreferences();
-    // Si ya tenemos coordenadas detectadas, no volver a pedirlas
-    if (userLat && userLng && currentCity && currentCity !== 'Madrid') {
-        // Ya tenemos ubicación, solo actualizar horarios
-        fetchPrayerTimes(userLat, userLng);
-        calcularQibla(userLat, userLng);
-        updateLocationDisplay();
-    } else {
-        // Si no, intentar obtenerla
-        getUserLocation();
-    }
-}
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookiesAccepted = true;
+            document.getElementById('cookieBanner').classList.remove('visible');
+            if (!restorePreferences()) detectLocationFromIp();
+        }
 
         function rejectCookies() {
             localStorage.setItem('cookiesAccepted', 'false');
@@ -9888,38 +9936,6 @@ function setFallbackLocation() {
             });
         });
 
-        // ================================================================
-        // UBICACIÓN
-        // ================================================================
-        function getUserLocation() {
-            if (!cookiesAccepted || !locationEnabled) { mostrarMensajeSinCookies(); return; }
-            if (restorePreferences()) return;
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        userLat = pos.coords.latitude;
-                        userLng = pos.coords.longitude;
-                        reverseGeocode(userLat, userLng);
-                        calcularQibla(userLat, userLng);
-                        if (cookiesAccepted) saveCurrentPreferences();
-                    },
-                    () => {
-                        document.getElementById('fechaLocation').innerHTML =
-                            `<span class="dot"></span> 📍 ${currentCity} ${getTranslation('gps_denied')} · ${new Date().toLocaleDateString('es-ES')}`;
-                        fetchPrayerTimes(userLat, userLng);
-                        calcularQibla(userLat, userLng);
-                        habilitarFuncionalidad();
-                    }
-                );
-            } else {
-                document.getElementById('fechaLocation').innerHTML =
-                    `<span class="dot"></span> 📍 ${currentCity} ${getTranslation('no_gps')} · ${new Date().toLocaleDateString('es-ES')}`;
-                fetchPrayerTimes(userLat, userLng);
-                calcularQibla(userLat, userLng);
-                habilitarFuncionalidad();
-            }
-        }
-
         function reverseGeocode(lat, lng) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
                 .then(r => r.json())
@@ -9954,12 +9970,14 @@ function setFallbackLocation() {
                 .then(data => {
                     if (data.code === 200) {
                         const timings = data.data.timings;
+                        prayerTimeZone = data.data.meta?.timezone || prayerTimeZone;
+                        const clockTime = value => String(value).match(/\d{1,2}:\d{2}/)?.[0] || '--:--';
                         prayerTimes = {
-                            Fajr: timings.Fajr,
-                            Dhuhr: timings.Dhuhr,
-                            Asr: timings.Asr,
-                            Maghrib: timings.Maghrib,
-                            Isha: timings.Isha
+                            Fajr: clockTime(timings.Fajr),
+                            Dhuhr: clockTime(timings.Dhuhr),
+                            Asr: clockTime(timings.Asr),
+                            Maghrib: clockTime(timings.Maghrib),
+                            Isha: clockTime(timings.Isha)
                         };
                         prayerIds.forEach(id => document.getElementById(id).innerText = prayerTimes[id]);
                         startCountdownAndAdhan();
@@ -9978,32 +9996,20 @@ function setFallbackLocation() {
 
             function updateTimer() {
                 const now = new Date();
-                const todayStr = now.toISOString().split('T')[0];
-
-                let prayerDates = prayerIds.map(id => {
+                const cityClock = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: prayerTimeZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+                }).formatToParts(now);
+                const cityPart = type => Number(cityClock.find(part => part.type === type)?.value || 0);
+                const currentSeconds = cityPart('hour') * 3600 + cityPart('minute') * 60 + cityPart('second');
+                const prayerSeconds = id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
-                    return { id, time: new Date(`${todayStr}T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00`) };
-                });
-                prayerDates.sort((a, b) => a.time - b.time);
+                    return h * 3600 + m * 60;
+                };
+                const nextId = prayerIds.find(id => prayerSeconds(id) > currentSeconds) || prayerIds[0];
 
-                let next = null;
-                for (let p of prayerDates) {
-                    if (p.time > now) { next = p; break; }
-                }
-
-                if (!next && prayerDates.length > 0) {
-                    const first = prayerDates[0];
-                    const tomorrow = new Date(now);
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    const [h, m] = prayerTimes[first.id].split(':').map(Number);
-                    tomorrow.setHours(h, m, 0, 0);
-                    next = { id: first.id, time: tomorrow };
-                }
-
-                if (next) {
-                    let diff = (next.time - now) / 1000;
-                    if (diff < 0) diff = 0;
-                    if (diff > 86400) diff = 86400;
+                if (nextId) {
+                    let diff = prayerSeconds(nextId) - currentSeconds;
+                    if (diff <= 0) diff += 86400;
                     const hrs = Math.floor(diff / 3600);
                     const mins = Math.floor((diff % 3600) / 60);
                     const secs = Math.floor(diff % 60);
@@ -10013,7 +10019,7 @@ function setFallbackLocation() {
                     document.getElementById('countdownTimer').innerText = '00:00:00';
                 }
 
-                const currentMin = now.getHours() * 60 + now.getMinutes();
+                const currentMin = cityPart('hour') * 60 + cityPart('minute');
                 prayerIds.forEach(id => {
                     const [h, m] = prayerTimes[id].split(':').map(Number);
                     const prayerMin = h * 60 + m;
@@ -10036,8 +10042,11 @@ function setFallbackLocation() {
 
         function highlightCurrentPrayer() {
             if (!locationEnabled || Object.keys(prayerTimes).length === 0) return;
-            const now = new Date();
-            const currentMin = now.getHours() * 60 + now.getMinutes();
+            const cityClock = new Intl.DateTimeFormat('en-GB', {
+                timeZone: prayerTimeZone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+            }).formatToParts(new Date());
+            const currentMin = Number(cityClock.find(part => part.type === 'hour')?.value || 0) * 60 +
+                Number(cityClock.find(part => part.type === 'minute')?.value || 0);
             let activeId = null;
             let minDiff = Infinity;
 
@@ -10062,7 +10071,6 @@ function setFallbackLocation() {
         // BÚSQUEDA DE CIUDAD
         // ================================================================
         document.getElementById('searchBtn').addEventListener('click', function() {
-            if (!cookiesAccepted || !locationEnabled) { alert(getTranslation('cookies_required')); return; }
             const city = document.getElementById('cityInput').value.trim();
             if (!city) return;
             const sanitized = encodeURIComponent(city.replace(/[<>]/g, ''));
@@ -10075,14 +10083,18 @@ function setFallbackLocation() {
                         userLat = lat;
                         userLng = lng;
                         currentCity = data[0].display_name.split(',')[0];
+                        locationEnabled = true;
                         updateLocationDisplay();
                         fetchPrayerTimes(lat, lng);
                         calcularQibla(lat, lng);
+                        habilitarFuncionalidad();
                         if (cookiesAccepted) saveCurrentPreferences();
                     } else alert(getTranslation('city_not_found'));
                 })
                 .catch(() => alert(getTranslation('search_error')));
         });
+
+        document.getElementById('detectLocationBtn').addEventListener('click', requestUserLocation);
 
         // ================================================================
         // INTERACCIÓN DEL USUARIO PARA ADHAN
