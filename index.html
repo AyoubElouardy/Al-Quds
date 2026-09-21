@@ -1751,6 +1751,7 @@
                 locating: 'Detectando tu ubicación…',
                 location_unavailable: 'No se pudo detectar tu ubicación exacta. Se usará la ubicación aproximada por IP o puedes buscar tu ciudad.',
                 ip_location_unavailable: 'No se pudo obtener la ubicación por IP. Busca tu ciudad.' ,
+                location_unavailable: 'No se pudo detectar tu ubicación. Busca tu ciudad.',
                 next_prayer: 'Proximo rezo: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1818,6 +1819,7 @@
                 locating: 'Recherche de votre position…',
                 location_unavailable: 'Votre position exacte est introuvable. La position IP approximative sera utilisée ou recherchez votre ville.',
                 ip_location_unavailable: 'La position IP est introuvable. Recherchez votre ville.' ,
+                location_unavailable: 'Position introuvable. Recherchez votre ville.',
                 next_prayer: 'Prochaine priere: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1885,6 +1887,7 @@
                 locating: 'Finding your location…',
                 location_unavailable: 'We could not find your exact location. Your approximate IP location will be used, or search for your city.',
                 ip_location_unavailable: 'We could not determine your IP location. Search for your city.' ,
+                location_unavailable: 'We could not find your location. Search for your city.',
                 next_prayer: 'Next prayer: ',
                 prayer_fajr: 'Fajr',
                 prayer_dhuhr: 'Dhuhr',
@@ -1952,6 +1955,7 @@
                 locating: 'جارٍ تحديد موقعك…',
                 location_unavailable: 'تعذر تحديد موقعك الدقيق. سيُستخدم موقع تقريبي عبر IP أو ابحث عن مدينتك.',
                 ip_location_unavailable: 'تعذر تحديد الموقع عبر IP. ابحث عن مدينتك.' ,
+                location_unavailable: 'تعذر تحديد موقعك. ابحث عن مدينتك.',
                 next_prayer: 'الصلاة القادمة: ',
                 prayer_fajr: 'الفجر',
                 prayer_dhuhr: 'الظهر',
@@ -9816,6 +9820,86 @@
             }
             if (cookiesAccepted) saveCurrentPreferences();
         }
+    const stored = localStorage.getItem('cookiesAccepted');
+    const banner = document.getElementById('cookieBanner');
+    if (stored === 'true') {
+        cookiesAccepted = true;
+        locationEnabled = true;
+        banner.classList.remove('visible');
+        habilitarFuncionalidad();
+        // Intentar restaurar preferencias guardadas o detectar ubicación
+        if (!restorePreferences()) {
+            getUserLocation();
+        }
+    } else if (stored === 'false') {
+        cookiesAccepted = false;
+        locationEnabled = false;
+        banner.classList.remove('visible');
+        mostrarMensajeSinCookies();
+        // Aun así intentar obtener ubicación por GPS si el navegador lo permite
+        autoDetectLocationSilently();
+    } else {
+        // Primera visita: pedir ubicación inmediatamente y mostrar banner como respaldo
+        cookiesAccepted = false;
+        locationEnabled = false;
+        banner.classList.add('visible');
+        mostrarMensajeSinCookies();
+        // Solicitar ubicación de inmediato
+        autoDetectLocationSilently();
+    }
+}
+        // ================================================================
+// DETECCIÓN AUTOMÁTICA DE UBICACIÓN AL ENTRAR
+// ================================================================
+function autoDetectLocationSilently() {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+        applyDetectedLocation,
+        (err) => console.warn('Geolocalización no disponible:', err.message),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
+    );
+}
+
+function requestUserLocation() {
+    const button = document.getElementById('detectLocationBtn');
+    if (!navigator.geolocation) {
+        alert(getTranslation('location_unavailable'));
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = getTranslation('locating');
+    document.getElementById('fechaLocation').innerHTML =
+        `<span class="dot"></span> 📍 ${getTranslation('locating')}`;
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            applyDetectedLocation(position);
+            button.disabled = false;
+            button.textContent = getTranslation('detect_location');
+        },
+        (err) => {
+            console.warn('Geolocalización no disponible:', err.message);
+            button.disabled = false;
+            button.textContent = getTranslation('detect_location');
+            updateLocationDisplay();
+            alert(getTranslation('location_unavailable'));
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+}
+
+function applyDetectedLocation(pos) {
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
+    locationEnabled = true;
+    habilitarFuncionalidad();
+    reverseGeocode(userLat, userLng);
+    calcularQibla(userLat, userLng);
+    if (cookiesAccepted) saveCurrentPreferences();
+}
+
 
         function mostrarMensajeSinCookies() {
             document.getElementById('fechaLocation').innerHTML =
@@ -9935,6 +10019,13 @@
                 if (tabId === 'tab6') loadStoriesAccordion();
             });
         });
+
+        // ================================================================
+        // UBICACIÓN
+        // ================================================================
+        function getUserLocation() {
+            requestUserLocation();
+        }
 
         function reverseGeocode(lat, lng) {
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
