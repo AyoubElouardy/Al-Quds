@@ -9681,69 +9681,38 @@
         function checkCookies() {
     const stored = localStorage.getItem('cookiesAccepted');
     const banner = document.getElementById('cookieBanner');
+    
     if (stored === 'true') {
+        // El usuario ya aceptó antes: restauramos preferencias o pedimos GPS
         cookiesAccepted = true;
         locationEnabled = true;
         banner.classList.remove('visible');
         habilitarFuncionalidad();
-        // Intentar restaurar preferencias guardadas o detectar ubicación
         if (!restorePreferences()) {
             getUserLocation();
         }
     } else if (stored === 'false') {
+        // El usuario ya rechazó antes: mostramos mensaje de denegación
         cookiesAccepted = false;
         locationEnabled = false;
         banner.classList.remove('visible');
         mostrarMensajeSinCookies();
-        // Aun así intentar obtener ubicación por GPS si el navegador lo permite
-        autoDetectLocationSilently();
     } else {
-        // Primera visita: pedir ubicación inmediatamente y mostrar banner como respaldo
+        // Primera visita: mostramos el banner para preguntar
         cookiesAccepted = false;
         locationEnabled = false;
         banner.classList.add('visible');
-        mostrarMensajeSinCookies();
-        // Solicitar ubicación de inmediato
-        autoDetectLocationSilently();
+        // Personalizamos el mensaje del banner
+        banner.querySelector('p').innerHTML = `<strong>Permiso de Ubicación</strong> Para ofrecerte los horarios de oración según tu ubicación, necesitamos tu permiso para acceder a tu geolocalización. Tu privacidad es importante.`;
+        // NO llamamos a autoDetectLocationSilently()
     }
 }
         // ================================================================
 // DETECCIÓN AUTOMÁTICA DE UBICACIÓN AL ENTRAR
 // ================================================================
 function autoDetectLocationSilently() {
-    if (!navigator.geolocation) {
-        // Sin soporte de geolocalización: usar Madrid por defecto
-        setFallbackLocation();
-        return;
-    }
-
-    // Mostrar estado "detectando ubicación…"
-    document.getElementById('fechaLocation').innerHTML =
-        `<span class="dot"></span> 📍 ${getTranslation('loading')}`;
-
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            userLat = pos.coords.latitude;
-            userLng = pos.coords.longitude;
-            // Aunque las cookies no estén aceptadas, permitimos cargar los horarios
-            locationEnabled = true;
-            habilitarFuncionalidad();
-            reverseGeocode(userLat, userLng);
-            calcularQibla(userLat, userLng);
-            // Guardar si el usuario ya había aceptado cookies
-            if (cookiesAccepted) saveCurrentPreferences();
-        },
-        (err) => {
-            // El usuario denegó el permiso o hubo un error
-            console.warn('Geolocalización no disponible:', err.message);
-            setFallbackLocation();
-        },
-        {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 600000 // 10 minutos de caché
-        }
-    );
+    // Función desactivada. La detección ahora se maneja con acceptCookies().
+    console.log("Detección silenciosa desactivada.");
 }
 
 function setFallbackLocation() {
@@ -9787,25 +9756,33 @@ function setFallbackLocation() {
     document.getElementById('cookieBanner').classList.remove('visible');
     habilitarFuncionalidad();
     saveCurrentPreferences();
-    // Si ya tenemos coordenadas detectadas, no volver a pedirlas
-    if (userLat && userLng && currentCity && currentCity !== 'Madrid') {
-        // Ya tenemos ubicación, solo actualizar horarios
-        fetchPrayerTimes(userLat, userLng);
-        calcularQibla(userLat, userLng);
-        updateLocationDisplay();
-    } else {
-        // Si no, intentar obtenerla
-        getUserLocation();
-    }
+    // Forzamos la obtención de la ubicación del usuario AHORA
+    getUserLocation();
 }
 
         function rejectCookies() {
-            localStorage.setItem('cookiesAccepted', 'false');
-            cookiesAccepted = false;
-            locationEnabled = false;
-            document.getElementById('cookieBanner').classList.remove('visible');
-            mostrarMensajeSinCookies();
-        }
+    localStorage.setItem('cookiesAccepted', 'false');
+    cookiesAccepted = false;
+    locationEnabled = false;
+    document.getElementById('cookieBanner').classList.remove('visible');
+    
+    // Mostramos mensaje claro de denegación en la barra de ubicación
+    document.getElementById('fechaLocation').innerHTML = `<span class="dot"></span> 📍 Detección automática denegada. Escribe tu ciudad.`;
+    
+    // Mostramos advertencia con instrucciones
+    document.getElementById('cookieWarning').style.display = 'block';
+    document.getElementById('cookieWarning').innerHTML = `<strong>Información</strong> Has denegado el acceso a tu ubicación. Para ver los horarios, por favor escribe tu ciudad en el buscador.`;
+    
+    // Ocultamos rejilla y contador
+    document.getElementById('prayerGrid').style.display = 'none';
+    document.getElementById('countdownTimer').textContent = '--:--:--';
+    
+    // Habilitamos el buscador manual
+    document.getElementById('searchBtn').disabled = false;
+    document.getElementById('cityInput').disabled = false;
+    document.getElementById('cityInput').placeholder = getTranslation('city_placeholder');
+    document.getElementById('cityInput').value = '';
+}
 
         function saveCurrentPreferences() {
             if (!cookiesAccepted) return;
@@ -10061,8 +10038,8 @@ function setFallbackLocation() {
         // ================================================================
         // BÚSQUEDA DE CIUDAD
         // ================================================================
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            if (!cookiesAccepted || !locationEnabled) { alert(getTranslation('cookies_required')); return; }
+document.getElementById('searchBtn').addEventListener('click', function() {
+    // ELIMINADA LA RESTRICCIÓN DE COOKIES. Ahora cualquiera puede buscar.
             const city = document.getElementById('cityInput').value.trim();
             if (!city) return;
             const sanitized = encodeURIComponent(city.replace(/[<>]/g, ''));
@@ -10079,6 +10056,8 @@ function setFallbackLocation() {
                         fetchPrayerTimes(lat, lng);
                         calcularQibla(lat, lng);
                         if (cookiesAccepted) saveCurrentPreferences();
+                                        document.getElementById('cookieWarning').style.display = 'none';
+                document.getElementById('prayerGrid').style.display = 'grid';
                     } else alert(getTranslation('city_not_found'));
                 })
                 .catch(() => alert(getTranslation('search_error')));
