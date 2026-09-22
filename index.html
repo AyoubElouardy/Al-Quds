@@ -48,7 +48,6 @@
                 radial-gradient(ellipse at 20% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 50%);
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
         }
 
         ::-webkit-scrollbar {
@@ -84,12 +83,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .brand-icon {
-            font-size: 2rem;
-            line-height: 1;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.15));
         }
 
         .brand-text {
@@ -170,24 +163,6 @@
             border-color: var(--gold);
         }
 
-        .lang-btn .arabic-char {
-            background: #1a5a2a;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .lang-btn.active .arabic-char {
-            background: var(--bg-primary);
-            color: var(--gold);
-        }
-
         /* ================================================================
            FECHA Y UBICACIÓN
            ================================================================ */
@@ -264,7 +239,6 @@
             transition: all var(--transition);
             position: relative;
             min-width: 48px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .bottom-nav .nav-item .nav-icon {
@@ -1280,19 +1254,9 @@
                 letter-spacing: 4px;
             }
 
-            .brand-icon {
-                font-size: 1.6rem;
-            }
-
             .lang-btn {
                 width: 28px;
                 height: 28px;
-                font-size: 11px;
-            }
-
-            .lang-btn .arabic-char {
-                width: 22px;
-                height: 22px;
                 font-size: 11px;
             }
 
@@ -1470,41 +1434,8 @@
             .prayer-card .time {
                 font-size: 1.6rem;
             }
-        }
-
-        .pulse-gold {
-            animation: pulseGold 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseGold {
-            0%,
-            100% {
-                opacity: 1;
             }
-            50% {
-                opacity: 0.5;
-            }
-        }
 
-        .glow-text {
-            text-shadow: 0 0 40px rgba(212, 175, 55, 0.05);
-        }
-
-        .loading-shimmer {
-            background: linear-gradient(90deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1517,7 +1448,6 @@
         <!-- ===== HEADER ===== -->
         <header class="app-header">
             <div class="brand">
-                <span class="brand-icon">ﱞ</span>
                 <div class="brand-text">
                     <h1>Al-Quds</h1>
                     <span class="subtitle">App Islámica</span>
@@ -1527,9 +1457,7 @@
                 <button class="lang-btn active" data-lang="es" title="Español" aria-label="Español">ES</button>
                 <button class="lang-btn" data-lang="fr" title="Français" aria-label="Français">FR</button>
                 <button class="lang-btn" data-lang="en" title="English" aria-label="English">EN</button>
-                <button class="lang-btn" data-lang="ar" title="العربية" aria-label="العربية">
-                    <span class="arabic-char">ع</span>
-                </button>
+                <button class="lang-btn" data-lang="ar" title="العربية" aria-label="العربية">ع</button>
             </div>
         </header>
 
@@ -1563,7 +1491,7 @@
                     <div class="prayer-card"><div class="name" data-i18n="prayer_isha">Isha</div><div class="time" id="Isha">--:--</div></div>
                     <div class="prayer-card"><div class="name" data-i18n="prayer_qibla">Qibla</div><div class="time" style="font-size:0.85rem;">Makkah</div></div>
                 </div>
-                <div id="cookieWarning" class="cookie-warning" style="display:none;">
+                <div id="cookieWarning" class="cookie-warning" 
                     <strong>Informacion</strong> Para ver los horarios, por favor <strong>acepta las cookies</strong>.
                 </div>
             </div>
@@ -1675,8 +1603,6 @@
     REPRODUCTOR DE AUDIO
     ================================================================ -->
     <div class="audio-player-fixed" id="audioPlayerFixed" role="region" aria-label="Reproductor del Coran">
-        <div class="surah-info" id="surahInfo" data-i18n="select_surah_audio">Selecciona una sura para escuchar</div>
-        <div class="controls-row">
             <button id="prevSurahBtn" aria-label="Anterior" title="Sura anterior">‹‹</button>
             <button id="playBtn" aria-label="Reproducir/Pausar" title="Reproducir">▶</button>
             <button id="nextSurahBtn" aria-label="Siguiente" title="Sura siguiente">››</button>
@@ -9427,12 +9353,10 @@
             userLng = -3.7026;
         let currentCity = 'Madrid';
         let adhanAudio = new Audio();
-        let adhanLoaded = false;
         let currentSurah = '';
         let currentLang = 'es';
         let cookiesAccepted = false;
         let locationEnabled = false;
-        let userInteracted = false;
         let audio = new Audio();
         let isPlaying = false;
         let qiblaAngle = 0;
@@ -9621,7 +9545,6 @@
 
                 adhanAudio.addEventListener('canplaythrough', function() {
                     console.log('Adhan cargado correctamente.');
-                    adhanLoaded = true;
                 }, { once: true });
 
                 adhanAudio.addEventListener('error', function(e) {
@@ -9640,19 +9563,7 @@
                 console.log('Adhan deshabilitado');
                 return;
             }
-            if (!userInteracted) {
-                document.getElementById('enableAudioBtn').style.display = 'block';
-                document.getElementById('enableAudioBtn').textContent = getTranslation('adhan_enable');
-                document.getElementById('enableAudioBtn').className = 'adhan-btn';
-                window._pendingAdhan = true;
-                return;
-            }
 
-            if (!adhanLoaded) {
-                loadAdhan();
-                setTimeout(() => { if (adhanLoaded) tryPlayAdhan(); }, 2000);
-                return;
-            }
             tryPlayAdhan();
         }
 
@@ -10085,38 +9996,10 @@ function setFallbackLocation() {
         });
 
         // ================================================================
-        // INTERACCIÓN DEL USUARIO PARA ADHAN
-        // ================================================================
-        document.addEventListener('click', function() {
-            if (!userInteracted) {
-                userInteracted = true;
-                if (window._pendingAdhan) {
-                    adhanEnabled = true;
-                    playAdhan();
-                    window._pendingAdhan = false;
-                }
-                document.getElementById('enableAudioBtn').style.display = 'none';
-            }
-        }, { once: false });
-
-        document.addEventListener('touchstart', function() {
-            if (!userInteracted) {
-                userInteracted = true;
-                if (window._pendingAdhan) {
-                    adhanEnabled = true;
-                    playAdhan();
-                    window._pendingAdhan = false;
-                }
-                document.getElementById('enableAudioBtn').style.display = 'none';
-            }
-        }, { once: false });
-
-        // ================================================================
         // BOTÓN PARA HABILITAR ADHAN
         // ================================================================
         document.getElementById('enableAudioBtn').addEventListener('click', function() {
             adhanEnabled = true;
-            userInteracted = true;
             this.textContent = getTranslation('adhan_enabled');
             this.className = 'adhan-btn enabled';
             if (window._pendingAdhan) {
@@ -10644,12 +10527,6 @@ function setFallbackLocation() {
     loadStoriesAccordion();
     loadAdhan();
     setTimeout(() => { if (qiblaAngle !== 0) dibujarBrújula(); }, 500);
-    setTimeout(() => {
-        if (userInteracted) {
-            adhanEnabled = true;
-            document.getElementById('enableAudioBtn').style.display = 'none';
-        }
-    }, 1000);
 };
 
         window.addEventListener('resize', () => {
